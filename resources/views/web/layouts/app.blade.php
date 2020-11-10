@@ -17,8 +17,6 @@
     <link rel="stylesheet" href="/css/web/datetimepicker/jquery.datetimepicker.min.css">
     <!-- 共通 -->
     <link rel="stylesheet" href="/css/web/style.css" />
-    <!-- 列固定テーブル -->
-    <link rel="stylesheet" href="/css/web/fixed.table.css" />
 
     <!-- fontawesome -->
     <!-- cdn廃止予定のためdownload版を使用 -->
@@ -43,7 +41,7 @@
                         </a>
                     </div>
                     @auth
-                    {{-- ログイン時のメニュー　--}}
+                    <!-- ログイン時のメニュー -->
                     <div class="d-flex flex-column flex-lg-row ml-5">
                         <div class="header__text d-flex align-items-center">
                             ログイン中：{{ Auth::user()->customer->name }}(ID:{{ Auth::user()->login_id }}) 様
@@ -78,6 +76,9 @@
     <!-- container -->
     <div class="container">
         @yield('app_bread')
+
+        <hr class="page__hr my-0">
+
         @yield('app_contents')
     </div>
     <!-- container -->
