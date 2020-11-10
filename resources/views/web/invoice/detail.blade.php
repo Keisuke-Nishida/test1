@@ -6,42 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-    <!-- CSS -->
-    <!-- bootstrap4用 -->
+    {{-- CSS --}}
+    {{-- bootstrap4用 --}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-    <!-- dataTables -->
+    {{-- dataTables --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap4.min.css" />
-    <!-- datetimepicker -->
+    {{-- datetimepicker --}}
     <link rel="stylesheet" href="../../../public/css/datetimepicker/jquery.datetimepicker.min.css">
-    <!-- 共通 -->
+    {{-- 共通 --}}
     <link rel="stylesheet" href="../../../public/css/style.css" />
-    <!-- 列固定テーブル -->
+    {{-- 列固定テーブル --}}
     <link rel="stylesheet" href="../../../public/css/fixed.table.css" />
     <link rel="stylesheet" href="../../../public/css/fixed.detail.table.css" />
 
-    <!-- fontawesome -->
-    <!-- cdn廃止予定のためdownload版を使用 -->
+    {{-- fontawesome --}}
+    {{-- cdn廃止予定のためdownload版を使用 --}}
     <link rel="stylesheet" href="../../../public/fontawesome-free-5.14.0-web/css/all.css" />
 
     <title>請求詳細 | タキイ Web情報閲覧サービス</title>
 </head>
 
 <body class="page">
-    <!-- ヘッダー -->
+    {{-- ヘッダー --}}
     <header class="header sticky-top">
         <div class="header__bachground-image">
             <div class="header__bachground-image__mask">
                 <div class="d-flex flex-row align-items-center px-5 py-3 shadow">
-                    <!-- ロゴ -->
+                    {{-- ロゴ --}}
                     <div class="mr-auto">
                         <a class="header__logo my-0 mr-lg-auto" href="../home/index.blade.html">
                             <img src="../../../public/images/LOGO.png" alt="LOGO画像">
                         </a>
                     </div>
 
-                    <!-- ログイン表示/会員メニュー -->
+                    {{-- ログイン表示/会員メニュー --}}
                     <div class="d-flex flex-column flex-lg-row ml-5">
                         <div class="header__text d-flex align-items-center">
                             ログイン中：株式会社○○○○○○○○○○○○(ID:123456789) 様
@@ -73,7 +73,7 @@
     </header>
 
     <div class="container mb-5">
-        <!-- パンくずリスト -->
+        {{-- パンくずリスト --}}
         <div class="d-flex mt-2">
             <div class="flex-grow-1 page__breadcrumb">
                 <nav aria-label="breadcrumb">
@@ -91,7 +91,7 @@
                 </nav>
             </div>
 
-            <!-- 前へ/次へボタン -->
+            {{-- 前へ/次へボタン --}}
             <div class="d-flex align-items-center">
                 <a href="#" class="button__main--outline button__prev btn btn-sm">前へ</a>
                 <a href="#" class="button__main--outline button__next btn btn-sm">次へ</a>
@@ -100,12 +100,12 @@
 
         <hr class="page__hr my-0" />
 
-        <!-- 請求詳細一覧 -->
+        {{-- 請求詳細一覧 --}}
         <div class="row">
             <div class="col py-3">
 
                 <div class="d-flex flex-row overflow-auto font-1rem">
-                    <!-- お届け先名 -->
+                    {{-- お届け先名 --}}
                     <div class="flex-grow-1">
                         <div class="card ">
                             <div class="card-header px-3 py-1">
@@ -136,7 +136,7 @@
                                                 <td>株式会社○○○○○○○○○○○　様</td>
                                                 <th></th>
                                                 <td>
-                                                    <!-- 印刷ボタン -->
+                                                    {{-- 印刷ボタン --}}
                                                     <form action="" class="ml-auto">
                                                         <button type="submit"
                                                             class="btn btn-block btn-sm button__main">印刷</button>
@@ -150,7 +150,7 @@
                         </div>
                     </div>
 
-                    <!-- お得意先名 -->
+                    {{-- お得意先名 --}}
                     <div class="flex-column ml-2">
                         <div class="">
                             <div class="card text-nowrap">
@@ -160,7 +160,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- 口座等 -->
+                        {{-- 口座等 --}}
                         <div class="mt-2">
                             <table
                                 class="main-list__table table table-borderless table-sm mb-0 text-nowrap bg-transparent">
@@ -182,7 +182,7 @@
                     </div>
                 </div>
 
-                <!-- 送り先データ表示 -->
+                {{-- 送り先データ表示 --}}
                 <div class="row mt-2">
                     <div class="col">
                         <div class="table-responsive">
@@ -233,14 +233,14 @@
                     </div>
                 </div>
 
-                <!-- 詳細一覧テーブル -->
+                {{-- 詳細一覧テーブル --}}
                 <div class="row mt-2">
                     <div class="col">
                         <div id="" class="main-list__detail__table">
-                            <!-- 表 -->
+                            {{-- 表 --}}
                             <table id="main_list" class="main-list__table table table-sm bg-white mb-0"
                                 style="width: 100%">
-                                <!-- 表頭 -->
+                                {{-- 表頭 --}}
                                 <thead class="main-list__thead main-list__detail__thead th-sm">
                                     <tr class="fixed-header-0">
                                         <th class="number">No.</th>
@@ -253,7 +253,7 @@
                                         <th class="sales_amount">売上金額</th>
                                     </tr>
                                 </thead>
-                                <!-- 表体 -->
+                                {{-- 表体 --}}
                                 <tbody id="main-list__detail__tbody" class="main-list__tbody main-list__detail__tbody">
                                 </tbody>
                             </table>
@@ -261,9 +261,9 @@
                     </div>
                 </div>
 
-                <!-- 伝票番号と総計等 -->
+                {{-- 伝票番号と総計等 --}}
                 <div class="d-flex flex-column flex-lg-row mt-2">
-                    <!-- 伝票番号 -->
+                    {{-- 伝票番号 --}}
                     <div class="d-flex d-lg-inline-flex">
                         <table class="main-list__table table table-bordered table-sm bg-white mb-0">
                             <tbody class="main-list__tbody th-sm">
@@ -275,7 +275,7 @@
                         </table>
                     </div>
 
-                    <!-- 金額類 -->
+                    {{-- 金額類 --}}
                     <div class="d-flex flex-column flex-lg-row ml-lg-auto">
                         <div class="d-flex d-lg-inline-flex">
                             <table class="main-list__table table table-bordered table-sm bg-white mb-0">
@@ -313,7 +313,7 @@
 
         <hr class="page__hr my-0" />
 
-        <!-- 請求管理へ戻るボタン -->
+        {{-- 請求管理へ戻るボタン --}}
         <div class="d-flex justify-content-center mt-2">
             <div class="text-nowrap">
                 <a href="./index.blade.html" class="button__main--outline btn btn-sm px-3">請求管理へ戻る</a>
@@ -331,28 +331,28 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
-    <!-- jQuery本体 -->
+    {{-- JavaScript --}}
+    {{-- jQuery本体 --}}
     <script src="https://code.jquery.com/jquery-3.5.1.js"
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-    <!-- Bootstrap -->
+    {{-- Bootstrap --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
-    <!-- dataTables -->
+    {{-- dataTables --}}
     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
-    <!-- datetimepicker -->
+    {{-- datetimepicker --}}
     <script src="../../../public/js/datetimepicker/jquery.datetimepicker.full.min.js"></script>
-    <!-- 共有 -->
+    {{-- 共有 --}}
     <script src="../../../public/js/main.js"></script>
     <script src="../../../public/js/invoice.js"></script>
     <script src="../../../public/js/data_invoice.js"></script>
-    <!-- ヘッダー固定テーブル -->
+    {{-- ヘッダー固定テーブル --}}
     <script src="../../../public/js/fixed.detail.table.js"></script>
 
 </body>
