@@ -1,109 +1,53 @@
-/* 列固定テーブル */
-.main-list__tabel--fixed table {
-  border: none;
-  border-top: 2px solid #dee2e6;
-  border-right: 1px solid #dee2e6;
-  border-bottom: 2px solid #dee2e6;
-  border-left: 2px solid #dee2e6;
-  border-collapse: collapse;
-  table-layout: fixed;
-  display: block;
-  white-space: nowrap;
+.main-list__table--fixed-wrapper {
+    position: relative;
 }
 
-/* 表題（固定）左端 */
-.main-list__tabel--fixed thead th[class*="fixed-column-left-"] {
-  position: -webkit-sticky; /* for Safari */
-  position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 3;
+.copy-column--left {
+    position: absolute;
+    top: 0;
+    left: 15px; /* padding分の幅を取る */
+    overflow: hidden;
 }
 
-/* 表題（固定）右端 */
-.main-list__tabel--fixed thead th[class*="fixed-column-right-"] {
-  position: -webkit-sticky; /* for Safari */
-  position: sticky;
-  top: 0;
-  right: 0;
-  z-index: 3;
+.copy-column--right {
+    position: absolute;
+    top: 0;
+    right: 15px; /* padding分の幅を取る */
 }
 
-/* 表題（非固定） */
-.main-list__tabel--fixed thead th {
-  position: -webkit-sticky; /* for Safari */
-  position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 2;
+/* 固定列カラー */
+/* .main-list__table--fixed tbody tr td.fixed-column--left,
+.main-list__table--fixed tbody tr td.fixed-column--right, */
+.copy-column--left tbody tr td,
+.copy-column--right tbody tr td {
+    background-color: rgb(250, 250, 250);
 }
 
-/* 表体（固定）左端 */
-/*列データを固定する。leftの値はjsで動的に指定*/
-.main-list__tabel--fixed tbody td[class*="fixed-column-left-"] {
-  background-color: #fff;
-  position: -webkit-sticky; /* for Safari */
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  border: none;
+.copy-header__row {
+    position: absolute;
+    top: 0;
+    left: 15px; /* padding分の幅を取る */
+    overflow: hidden;
 }
 
-/* 表体（固定）右端 */
-/*列データを固定する。leftの値はjsで動的に指定*/
-.main-list__tabel--fixed tbody td[class*="fixed-column-right-"] {
-  background-color: #fff;
-  position: -webkit-sticky; /* for Safari */
-  position: sticky;
-  right: 0;
-  z-index: 1;
-  border: none;
+.copy-header__row table {
+    table-layout: fixed;
+    width: 100%;
 }
 
-.main-list__tabel--fixed tbody td {
-  background-color: #fff;
+.copy-header__cell--left {
+    position: absolute;
+    top: 0;
+    left: 15px; /* padding分の幅を取る */
 }
 
-.main-list__tabel--fixed th,
-.main-list__tabel--fixed td {
-  position: relative;
-  border: none;
-  padding-right: 1rem;
-  z-index: 0;
+.copy-header__cell--right {
+    position: absolute;
+    top: 0;
+    right: 15px; /* padding分の幅を取る */
 }
 
-.main-list__tabel--fixed th {
-  border-bottom: 1px solid #dee2e6 !important;
-}
-
-.main-list__tabel--fixed td {
-  border-bottom: none;
-}
-
-.main-list__tabel--fixed td::before,
-.main-list__tabel--fixed th::before {
-  content: "";
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  border-right: 1px solid #dee2e6 !important;
-  border-bottom: 1px solid #dee2e6 !important;
-  z-index: -1;
-}
-
-.main-list__tabel--fixed th[class*="fixed-column-left-"]::before,
-.main-list__tabel--fixed td[class*="fixed-column-left-"]::before {
-  border-right: 2px solid #dee2e6;
-}
-
-.main-list__tabel--fixed th[class*="fixed-column-right-"]::before,
-.main-list__tabel--fixed td[class*="fixed-column-right-"]::before {
-  border-left: 1px solid #dee2e6;
-}
-
-.main-list__tabel--fixed td.main-list__operation-colmun {
-  padding: 0.25rem 1.25rem;
+/* 詳細一覧用 */
+.main-list__detail-table--wrapper {
+    max-height: 230px;
 }
