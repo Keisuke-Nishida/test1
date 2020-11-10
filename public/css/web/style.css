@@ -1,0 +1,403 @@
+@charset "UTF-8";
+
+/* 試験的にBEM記法を使用 */
+/* utility */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-decoration-none {
+  text-decoration: none;
+}
+
+.font-1rem {
+  font-size: 1rem;
+}
+
+/* テキストカラー */
+.text__main {
+  color: #0b0049;
+}
+
+.text__sub {
+  color: #565656;
+}
+
+/* a link カラー */
+.link__main {
+  color: #4b74c6;
+}
+
+.link__main:hover {
+  color: #355aa8;
+}
+
+/* 基本ボタン */
+.button__main {
+  color: #fff;
+  background-color: #4b74c6;
+  border-color: #4b74c6;
+}
+
+.button__main:not(:disabled):not(.disabled):active,
+.button__main:not(:disabled):not(.disabled).active,
+.show > .button__main.dropdown-toggle {
+  color: #fff;
+  background-color: #4b74c6;
+  border-color: #4b74c6;
+}
+
+.button__main:active,
+.button__main:hover {
+  color: #fff;
+  background-color: #355aa8;
+  border-color: #355aa8;
+}
+
+.button__main:focus {
+  box-shadow: 0 0 0 0.2rem rgba(53, 90, 168, 0.5);
+}
+
+/* 基本ボタン（アウトライン） */
+.button__main--outline {
+  color: #4b74c6;
+  border-color: #4b74c6;
+}
+
+.button__main--outline:not(:disabled):not(.disabled):active,
+.button__main--outline:not(:disabled):not(.disabled).active,
+.show > .button__main--outline.dropdown-toggle {
+  color: #fff;
+  background-color: #4b74c6;
+  border-color: #4b74c6;
+}
+
+.button__main--outline:active,
+.button__main--outline:hover {
+  color: #fff;
+  background-color: #4b74c6;
+  border-color: #4b74c6;
+}
+
+.button__main--outline:focus {
+  box-shadow: 0 0 0 0.2rem rgba(53, 90, 168, 0.5);
+}
+
+.content__header__background-color {
+  font-weight: bold;
+  background-color: #e8eef8;
+}
+
+/** 共通CSS **/
+
+.page-home {
+  font-size: 1.25rem;
+  color: #0b0049;
+  background-color: #f5f5f5;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page {
+  font-size: 1.25rem;
+  color: #565656;
+  background-color: #f5f5f5;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page__title {
+  font-size: 2.25rem;
+  font-weight: normal;
+  color: #565656;
+}
+
+.page__breadcrumb {
+  color: #565656;
+}
+
+.page__hr my-0 {
+  margin-top: 0;
+  border-top: 1px solid #565656;
+}
+
+/* ヘッダー */
+/* ヘッダー画像用 */
+.header__bachground-image {
+  background-image: url("../../images/header_image.png");
+  background-size: cover;
+}
+
+/* ヘッダー画像の透明度調整用　アルファ値を低くすれば画像が濃くなる */
+.header__bachground-image__mask {
+  height: 100%;
+  background: rgba(245, 245, 245, 0.6);
+}
+
+.header__text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #565656;
+  text-shadow: #fff 2px 2px 0, #fff -2px -2px 0, #fff -2px 2px 0,
+    #fff 2px -2px 0, #fff 0px 2px 0, #fff 0-2px 0, #fff -2px 0 0, #fff 2px 0 0;
+}
+
+/* .header__dropdown-menu {
+} */
+
+.header__dropdown-menu__item:active {
+  background-color: #4b74c6;
+}
+
+.header__dropdown-menu__text {
+  font-size: 1rem;
+  color: #565656;
+}
+
+.header__dropdown-menu__text:hover {
+  color: #565656;
+}
+
+.header__dropdown-menu__text:active {
+  color: #fff;
+}
+
+/* コンテンツ(body内) */
+.content {
+  color: #0b0049;
+  background-color: #fff;
+}
+.content:hover {
+  color: #0b0049;
+}
+/* .content__icon {
+} */
+.content__title {
+  font-size: 1.75rem;
+}
+.content__info {
+  font-size: 3rem;
+}
+.content__card--round {
+  border-radius: 1rem;
+}
+
+/* 記事リスト（お知らせや掲示板の一覧表示） */
+/* .article-list__item {
+} */
+.article-list__item:hover {
+  color: #0b0049;
+  background-color: rgba(190, 179, 255, 0.15);
+}
+.article-list__thumbnail {
+  width: 90px;
+  height: 90px;
+}
+.article-list__title {
+  font-size: 1.5rem;
+  color: #0b0049;
+}
+.article-list__date {
+  font-size: 1rem;
+  color: #0b0049;
+}
+.article-list__text {
+  line-height: 1.75;
+}
+
+/* ボタン */
+/* 詳細検索ボタン */
+.button__detail-search {
+  width: 100px;
+}
+
+/* 検索ボタン */
+.button__search {
+  width: 100px;
+}
+
+/* クリアボタン */
+.button__clear {
+  width: 100px;
+}
+
+/* 印刷ボタン */
+.button__print {
+  width: 100px;
+}
+
+/* CSV出力ボタン */
+.button__csv {
+  width: 100px;
+}
+
+/* 詳細ボタン */
+.button__detail {
+  width: 75px;
+}
+
+/* 一覧のモーダル表示ボタン */
+.button__modal-link {
+  font-size: 1.25rem;
+  padding: 0;
+}
+
+/* 前へボタン */
+.button__prev {
+  width: 100px;
+}
+
+/* 次へボタン */
+.button__next {
+  width: 100px;
+  margin-left: 0.5rem;
+}
+
+/* テーブル全体 */
+.main-list__table {
+  white-space: nowrap;
+  vertical-align: middle;
+  width: 100%;
+  color: #565656;
+}
+
+.main-list__table th {
+  background-color: #e8eef8;
+}
+
+.main-list__table thead.th-sm th,
+.main-list__table tbody.th-sm th {
+  font-size: 1rem;
+}
+
+.bg-transparent th {
+  background-color: transparent !important;
+}
+
+.main-list__thead tr th {
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+}
+
+.main-list__tbody tr th,
+.main-list__tbody tr td {
+  vertical-align: middle;
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+}
+
+.main-list__operation-colmun {
+  text-align: center;
+}
+
+.main-list__button--detail {
+  width: 75px;
+}
+
+.main-list__button--print {
+  width: 75px;
+  margin-left: 0.5rem;
+}
+
+/* ローディングスピナー */
+#loading_bg {
+  display: table;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  opacity: 0.8;
+  z-index: 9999;
+}
+
+#loading_spinner {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* フッター */
+.footer {
+  background-color: #2054cc;
+  margin-top: auto !important;
+}
+
+.footer__text {
+  font-size: 1rem;
+  color: #fff;
+}
+
+/* Bootstrap4 上書き */
+.page-item.active .page-link {
+  background-color: #4b74c6;
+  border-color: #4b74c6;
+}
+
+.page-link {
+  color: #4b74c6;
+}
+
+.page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(53, 90, 168, 0.5);
+}
+
+.disabled {
+  background-color: #dedede;
+}
+
+.card-header {
+  font-weight: bold;
+  background-color: #e8eef8;
+}
+
+table .btn-link {
+  color: #4b74c6;
+}
+table .btn-link:hover {
+  color: #355aa8;
+}
+
+/* チェックボックスの位置操作 */
+.custom-control-input {
+  top: 0.5rem;
+  left: 0.25rem;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  color: #fff;
+  background-color: #4b74c6;
+  border-color: #4b74c6;
+}
+
+.custom-control-label::before,
+.custom-control-label::after {
+  top: 0.5rem;
+  left: -1.3rem;
+}
+
+/* DateTimePicker 上書き */
+/* 日曜日着色 */
+.xdsoft_calendar thead tr th:nth-of-type(1) {
+  color: #ff6666;
+}
+
+.xdsoft_calendar tbody tr td:nth-of-type(1) {
+  color: #ff6666;
+  background-color: #ffdddd;
+}
+
+/* 土曜日着色 */
+.xdsoft_calendar thead tr th:nth-of-type(7) {
+  color: #6666ff;
+}
+
+.xdsoft_calendar tbody tr td:nth-of-type(7) {
+  color: #6666ff;
+  background-color: #ddddff;
+}

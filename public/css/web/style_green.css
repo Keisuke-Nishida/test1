@@ -1,0 +1,402 @@
+@charset "UTF-8";
+
+:root {
+  /* テキストカラー */
+  --main-text-color: #004d1a;
+  /* #004d1a in decimal RGB */
+  --main-text-color-hover: 166, 242, 194;
+
+  --sub-text-color: #565656;
+
+  /* ボタンカラー */
+  --main-button-color-text: #fff;
+  --main-button-color: #3a995d;
+  --main-button-color-active: #2b7346;
+  /* #3a995d in decimal RGB */
+  --main-button-color-focus: 58, 153, 93;
+
+  /* ページの背景色 */
+  --page-background-color: #f5f5f5;
+
+  /* フッターカラー */
+  --footer-background-color: #008932;
+
+  /* 背景画像の濃度調整用 */
+  --image-mask: 245, 245, 245;
+}
+
+/* 試験的にBEM記法を使用 */
+/* utility */
+.text-decoration-none {
+  text-decoration: none;
+}
+/** 共通CSS **/
+/* 背景画像用 */
+.bg-image {
+  background-image: url("../images/580219_l.jpg");
+  background-size: cover;
+}
+
+/* 背景画像の透明度調整用　アルファ値を低くすれば画像が濃くなる */
+.bg-image__mask {
+  height: 100%;
+  background: rgba(var(--image-mask), 0.85);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ヘッダー画像用 */
+.header-image {
+  background-image: url("../images/580219_l.jpg");
+  background-size: cover;
+}
+
+/* ヘッダー画像の透明度調整用　アルファ値を低くすれば画像が濃くなる */
+.header-image__mask {
+  height: 100%;
+  background: rgba(var(--image-mask), 0.6);
+}
+
+.page-home {
+  font-size: 1.25rem;
+  color: var(--main-text-color);
+  background-color: var(--page-background-color);
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page {
+  font-size: 1.25rem;
+  color: var(--sub-text-color);
+  background-color: var(--page-background-color);
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page__title {
+  font-size: 2.25rem;
+  font-weight: normal;
+  color: var(--sub-text-color);
+}
+
+.page__breadcrumb {
+  color: var(--sub-text-color);
+}
+
+.page__hr {
+  margin-top: 0;
+  border-top: 1px solid var(--sub-text-color);
+}
+
+/* ヘッダー */
+.header__text {
+  font-size: 1rem;
+  color: var(--sub-text-color);
+}
+
+/* .header__dropdown-menu {
+} */
+
+.header__dropdown-menu__item:active {
+  background-color: var(--main-button-color);
+}
+
+.header__dropdown-menu__text {
+  font-size: 1rem;
+  color: var(--sub-text-color);
+}
+
+.header__dropdown-menu__text:hover {
+  color: var(--sub-text-color);
+  background-color: rgba(var(--main-text-color-hover), 0.15);
+}
+
+.header__dropdown-menu__text:active {
+  color: var(--main-button-color-text);
+}
+
+.header__dropdown-menu__button {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.header__dropdown-menu__button:not(:disabled):not(.disabled):active,
+.header__dropdown-menu__button:not(:disabled):not(.disabled).active,
+.show > .header__dropdown-menu__button.dropdown-toggle {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.header__dropdown-menu__button:active,
+.header__dropdown-menu__button:hover {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color-active);
+  border-color: var(--main-button-color-active);
+}
+
+.header__dropdown-menu__button:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--main-button-color-focus), 0.5);
+}
+
+/* コンテンツ(body内) */
+.content {
+  color: var(--main-text-color);
+  background-color: var(--main-button-color-text);
+}
+.content:hover {
+  color: var(--main-text-color);
+}
+/* .content__icon {
+} */
+.content__title {
+  font-size: 1.75rem;
+}
+.content__info {
+  font-size: 3rem;
+}
+.content__card--round {
+  border-radius: 1rem;
+}
+
+/* 記事リスト（お知らせや掲示板の一覧表示） */
+/* .article-list__item {
+} */
+.article-list__item:hover {
+  color: var(--main-text-color);
+  background-color: rgba(var(--main-text-color-hover), 0.15);
+}
+.article-list__thumbnail {
+  width: 90px;
+  height: 90px;
+}
+.article-list__title {
+  font-size: 1.5rem;
+  color: var(--main-text-color);
+}
+.article-list__date {
+  font-size: 1rem;
+  color: var(--main-text-color);
+}
+.article-list__text {
+  color: var(--main-text-color);
+}
+
+/* 一覧 */
+/* 検索ボタン */
+.button__search {
+  width: 100px;
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.button__search:not(:disabled):not(.disabled):active,
+.button__search:not(:disabled):not(.disabled).active,
+.show > .button__search.dropdown-toggle {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.button__search:active,
+.button__search:hover {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color-active);
+  border-color: var(--main-button-color-active);
+}
+
+.button__search:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--main-button-color-focus), 0.5);
+}
+
+/* クリアボタン */
+.button__clear {
+  width: 100px;
+  color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.button__clear:not(:disabled):not(.disabled):active,
+.button__clear:not(:disabled):not(.disabled).active,
+.show > .button__clear.dropdown-toggle {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.button__clear:active,
+.button__clear:hover {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color-active);
+  border-color: var(--main-button-color-active);
+}
+
+.button__clear:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--main-button-color-focus), 0.5);
+}
+
+/* CSVダウンロードボタン */
+.button__download {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.button__download:not(:disabled):not(.disabled):active,
+.button__download:not(:disabled):not(.disabled).active,
+.show > .button__download.dropdown-toggle {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.button__download:active,
+.button__download:hover {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color-active);
+  border-color: var(--main-button-color-active);
+}
+
+.button__download:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--main-button-color-focus), 0.5);
+}
+
+/* CSVダウンロードボタン */
+.button__detail {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.button__detail:not(:disabled):not(.disabled):active,
+.button__detail:not(:disabled):not(.disabled).active,
+.show > .button__detail.dropdown-toggle {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.button__detail:active,
+.button__detail:hover {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color-active);
+  border-color: var(--main-button-color-active);
+}
+
+.button__detail:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--main-button-color-focus), 0.5);
+}
+
+/* テーブル全体 */
+.main-list__table {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.main-list__thead tr th {
+  margin-left: 1rem;
+  padding-left: 0.75rem;
+  padding-right: 1.75rem;
+}
+
+.main-list__tbody tr td {
+  vertical-align: middle;
+  padding-left: 0.75rem;
+  padding-right: 1.75rem;
+}
+
+.main-list__operation-colmun {
+  width: 200px;
+  text-align: center;
+}
+
+.main-list__button {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.main-list__button:not(:disabled):not(.disabled):active,
+.main-list__button:not(:disabled):not(.disabled).active,
+.show > .main-list__button.dropdown-toggle {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.main-list__button:active,
+.main-list__button:hover {
+  color: var(--main-button-color-text);
+  background-color: var(--main-button-color-active);
+  border-color: var(--main-button-color-active);
+}
+
+.main-list__button:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--main-button-color-focus), 0.5);
+}
+
+.main-list__button--detail {
+  width: 75px;
+}
+
+.main-list__button--print {
+  width: 75px;
+  margin-left: 0.5rem;
+}
+
+/* フッター */
+.footer {
+  background-color: var(--footer-background-color);
+  margin-top: auto !important;
+}
+
+.footer__text {
+  font-size: 1rem;
+  color: var(--main-button-color-text);
+}
+
+/* Bootstrap4 上書き */
+.page-item.active .page-link {
+  background-color: var(--main-button-color);
+  border-color: var(--main-button-color);
+}
+
+.page-link {
+  color: var(--main-button-color);
+}
+
+.page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--main-button-color-focus), 0.5);
+}
+
+.disabled {
+  background-color: #dedede;
+}
+
+/* DateTimePicker 上書き */
+/* 日曜日着色 */
+.xdsoft_calendar thead tr th:nth-of-type(1) {
+  color: #ff6666;
+}
+
+.xdsoft_calendar tbody tr td:nth-of-type(1) {
+  color: #ff6666;
+  background-color: #ffdddd;
+}
+
+/* 土曜日着色 */
+.xdsoft_calendar thead tr th:nth-of-type(7) {
+  color: #6666ff;
+}
+
+.xdsoft_calendar tbody tr td:nth-of-type(7) {
+  color: #6666ff;
+  background-color: #ddddff;
+}

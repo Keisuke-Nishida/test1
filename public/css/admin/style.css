@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+/* 共通設定 */
+html {
+    font-size: 16px;
+}
+/* ヘッダー */
+.app-header {
+    background-color: #f4f6f6;
+    color: #384c61;
+}
+/* サイドバー */
+.sidebar-nav {
+    background-color: #2f353a;
+}
+/* HOME メインメニュー */
+.main-menu {
+    font-size: 1.2em;
+}
+/* ヘッダータイトル */
+.system-title {
+    font-size: 1.2em;
+    /*color: #fff;*/
+    margin-left: 10px;
+}
+/* ログインBody */
+.login-body {
+    background-color: #fff;
+}
+
+
+
+/* カーソルポインター */
+.cursor-pointer {
+    cursor: pointer;
+}
+/* 各幅 class */
+.width-100 {
+    width: 100px;
+}
+.width-200 {
+    width: 200px;
+}
+.width-400 {
+    width: 400px;
+}

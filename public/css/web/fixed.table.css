@@ -1,0 +1,109 @@
+/* 列固定テーブル */
+.main-list__tabel--fixed table {
+  border: none;
+  border-top: 2px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 2px solid #dee2e6;
+  border-left: 2px solid #dee2e6;
+  border-collapse: collapse;
+  table-layout: fixed;
+  display: block;
+  white-space: nowrap;
+}
+
+/* 表題（固定）左端 */
+.main-list__tabel--fixed thead th[class*="fixed-column-left-"] {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 3;
+}
+
+/* 表題（固定）右端 */
+.main-list__tabel--fixed thead th[class*="fixed-column-right-"] {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  top: 0;
+  right: 0;
+  z-index: 3;
+}
+
+/* 表題（非固定） */
+.main-list__tabel--fixed thead th {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+/* 表体（固定）左端 */
+/*列データを固定する。leftの値はjsで動的に指定*/
+.main-list__tabel--fixed tbody td[class*="fixed-column-left-"] {
+  background-color: #fff;
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  border: none;
+}
+
+/* 表体（固定）右端 */
+/*列データを固定する。leftの値はjsで動的に指定*/
+.main-list__tabel--fixed tbody td[class*="fixed-column-right-"] {
+  background-color: #fff;
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  right: 0;
+  z-index: 1;
+  border: none;
+}
+
+.main-list__tabel--fixed tbody td {
+  background-color: #fff;
+}
+
+.main-list__tabel--fixed th,
+.main-list__tabel--fixed td {
+  position: relative;
+  border: none;
+  padding-right: 1rem;
+  z-index: 0;
+}
+
+.main-list__tabel--fixed th {
+  border-bottom: 1px solid #dee2e6 !important;
+}
+
+.main-list__tabel--fixed td {
+  border-bottom: none;
+}
+
+.main-list__tabel--fixed td::before,
+.main-list__tabel--fixed th::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-right: 1px solid #dee2e6 !important;
+  border-bottom: 1px solid #dee2e6 !important;
+  z-index: -1;
+}
+
+.main-list__tabel--fixed th[class*="fixed-column-left-"]::before,
+.main-list__tabel--fixed td[class*="fixed-column-left-"]::before {
+  border-right: 2px solid #dee2e6;
+}
+
+.main-list__tabel--fixed th[class*="fixed-column-right-"]::before,
+.main-list__tabel--fixed td[class*="fixed-column-right-"]::before {
+  border-left: 1px solid #dee2e6;
+}
+
+.main-list__tabel--fixed td.main-list__operation-colmun {
+  padding: 0.25rem 1.25rem;
+}
