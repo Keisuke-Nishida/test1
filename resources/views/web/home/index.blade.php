@@ -4,35 +4,27 @@
     HOME
 @endsection
 
+{{-- Breadcrumb--}}
 @section('app_bread')
-    <!-- Breadcrumb-->
-    <div class="page__breadcrumb col col-lg-10 d-flex align-items-end">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-transparent mb-0">
-                <li class="breadcrumb-item active" aria-current="page">HOME</li>
-            </ol>
-        </nav>
+    <div class="row mt-2">
+        <div class="page__breadcrumb col col-lg-10 d-flex align-items-end">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0">
+                    <li class="breadcrumb-item active" aria-current="page">HOME</li>
+                </ol>
+            </nav>
+        </div>
     </div>
 @endsection
 
+{{-- コンテンツ --}}
 @section('app_contents')
-    <div class="row mt-2">
-        <!-- ページタイトル -->
-        <!-- <div class="col col-lg-2 d-flex align-items-end">
-            <h1 class="page__title">HOME</h1>
-        </div> -->
-        <!-- パンくずリスト -->
-    </div>
-
-    <hr class="page__hr my-0">
-
-    <!-- コンテンツ -->
-    <div class="row p-3 mb-5">
+    <div class="row p-3">
         <div class="col-lg">
             <div class="row">
                 <!-- 請求管理 -->
                 <a class="content btn btn-link col shadow px-3 py-5 content__card--round text-center"
-                   href="../invoice/index.blade.html">
+                   href="/invoice">
                     <i class="content__icon far fa-file-alt fa-4x"></i><br>
                     <h2 class="content__title mt-3">請求管理</h2>
                     <p class="content__info m-0">99</p>
@@ -80,7 +72,7 @@
                         <a class="text-decoration-none" href="../bulletin_board/detail.blade.html">
                             <li class="article-list__item media p-2 mt-2">
                                 <div class="col-3">
-                                    <img src="../../../public/images/bbs_image1.png" width="100%">
+                                    <img src="/images/bbs_image1.png" width="100%">
                                 </div>
                                 <div class="col-9">
                                     <h3 class="article-list__title m-0"><u>2020年秋 種特集号 vol.50</u></h3>
