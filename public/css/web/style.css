@@ -39,14 +39,6 @@
     border-color: #4b74c6;
 }
 
-.button__main:not(:disabled):not(.disabled):active,
-.button__main:not(:disabled):not(.disabled).active,
-.show > .button__main.dropdown-toggle {
-    color: #fff;
-    background-color: #4b74c6;
-    border-color: #4b74c6;
-}
-
 .button__main:active,
 .button__main:hover {
     color: #fff;
@@ -58,17 +50,25 @@
     box-shadow: 0 0 0 0.2rem rgba(53, 90, 168, 0.5);
 }
 
-/* 基本ボタン（アウトライン） */
-.button__main--outline {
-    color: #4b74c6;
+.button__main.disabled,
+.button__main:disabled {
+    color: #fff;
+    background-color: #4b74c6;
+    border-color: #4b74c6;
+    opacity: 0.65;
+}
+
+.button__main:not(:disabled):not(.disabled):active,
+.button__main:not(:disabled):not(.disabled).active,
+.show > .button__main.dropdown-toggle {
+    color: #fff;
+    background-color: #4b74c6;
     border-color: #4b74c6;
 }
 
-.button__main--outline:not(:disabled):not(.disabled):active,
-.button__main--outline:not(:disabled):not(.disabled).active,
-.show > .button__main--outline.dropdown-toggle {
-    color: #fff;
-    background-color: #4b74c6;
+/* 基本ボタン（アウトライン） */
+.button__main--outline {
+    color: #4b74c6;
     border-color: #4b74c6;
 }
 
@@ -81,6 +81,22 @@
 
 .button__main--outline:focus {
     box-shadow: 0 0 0 0.2rem rgba(53, 90, 168, 0.5);
+}
+
+.button__main--outline.disabled,
+.button__main--outline:disabled {
+    color: #fff;
+    background-color: #4b74c6;
+    border-color: #4b74c6;
+    opacity: 0.65;
+}
+
+.button__main--outline:not(:disabled):not(.disabled):active,
+.button__main--outline:not(:disabled):not(.disabled).active,
+.show > .button__main--outline.dropdown-toggle {
+    color: #fff;
+    background-color: #4b74c6;
+    border-color: #4b74c6;
 }
 
 .content__header__background-color {
