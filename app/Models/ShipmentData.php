@@ -27,14 +27,21 @@ class ShipmentData extends BaseModel
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function condition() {
-            return $this->hasOne('App\Models\Condition', 'code', 'condition_type');
+            return $this->hasOne('App\Models\Condition', 'code', 'condition_code');
     }
     /**
-     * 都道府県マスタリレーション
+     * 売上先都道府県マスタリレーション
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function prefecture() {
+    public function sale_prefecture() {
         return $this->hasOne('App\Models\Prefecture', 'code', 'sale_prefecture_code');
+    }
+    /**
+     * 送り先都道府県マスタリレーション
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function destination_prefecture() {
+        return $this->hasOne('App\Models\Prefecture', 'code', 'destination_prefecture_code');
     }
     /**
      * 伝票区分マスタリレーション

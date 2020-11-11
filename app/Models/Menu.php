@@ -14,8 +14,12 @@ class Menu extends BaseModel
 
     protected $table = 'menu';
 
+    /**
+     * 権限メニューリレーション
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function role_menu() {
-        return $this->hasMany('App\Models\RoleMenu', 'id', 'menu_id');
+        return $this->hasMany('App\Models\RoleMenu', 'menu_id', 'id');
     }
 }
 
