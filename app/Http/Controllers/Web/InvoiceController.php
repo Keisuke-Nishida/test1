@@ -16,13 +16,4 @@ class InvoiceController extends BaseController
         $this->mainService = null;
         $this->mainRoot     = "web/invoice";
     }
-
-    /**
-     * HOME
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function index()
-    {
-        return view($this->mainRoot . '/index');
-    }
 }
