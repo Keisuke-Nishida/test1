@@ -99,10 +99,10 @@
                 </div>
                 <hr>
                 <div class="modal_agree">
-                    <p class="custom-control custom-checkbox">
+                    <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="check_agree">
-                        <label class="custom-control-label" for="check_agree">利用規約に同意する</label>
-                    </p>
+                        <label class="custom-control-label cursor-pointer" for="check_agree">利用規約に同意する</label>
+                    </div>
                     <div class="text-center">
                         <button id="button_agree" type="button" class="btn button__main" disabled>利用規約に同意して登録する</button>
                     </div>
