@@ -74,7 +74,7 @@
     <!-- header -->
 
     <!-- container -->
-    <div class="container">
+    <div class="container mb-5">
         @yield('app_bread')
 
         <hr class="page__hr my-0">
