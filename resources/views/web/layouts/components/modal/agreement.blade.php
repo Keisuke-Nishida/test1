@@ -4,8 +4,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">利用規約</h5> <button type="button" class="close"
-                                                                                       data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="exampleModalCenterTitle">利用規約</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -91,7 +91,7 @@
                         </p>
                         <h5>【ネット通販における個人情報の確認・変更・削除】</h5>
                         <p>ご登録いただいている個人情報は、タキイネット通販にログインし、マイページ内の「ユーザー情報の確認・変更」よりいつでも確認・変更が可能です。
-                            お客様がご登録いただいているユーザー登録情報の削除を希望される場合には、タキイネット通販にログインし、マイページ内の「ユーザー情報の確認・変更」より手続きを行ってください。<br>
+                            お客様がご登録いただいているユーザー登録情報の削除を希望される場合には、タキイネット通販にログインし、マイページ内の「ユーザー情報の確認・変更」より手続きを行ってください。<br><br>
                             個人情報に関するお問い合わせ先<br> 〒600−8686　京都市下京区梅小路通猪熊東入　タキイ種苗（株）通販係<br> TEL：075−365−0140<br>
                             FAX：075−344−6707<br> 電話受付時間：午前9:00～午後5:00<br> 休日：土曜・日曜・祝日・盆・年末年始・弊社の休業日<br>
                             ネットでのお問い合わせはこちらへ</p>
@@ -103,10 +103,9 @@
                         <input type="checkbox" class="custom-control-input" id="check_agree">
                         <label class="custom-control-label" for="check_agree">利用規約に同意する</label>
                     </p>
-                    <p class="text-center">
-                        <a href="../layouts/result.blade.html"><button type="button"
-                                                                       class="btn button__main">利用規約に同意して登録する</button></a>
-                    </p>
+                    <div class="text-center">
+                        <button id="button_agree" type="button" class="btn button__main" disabled>利用規約に同意して登録する</button>
+                    </div>
                 </div>
             </div>
         </div>
