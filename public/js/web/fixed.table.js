@@ -1,10 +1,6 @@
 // 管理一覧の行列固定
 $(function () {
-    const startTime = performance.now(); // 開始時間
     fixedTableInit();
-    const endTime = performance.now(); // 終了時間
-
-    console.log("固定行列処理時間：", endTime - startTime, "msec");
 
     /**
      * 行列固定テーブル 初期化
@@ -151,7 +147,8 @@ const fixedTable = function () {
         let fixedTheadColumnClass = ".fixed-column--right";
         copyTableThead = compositeTableThead(
             copyTableThead,
-            fixedTheadColumnClass
+            fixedTheadColumnClass,
+            false
         );
 
         // tbodyのfixed-column--rightクラスを持っている要素をコピー
@@ -238,7 +235,8 @@ const fixedTable = function () {
         let fixedTheadColumnClass = ".fixed-column--left";
         copyTableThead = compositeTableThead(
             copyTableThead,
-            fixedTheadColumnClass
+            fixedTheadColumnClass,
+            false
         );
 
         const compositeTable = copyTable.append(copyTableThead);
@@ -268,7 +266,8 @@ const fixedTable = function () {
         let fixedTheadColumnClass = ".fixed-column--right";
         copyTableThead = compositeTableThead(
             copyTableThead,
-            fixedTheadColumnClass
+            fixedTheadColumnClass,
+            false
         );
 
         const compositeTable = copyTable.append(copyTableThead);
@@ -289,7 +288,7 @@ const fixedTable = function () {
     function compositeTableThead(
         copyTableThead,
         fixedTheadColumnClass,
-        hasDeleteCheckboxFeature = false
+        hasDeleteCheckboxFeature
     ) {
         if (baseTableThead.length > 0) {
             $.each(baseTableTheadTr, function (i, e) {
