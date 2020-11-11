@@ -6,7 +6,7 @@ use App\Models\Traits\TraitOperationUser;
 
 /**
  * お知らせデータModel
- * Class InvoiceData
+ * Class NoticeData
  * @package App\Models
  */
 class NoticeData extends BaseModel
@@ -14,7 +14,4 @@ class NoticeData extends BaseModel
     use TraitOperationUser;
 
     protected $table = 'notice_data';
-
 }
-
-
