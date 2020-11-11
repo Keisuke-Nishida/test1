@@ -20,7 +20,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0">
                     <li class="breadcrumb-item">
-                        <a class="link__main" href="../home/index.blade.html">HOME</a>
+                        <a class="link__main" href="/">HOME</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                         請求管理
@@ -305,7 +305,7 @@
     <!-- ホームへ戻るボタン -->
     <div class="d-flex justify-content-center mt-2">
         <div class="text-nowrap">
-            <a href="../home/index.blade.html" class="button__main--outline btn btn-sm px-3">ホームへ戻る</a>
+            <a href="/" class="button__main--outline btn btn-sm px-3">ホームへ戻る</a>
         </div>
     </div>
 
@@ -323,6 +323,3 @@
     <!-- ヘッダーと列固定テーブル -->
     <script src="/js/web/fixed.table.js"></script>
 @endsection
-
-
-

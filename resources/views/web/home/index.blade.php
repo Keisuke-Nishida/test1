@@ -31,7 +31,7 @@
                 </a>
                 <!-- 出荷管理 -->
                 <a class="content btn btn-link col shadow px-3 py-5 ml-4 content__card--round text-center"
-                   href="../shipment/index.blade.html">
+                   href="/shipment">
                     <i class="content__icon fas fa-truck fa-4x"></i><br>
                     <h2 class="content__title mt-3">出荷管理</h2>
                     <p class="content__info m-0">99</p>
@@ -59,7 +59,7 @@
                         </li>
                     </ul>
                     <div class="content__bottom__link text-center">
-                        <a class="link__main" href="../notice/list.blade.html">> 過去のお知らせ一覧へ</a>
+                        <a class="link__main" href="/notice">> 過去のお知らせ一覧へ</a>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                         </a>
                     </ul>
                     <div class="content__bottom__link text-center">
-                        <a class="link__main" href="../bulletin_board/list.blade.html">> 過去の掲示板一覧へ</a>
+                        <a class="link__main" href="/bulletin_board">> 過去の掲示板一覧へ</a>
                     </div>
                 </div>
             </div>
