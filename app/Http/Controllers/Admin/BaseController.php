@@ -85,7 +85,7 @@ class BaseController extends Controller
          * 使い方例
          *  condition   => ['name@like' => $request->name, 'id' => $request->id]
          *　　　各テーブルのカラム名指定
-         *　　　※検索方法は app\Services\BaseService.php「getConditions」 参考
+         *　　　※検索方法は app\Services\Models\BaseService.php「getConditions」 参考
          *
          *  sort        => [['id' => 'asc'], ['name' => 'desc']]
          *　　　ソートしたいキーとasc,descを指定。先頭から順に優先
