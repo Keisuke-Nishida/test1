@@ -15,7 +15,7 @@ function search_main_list()
         "ajax": {
             "type": "post",
             "dataType": "json",
-            "url": '/admin/user/search',
+            "url": "/admin/user/search",
             "data": {
                 "name": $("#search-name").val(),
                 "login_id": $("#search-login-id").val(),
@@ -28,7 +28,7 @@ function search_main_list()
             }
         },
         "initComplete": function() {
-            $(this).css('width', '100%');
+            $(this).css("width", "100%");
             $(this).find('[data-toggle="tooltip"]').tooltip();
         },
         "lengthMenu": [25, 50, 100],
@@ -135,7 +135,7 @@ $(document).ready(function() {
     $(document).on("click", ".btn-remove", function() {
         $("#confirm_url").val($(this).data("url"));
         $("#confirm_id").val($(this).data("id"));
-        $("#confirm_modal").modal('show');
+        $("#confirm_modal").modal("show");
     });
 
     $("#user-multiple-delete-button").click(function(e) {
@@ -152,36 +152,40 @@ $(document).ready(function() {
         selected_rows = selected_rows.join(",");
 
         $("#confirm_id").val(selected_rows);
-        $("#confirm_modal").modal('show');
+        $("#confirm_modal").modal("show");
     });
 
     $("#confirm_button").click(function() {
         $("#confirm_modal").modal("hide");
 
-        $.ajaxSetup({
-            "headers": {
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-            }
-        });
-
-        $.ajax({
-            "url": $("#confirm_url").val(),
-            "type": "POST",
-            "data": {
-                "id": $("#confirm_id").val()
-            }
-        }).done(function(response){
-            if (response.status == 1) {
-                $('#result_info_message').html(response.message);
-                $('#result_info_modal').modal('show');
-                clear_search_fields();                
-                $("#user-table").DataTable().destroy();
-                search_main_list();
-            } else {
-                $('#result_error_message').html(response.message);
-                $('#result_error_modal').modal('show');
-            }
-        });
+        if ($("#confirm_id").val()) {
+            $.ajaxSetup({
+                "headers": {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+                }
+            });
+    
+            $.ajax({
+                "url": $("#confirm_url").val(),
+                "type": "POST",
+                "data": {
+                    "id": $("#confirm_id").val()
+                }
+            }).done(function(response){
+                if (response.status == 1) {
+                    $("#result_info_message").html(response.message);
+                    $("#result_info_modal").modal("show");
+                    clear_search_fields();                
+                    $("#user-table").DataTable().destroy();
+                    search_main_list();
+                } else {
+                    $("#result_error_message").html(response.message);
+                    $("#result_error_modal").modal("show");
+                }
+            });
+        } else {
+            document.location.href = $("#confirm_url").val();
+        }
     });
 
     $("#confirm_modal").on("hidden.bs.modal", function() {
@@ -203,4 +207,9 @@ $(document).ready(function() {
             }
         });
     }
+
+    $("#user-form-cancel").click(function(e) {
+        $("#confirm_url").val($(this).data("url"));
+        $("#confirm_modal").modal("show");
+    });
 });

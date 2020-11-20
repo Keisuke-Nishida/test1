@@ -12,7 +12,7 @@
 <div class="card">
     <div class="card-header">{{ $action }}</div>
     <div class="card-body">
-        <form class="form" id="user-edit-form" action="{{ route('admin/user/save') }}" method="post">
+        <form class="form" id="user-form" action="{{ route('admin/user/save') }}" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="register_mode" value="{{ $register_mode }}" />
             @if (isset($data['id']))
@@ -143,10 +143,15 @@
             <div class="row">
                 <div class="col-md-12">
                     <button class="btn btn-primary width-100" tabindex="11" type="submit">保存</button>
-                    <a class="btn btn-outline-secondary width-100" tabindex="12" href="{{ route('admin/user') }}">キャンセル</a>
+                    <a class="btn btn-outline-secondary width-100" id="user-form-cancel" data-url="/admin/user/index" tabindex="12" href="#">キャンセル</a>
                 </div>
             </div>
         </form>
     </div>
 </div>
+@include('admin.layouts.components.modal.confirm', [
+    'title'         => 'ユーザ管理',
+    'button_name'   => 'OK',
+    'message'       => \App\Lib\Message::getMessage(\App\Lib\Message::INFO_005, [])
+])
 @endsection

@@ -7,6 +7,8 @@ use App\Models\Customer;
 use App\Models\Role;
 use App\Services\Models\AdminUserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends BaseController
 {
@@ -117,7 +119,14 @@ class UserController extends BaseController
             'name' => 'required|string|min:4|max:50',
             'system_admin_flag' => 'integer|min:0|max:1|nullable',
             'status' => 'required|integer|min:1|max:2',
-            'customer_id' => 'integer|nullable',
+            'customer_id' => [
+                'integer',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->get('status') == 2 && !$value) {
+                        return $fail($attribute . ' is invalid');
+                    }
+                }
+            ],
             'login_id' => 'required|string|min:4|max:10',
             'email' => 'required|string|email|min:6|max:255',
             'role_id' => 'required|integer'
@@ -173,5 +182,77 @@ class UserController extends BaseController
         }
 
         return $messages;
+    }
+
+    /**
+     * Method for overriding except method of BaseController class
+     * 
+     * @return array
+     */
+    public function except()
+    {
+        $base = ['_token', 'register_mode'];
+
+        if (!request()->get('password')) {
+            $base[] = 'password';
+            $base[] = 'password_confirmation';
+        }
+
+        return array_merge($this->child_except(), $base);
+    }
+
+    /**
+     * Method for overriding save_before method of BaseController class
+     * 
+     * @param Request $request
+     * @return array
+     * @throws \Exception
+     */
+    public function saveBefore(Request $request)
+    {
+        $input = $request->except($this->except());
+
+        return $input;
+    }
+
+    /**
+     * Method for overriding save method of BaseController class
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function save(Request $request)
+    {
+        $validator = $this->validation($request);
+
+        if ($validator->fails()) {
+            return $this->validationFailRedirect($request, $validator);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $input = $this->saveBefore($request);
+
+            if (isset($input['password'])) {
+                $input['password'] = bcrypt($input['password']);
+            }
+
+            if ($input['status'] == 1) {
+                $input['customer_id'] = null;
+            }
+
+            $model = $this->mainService->save($input);
+            $this->saveAfter($request, $model);
+
+            DB::commit();
+
+            return $this->saveAfterRedirect($request);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('database register error:' . $e->getMessage());
+            throw new \Exception($e);
+        }
     }
 }
