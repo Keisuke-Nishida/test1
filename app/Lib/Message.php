@@ -19,6 +19,7 @@ class Message {
     const INFO_002  = "%sの編集を行いました";
     const INFO_003  = "%sの削除を行いました";
     const INFO_004  = "%sのデータを削除します。よろしいですか？";
+    const INFO_005 = "Go back to index page?";
 
     /**
      * メッセージ取得
