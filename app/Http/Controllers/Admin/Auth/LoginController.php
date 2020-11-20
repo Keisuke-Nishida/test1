@@ -46,8 +46,9 @@ class LoginController extends Controller
      * ログインIDの名称変更
      * @return string
      */
-    protected function username() {
-        return "login_id";
+    protected function username()
+    {
+        return 'login_id';
     }
 
     /**
@@ -70,8 +71,8 @@ class LoginController extends Controller
             $this->username() => 'required|string',
             'password' => 'required|string',
         ], [
-            $this->username().".required"   => Message::getMessage(Message::ERROR_001, ["ログインID"]),
-            "password.required"          => Message::getMessage(Message::ERROR_001, ["パスワード"]),
+            $this->username() . '.required' => Message::getMessage(Message::ERROR_001, ['ログインID']),
+            'password.required' => Message::getMessage(Message::ERROR_001, ['パスワード']),
         ]);
     }
 
@@ -79,11 +80,13 @@ class LoginController extends Controller
      * 認証エラー時メッセージ
      * @param Request $request
      */
-    protected function sendFailedLoginResponse(Request $request) {
+    protected function sendFailedLoginResponse(Request $request)
+    {
         throw ValidationException::withMessages([
             $this->username() => [Message::getMessage(Message::ERROR_007)],
         ]);
     }
+
     /**
      * 認証
      * @param Request $request
@@ -98,9 +101,11 @@ class LoginController extends Controller
      * ログイン後のリダイレクト先
      * @return string
      */
-    public function redirectPath() {
+    public function redirectPath()   
+    {
         return $this->redirectTo;
     }
+
     /**
      * ログイン画面
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -148,16 +153,32 @@ class LoginController extends Controller
      * @param Request $request
      * @return bool
      */
-    public function attemptLogin(Request $request) {
-        if ($this->guard()->attempt(
-            [
+    public function attemptLogin(Request $request)
+    {
+        if ($this->guard()->attempt([
                 'login_id'  => $request->input('login_id'),
                 'password'  => $request->input('password'),
                 'status'    => Constant::STATUS_ADMIN
-            ], $request->filled('remember'))
-        ) {
+            ], $request->filled('remember'))) {
+            $user = $this->guard()->user();
+
+            session([
+                'id' => $user->id,
+                'name' => $user->name,
+                'login_id' => $user->login_id,
+                'email' => $user->email,
+                'role_id' => $user->role_id,
+                'status' => $user->status,
+                'customer_id' => $user->customer_id,
+                'system_admin_flag' => $user->system_admin_flag
+            ]);
+
+            $user->last_login_time = date('Y-m-d H:i:s');
+            $user->save();
+
             return true;
         }
+
         return false;
     }
 
@@ -166,18 +187,20 @@ class LoginController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function sendLoginResponse(Request $request) {
+    protected function sendLoginResponse(Request $request)
+    {
         // 保存するにチェックしていない場合は、何も行わない
         if (!$request->remember) {
             return $this->authenticated($request, $this->guard()->user())
                 ?: redirect()->intended($this->redirectPath());
         }
+
         $request->session()->regenerate();
         $this->clearLoginAttempts($request);
-        $cookies = \Auth::getCookieJar();
-        $value = $cookies->queued(\Auth::getRecallerName())->getValue();
+        $cookies = Auth::getCookieJar();
+        $value = $cookies->queued(Auth::getRecallerName())->getValue();
         // ログイン保存の時間を変更
-        $cookies->queue(\Auth::getRecallerName(), $value, Constant::REMEMBER_TOKEN_TIME);
+        $cookies->queue(Auth::getRecallerName(), $value, Constant::REMEMBER_TOKEN_TIME);
 
         return $this->authenticated($request, $this->guard()->user())
             ?: redirect()->intended($this->redirectPath());

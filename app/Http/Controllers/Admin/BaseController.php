@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Lib\Message;
 use App\Http\Controllers\Controller;
-use App\Services\BaseService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -28,7 +29,8 @@ class BaseController extends Controller
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         // 子クラスは必ず、サービス・ルート・タイトルを子クラスで定義する
     }
 
@@ -36,7 +38,8 @@ class BaseController extends Controller
      * 登録除外配列(基本)
      * @return array
      */
-    public function except() {
+    public function except()
+    {
         $base = ["_token", "register_mode"];
         return array_merge($this->child_except(), $base);
     }
@@ -45,7 +48,8 @@ class BaseController extends Controller
      * 各機能登録時のRequest除外項目設定　※オーバーライドして使用する
      * @return array
      */
-    public function child_except() {
+    public function child_except()
+    {
         return [];
     }
 
@@ -55,7 +59,8 @@ class BaseController extends Controller
      * @param Request $request
      * @return array
      */
-    public function validation_rules(Request $request) {
+    public function validation_rules(Request $request)
+    {
         return [];
     }
 
@@ -64,7 +69,8 @@ class BaseController extends Controller
      * @param Request $request
      * @return array
      */
-    public function validation_message(Request $request) {
+    public function validation_message(Request $request)
+    {
         return [];
     }
 
@@ -72,7 +78,8 @@ class BaseController extends Controller
      * index 検索が必要な場合はオーバーライドする
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index() {
+    public function index()
+    {
         return view($this->mainRoot.'/index');
     }
 
@@ -80,7 +87,8 @@ class BaseController extends Controller
      * 一覧画面検索・ソート・リレーション設定　※条件があればオーバーライドする
      * @return array
      */
-    public function list_search_condition(Request $request) {
+    public function list_search_condition(Request $request)
+    {
         /**
          * 使い方例
          *  condition   => ['name@like' => $request->name, 'id' => $request->id]
@@ -105,7 +113,8 @@ class BaseController extends Controller
      * 一覧画面検索処理
      * @return \Illuminate\Http\JsonResponse
      */
-    public function list_search(Request $request) {
+    public function list_search(Request $request)
+    {
         $search = $this->list_search_condition($request);
         $list = $this->mainService->searchList($search['condition'], $search['sort'], $search['relation']);
 
@@ -117,7 +126,8 @@ class BaseController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function detail(Request $request) {
+    public function detail(Request $request)
+    {
         return view($this->mainRoot.'/detail', [
             'status' => 1,
             'data'   => $this->mainService->find($request->id),
@@ -129,7 +139,8 @@ class BaseController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         return view($this->mainRoot.'/register', [
             'register_mode' => 'create',
             'data'          => $this->mainService->model()
@@ -141,7 +152,8 @@ class BaseController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Request $request) {
+    public function edit(Request $request)
+    {
         return view($this->mainRoot.'/register', [
             'register_mode' => 'edit',
             'data'          => $this->mainService->find($request->id),
@@ -153,7 +165,8 @@ class BaseController extends Controller
      * @param Request $request
      * @return bool
      */
-    public function isCreate(Request $request) {
+    public function isCreate(Request $request)
+    {
         return isset($request->register_mode) && $request->register_mode == "create";
     }
 
@@ -162,7 +175,8 @@ class BaseController extends Controller
      * @param Request $request
      * @return bool
      */
-    public function isEdit(Request $request) {
+    public function isEdit(Request $request)
+    {
         return isset($request->register_mode) && $request->register_mode == "edit";
     }
 
@@ -171,7 +185,8 @@ class BaseController extends Controller
      * @param Request $request
      * @return Request
      */
-    public function addRequest(Request $request) {
+    public function addRequest(Request $request)
+    {
         return $request;
     }
 
@@ -180,7 +195,8 @@ class BaseController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\Validation\Validator|\Illuminate\Validation\Validator
      */
-    public function validation(Request $request) {
+    public function validation(Request $request)
+    {
         // リクエスト変数を追加
         $request = $this->addRequest($request);
 
@@ -193,7 +209,8 @@ class BaseController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      */
-    public function validationFailRedirect(Request $request, $validator) {
+    public function validationFailRedirect(Request $request, $validator)
+    {
         return redirect(url()->previous())
             ->withErrors($validator)
             ->withInput();
@@ -205,7 +222,8 @@ class BaseController extends Controller
      * @return array
      * @throws \Exception
      */
-    public function saveBefore(Request $request) {
+    public function saveBefore(Request $request)
+    {
         // 除外項目
         $input = $request->except($this->except());
         return $input;
@@ -217,16 +235,18 @@ class BaseController extends Controller
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      * @throws \Exception
      */
-    public function save(Request $request) {
+    public function save(Request $request)
+    {
         // バリデーション
         $validator = $this->validation($request);
+
         // バリデーションエラー時はリダイレクト
         if ($validator->fails()) {
             return $this->validationFailRedirect($request, $validator);
         }
 
         try {
-            \DB::beginTransaction();
+            DB::beginTransaction();
 
             // 保存前処理で保存データ作成
             $input = $this->saveBefore($request);
@@ -235,13 +255,12 @@ class BaseController extends Controller
             // 保存後処理
             $this->saveAfter($request, $model);
 
-            \DB::commit();
+            DB::commit();
 
             return $this->saveAfterRedirect($request);
-
         } catch (\Exception $e) {
-            \DB::rollBack();
-            \Log::error('database register error:'.$e->getMessage());
+            DB::rollBack();
+            Log::error('database register error:' . $e->getMessage());
             throw new \Exception($e);
         }
     }
@@ -259,7 +278,8 @@ class BaseController extends Controller
      * 保存処理後リダイレクト先
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      */
-    public function saveAfterRedirect(Request $request) {
+    public function saveAfterRedirect(Request $request)
+    {
         if ($this->isCreate($request)) {
             return redirect($this->mainRoot."/index")->with('info_message', Message::getMessage(Message::INFO_001, [$this->mainTitle]));
         } else {
@@ -273,19 +293,48 @@ class BaseController extends Controller
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      * @throws \Exception
      */
-    public function delete(Request $request) {
+    public function delete(Request $request)
+    {
         try {
-            \DB::beginTransaction();
+            DB::beginTransaction();
 
             $this->mainService->delete($request->id);
 
-            \DB::commit();
+            DB::commit();
 
             return ['status' => 1, 'message' => Message::getMessage(Message::INFO_003, [$this->mainTitle])];
-
         } catch (\Exception $e) {
-            \DB::rollBack();
-            \Log::error('remove error:'.$e->getMessage());
+            DB::rollBack();
+            Log::error('remove error:'.$e->getMessage());
+            return ['status' => -1, 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Deleting multiple rows
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function deleteMultiple(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $ids = $request->get('id');
+            $ids = explode(',', $ids);
+
+            foreach ($ids as $id) {
+                $this->mainService->delete($id);
+            }
+
+            DB::commit();
+
+            return ['status' => 1, 'message' => Message::getMessage(Message::INFO_003, [$this->mainTitle])];
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('remove error:'.$e->getMessage());
             return ['status' => -1, 'message' => $e->getMessage()];
         }
     }
