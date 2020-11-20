@@ -22,22 +22,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function(){
     Route::get('/', 'Admin\HomeController@index')->name('admin/index');
     Route::get('/index', 'Admin\HomeController@index')->name('admin/index');
 
-    /*****************************
-     * サンプル管理
-     *****************************/
-    // 一覧画面
-    Route::get('/sample', 'Admin\SampleController@index')->name('admin/sample/index');
-    Route::get('/sample/index', 'Admin\SampleController@index')->name('admin/sample/index');
-
-    // 検索処理(ajax呼び出し)
-    Route::post('/sample/list/search', 'Admin\SampleController@list_search');
-    // 新規登録画面
-    Route::get('/sample/create', 'Admin\SampleController@create')->name('admin/sample/create');
-    // 編集画面
-    Route::get('/sample/edit/{id}', 'Admin\SampleController@edit')->name('admin/sample/edit');
-    // 削除処理(ajax呼び出し)
-    Route::get('/sample/delete/{id}', 'Admin\SampleController@delete')->name('admin/sample/delete');
-
-    // 登録処理(post)
-    Route::post('/sample/save', 'Admin\SampleController@save')->name('admin/sample/save');
+    Route::get('/user', 'Admin\UserController@index')->name('admin/user');
+    Route::get('/user/index', 'Admin\UserController@index')->name('admin/user/index');
+    Route::post('/user/search', 'Admin\UserController@list_search')->name('admin/user/search');
+    Route::get('/user/create', 'Admin\UserController@create')->name('admin/user/create');
+    Route::get('/user/edit/{id}', 'Admin\UserController@edit')->name('admin/user/edit');
+    Route::post('/user/save', 'Admin\UserController@save')->name('admin/user/save');
+    Route::post('/user/delete_single', 'Admin\UserController@delete')->name('admin/user/delete_single');
+    Route::post('/user/delete_multiple', 'Admin\UserController@deleteMultiple')->name('admin/user/delete_multiple');
 });

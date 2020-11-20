@@ -11,7 +11,8 @@
                 <strong id="message_body">{{ $message }}</strong>
             </div>
             <div class="modal-footer">
-                <input type="hidden" id="confirm_url" value="">
+                <input type="hidden" id="confirm_url" value="" />
+                <input type="hidden" id="confirm_id" value="" />
                 <button class="btn btn-primary" type="button" id="confirm_button">{{ $button_name }}</button>
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
             </div>
