@@ -54,7 +54,7 @@
                                 @else
                                 <input class="custom-control-input" type="checkbox" name="system_admin_flag" id="system-admin-flag" tabindex="7" value="1" />
                                 @endif
-                                <label class="custom-control-label cursor-pointer mr-3" for="system-admin-flag">&nbsp;</label>
+                                <label class="custom-control-label cursor-pointer mr-3" id="system_admin_flag_checkbox" for="system-admin-flag">&nbsp;</label>
                             </div>
                             @include('admin.layouts.components.error_message', ['title' => 'system_admin_flag'])
                         </div>

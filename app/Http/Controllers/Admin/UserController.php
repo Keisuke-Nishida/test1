@@ -14,7 +14,7 @@ class UserController extends BaseController
 {
     /**
      * Create a new UserController instance
-     * 
+     *
      * @param AdminUserService $admin_service
      * @return void
      */
@@ -28,7 +28,7 @@ class UserController extends BaseController
 
     /**
      * Method for overriding index method of BaseController class
-     * 
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
@@ -38,7 +38,7 @@ class UserController extends BaseController
 
     /**
      * Method for overriding list_search_condition method of BaseController class
-     * 
+     *
      * @param Request $request
      * @return array
      */
@@ -53,7 +53,7 @@ class UserController extends BaseController
         if ($request->login_id) {
             $conditions['login_id@like'] = $request->login_id;
         }
-        
+
         if ($request->status) {
             $conditions['status'] = $request->status;
         }
@@ -73,7 +73,7 @@ class UserController extends BaseController
 
     /**
      * Method for overriding create method of BaseController class
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -91,7 +91,7 @@ class UserController extends BaseController
 
     /**
      * Method for overriding edit method of BaseController class
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -109,7 +109,7 @@ class UserController extends BaseController
 
     /**
      * Method for overriding validation_rules method of BaseController class
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -137,48 +137,48 @@ class UserController extends BaseController
             $rules['password_confirmation'] = 'required|string|min:7|max:15|same:password';
         }
 
-        return $rules;        
+        return $rules;
     }
 
     /**
      * Method for overriding validation_message method of BaseController class
-     * 
+     *
      * @param Request $request
      * @return array|void
      */
     public function validation_message(Request $request)
     {
         $messages = [
-            'name.required' => Message::getMessage(Message::ERROR_001, ['ユーザー名']),
-            'name.min' => Message::getMessage(Message::ERROR_006, ['ユーザー名', '4']),
-            'name.max' => Message::getMessage(Message::ERROR_002, ['ユーザー名', '50']),
-            'system_admin_flag.integer' => Message::getMessage(Message::ERROR_001, ['システム管理者フラグ']),
-            'system_admin_flag.min' => Message::getMessage(Message::ERROR_003, ['システム管理者フラグ']),
-            'system_admin_flag.max' => Message::getMessage(Message::ERROR_003, ['システム管理者フラグ']),
-            'status.required' => Message::getMessage(Message::ERROR_001, ['ユーザーステータス']),
-            'status.integer' => Message::getMessage(Message::ERROR_005, ['ユーザーステータス']),
-            'status.min' => Message::getMessage(Message::ERROR_003, ['ユーザーステータス']),
-            'status.max' => Message::getMessage(Message::ERROR_003, ['ユーザーステータス']),
-            'customer_id.integer' => Message::getMessage(Message::ERROR_001, ['得意先ID']),
-            'login_id.required' => Message::getMessage(Message::ERROR_001, ['ログインID']),
-            'login_id.min' => Message::getMessage(Message::ERROR_006, ['ログインID', '4']),
-            'login_id.max' => Message::getMessage(Message::ERROR_002, ['ログインID', '10']),
-            'email.required' => Message::getMessage(Message::ERROR_001, ['メールアドレス']),
-            'email.email' => Message::getMessage(Message::ERROR_003, ['メールアドレス']),
-            'email.min' => Message::getMessage(Message::ERROR_006, ['メールアドレス', '6']),
-            'email.max' => Message::getMessage(Message::ERROR_002, ['メールアドレス', '255']),
-            'role_id.required' => Message::getMessage(Message::ERROR_001, ['権限ID']),
-            'role_id.integer' => Message::getMessage(Message::ERROR_005, ['権限ID'])
+            'name.required' => Message::getMessage(Message::ERROR_001, [langtext('USER_L_002')]),
+            'name.min' => Message::getMessage(Message::ERROR_006, [langtext('USER_L_002'), '4']),
+            'name.max' => Message::getMessage(Message::ERROR_002, [langtext('USER_L_002'), '50']),
+            'system_admin_flag.integer' => Message::getMessage(Message::ERROR_001, [langtext('USER_L_009')]),
+            'system_admin_flag.min' => Message::getMessage(Message::ERROR_003, [langtext('USER_L_009')]),
+            'system_admin_flag.max' => Message::getMessage(Message::ERROR_003, [langtext('USER_L_009')]),
+            'status.required' => Message::getMessage(Message::ERROR_001, [langtext('USER_L_007')]),
+            'status.integer' => Message::getMessage(Message::ERROR_005, [langtext('USER_L_007')]),
+            'status.min' => Message::getMessage(Message::ERROR_003, [langtext('USER_L_007')]),
+            'status.max' => Message::getMessage(Message::ERROR_003, [langtext('USER_L_007')]),
+            'customer_id.integer' => Message::getMessage(Message::ERROR_001, [langtext('USER_L_008')]),
+            'login_id.required' => Message::getMessage(Message::ERROR_001, [langtext('USER_L_004')]),
+            'login_id.min' => Message::getMessage(Message::ERROR_006, [langtext('USER_L_004'), '4']),
+            'login_id.max' => Message::getMessage(Message::ERROR_002, [langtext('USER_L_004'), '10']),
+            'email.required' => Message::getMessage(Message::ERROR_001, [langtext('USER_L_005')]),
+            'email.email' => Message::getMessage(Message::ERROR_003, [langtext('USER_L_005')]),
+            'email.min' => Message::getMessage(Message::ERROR_006, [langtext('USER_L_005'), '6']),
+            'email.max' => Message::getMessage(Message::ERROR_002, [langtext('USER_L_005'), '255']),
+            'role_id.required' => Message::getMessage(Message::ERROR_001, [langtext('USER_L_022')]),
+            'role_id.integer' => Message::getMessage(Message::ERROR_005, [langtext('USER_L_022')])
         ];
 
         if ($request->get('register_mode') == 'create') {
-            $messages['password.required'] = Message::getMessage(Message::ERROR_001, ['パスワード']);
-            $messages['password.min'] = Message::getMessage(Message::ERROR_006, ['パスワード', '8']);
-            $messages['password.max'] = Message::getMessage(Message::ERROR_002, ['パスワード', '255']);
-            $messages['password_confirmation.required'] = Message::getMessage(Message::ERROR_001, ['パスワード']);
-            $messages['password_confirmation.min'] = Message::getMessage(Message::ERROR_006, ['パスワード', '8']);
-            $messages['password_confirmation.max'] = Message::getMessage(Message::ERROR_002, ['パスワード', '255']);
-            $messages['password_confirmation.same'] = Message::getMessage(Message::ERROR_002, ['パスワード', 'パスワード（確認）']);
+            $messages['password.required'] = Message::getMessage(Message::ERROR_001, [langtext('USER_L_021')]);
+            $messages['password.min'] = Message::getMessage(Message::ERROR_006, [langtext('USER_L_021'), '8']);
+            $messages['password.max'] = Message::getMessage(Message::ERROR_002, [langtext('USER_L_021'), '255']);
+            $messages['password_confirmation.required'] = Message::getMessage(Message::ERROR_001, [langtext('USER_L_021')]);
+            $messages['password_confirmation.min'] = Message::getMessage(Message::ERROR_006, [langtext('USER_L_021'), '8']);
+            $messages['password_confirmation.max'] = Message::getMessage(Message::ERROR_002, [langtext('USER_L_021'), '255']);
+            $messages['password_confirmation.same'] = Message::getMessage(Message::ERROR_002, [langtext('USER_L_021'), langtext(('USER_L_027'))]);
         }
 
         return $messages;
@@ -186,7 +186,7 @@ class UserController extends BaseController
 
     /**
      * Method for overriding except method of BaseController class
-     * 
+     *
      * @return array
      */
     public function except()
@@ -203,7 +203,7 @@ class UserController extends BaseController
 
     /**
      * Method for overriding save_before method of BaseController class
-     * 
+     *
      * @param Request $request
      * @return array
      * @throws \Exception
@@ -217,7 +217,7 @@ class UserController extends BaseController
 
     /**
      * Method for overriding save method of BaseController class
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      * @throws \Exception
