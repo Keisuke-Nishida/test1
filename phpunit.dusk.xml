@@ -2,7 +2,10 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd" bootstrap="vendor/autoload.php" colors="true">
     <testsuites>
         <testsuite name="Login Tests">
-            <file>tests/Browser/LoginTest.php</file>
+            <file>tests/Browser/Admin/LoginTest.php</file>
+        </testsuite>
+        <testsuite name="User List Test">
+            <file>tests/Browser/Admin/User/UserListTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
