@@ -8,7 +8,7 @@ use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use App\Lib\Message;
 
-class UserTest extends DuskTestCase
+class UserListTest extends DuskTestCase
 {
     private $login_url = "/admin/login";
     private $user_url = "/admin/user";
@@ -88,7 +88,9 @@ class UserTest extends DuskTestCase
                     ->pause(1000)
                     ->click('a[data-id="'.$user->id.'"]')
                     ->pause(1000)
-                    ->assertSee(Message::getMessage(Message::INFO_004, [langtext('SIDEBAR_LI_002')]));
+                    ->assertSee(Message::getMessage(Message::INFO_004, [langtext('SIDEBAR_LI_002')]))
+                    ->press('Close')
+                    ->pause(1000);
                     // ->click('#confirm_button') // this will delete user from database
                     // ->pause(1000)
                     // ->assertSee(Message::getMessage(Message::INFO_003, [langtext('SIDEBAR_LI_002')]))
@@ -105,8 +107,7 @@ class UserTest extends DuskTestCase
         $this->browse( function (Browser $browser)
         {
             // check edit link
-            $browser->visit($this->user_url)
-                    ->assertPathIs($this->user_url)
+            $browser->assertPathIs($this->user_url)
                     ->pause(3000)
                     ->assertVisible('#user-table > tbody > tr:nth-child(1) > td:nth-child(3) > a')
                     ->click('#user-table > tbody > tr:nth-child(1) > td:nth-child(3) > a');
