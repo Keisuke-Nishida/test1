@@ -2,49 +2,48 @@
 
 namespace Tests\Browser;
 
-use Illuminate\Testing\Assert as PHPUnit;
+use PHPUnit\Framework\TestCase;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
+use App\Lib\Message;
 
 class UserTest extends DuskTestCase
 {
-    private $login_url = "/login";
-    private $user_url = "/user";
+    private $login_url = "/admin/login";
+    private $user_url = "/admin/user";
     private $logout_url = "/logout";
     /**
      * Verify start session for /user
      * @return void
      */
-    public function testStartUserSession()
+    public function testUserScreenSession()
     {
         $this->browse(function (Browser $browser)
         {
             $browser->visit($this->login_url)
                     ->assertSee(langtext('LOGIN_T_001'))
-                    ->value('#login-id', env('TEST_LOGIN_ID'))
-                    ->value('#password', env('TEST_PASSWORD'))
+                    ->type('login_id', env('TEST_LOGIN_ID'))
+                    ->type('password', env('TEST_PASSWORD'))
                     ->click('button[type="submit"]')
-                    ->assertPathIs('/dashboard') //check if logged in and see dashboard index
+                    ->assertPathIs('/admin/index') //check if logged in and see dashboard index
                     //move to /user
                     ->pause(3000)
                     ->assertVisible('div.app-body > div.sidebar > nav.sidebar-nav > ul > li:nth-child(2) > a')
                     ->click('div.app-body > div.sidebar > nav.sidebar-nav > ul > li:nth-child(2) > a')
-                    ->assertPathIs('/user');
+                    ->assertPathIs($this->user_url);
         });
     }
 
     /*
-     * Test read intial loaded data from visiting /user page
-     * check table loaded and search bar empty
-     * @return void
+     * Test case 1: check the initial user data
      */
-    public function testUserInitialPageLoadded()
+    public function testInitialUserListData()
     {
         $this->browse(function (Browser $browser)
         {
-            $browser->assertPathIs('/user')
-                    ->pause(3000) //give time to load elements first
+            $browser->assertPathIs($this->user_url)
+                    ->pause(6000) //give time to load elements first
                     ->assertSeeIn('main.main > ol > li',langtext('SIDEBAR_LI_002'))
                     // check search fields as empty
                     ->value('#search-name',"")
@@ -61,23 +60,24 @@ class UserTest extends DuskTestCase
     }
 
     /**
-     * Test no selected row bulk delete
-     * popup dialog
+     *  NOTE: not implemented
+     * Check pop up message when bulk delete is pressed and no selected data to be deleted
+     * note: not implemented
      */
-    public function testNoSelectedBulkDeleteDialog()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit($this->user_url)
-                    ->pause(1000)
-                    ->assertSee(langtext('SIDEBAR_LI_002'))
-                    ->click('#user-multiple-delete-button')
-                    ->assertDialogOpened(langtext('USER_M_001'))
-                    ->acceptDialog();
-        });
-    }
+    // public function testPopUpMessageWhenBulkDeleteButtonPressedAndNoDataSelected()
+    // {
+    //     $this->browse(function (Browser $browser) {
+    //         $browser->visit($this->user_url)
+    //                 ->pause(1000)
+    //                 ->assertSee(langtext('SIDEBAR_LI_002'))
+    //                 ->click('#user-multiple-delete-button')
+    //                 ->assertDialogOpened(langtext('USER_M_001'))
+    //                 ->acceptDialog();
+    //     });
+    // }
 
     /**
-     * Test delete row confirm pop up dialog
+     * Test case : Check pop up message upon deleting user
      */
     public function testRowDeleteConfirmDialog()
     {
@@ -86,56 +86,56 @@ class UserTest extends DuskTestCase
             $browser->visit($this->user_url)
                     ->assertSee(langtext('SIDEBAR_LI_002'))
                     ->pause(1000)
-                    ->click("#delete-id-$user->id")
+                    ->click('a[data-id="'.$user->id.'"]')
                     ->pause(1000)
-                    ->assertSee(str_replace('[user_id]', $user->id, langtext('USER_DLG_001')))
-                    ->click('#delete-no')
-                    ->pause(1000);  //pause closing the dialog
+                    ->assertSee(Message::getMessage(Message::INFO_004, [langtext('SIDEBAR_LI_002')]));
+                    // ->click('#confirm_button') // this will delete user from database
+                    // ->pause(1000)
+                    // ->assertSee(Message::getMessage(Message::INFO_003, [langtext('SIDEBAR_LI_002')]))
+                    // ->pause(1000);  //pause closing the dialog
         });
     }
 
     /*
-     * validate edit redirection for selected user and proceed to /user/edit
+     * Check user's edit page
      * @return void
      */
-    public function testRedirectSelectUserEdit()
+    public function testUserEditPage()
     {
         $this->browse( function (Browser $browser)
         {
             // check edit link
-            $browser->assertPathIs('/user')
+            $browser->visit($this->user_url)
+                    ->assertPathIs($this->user_url)
                     ->pause(3000)
                     ->assertVisible('#user-table > tbody > tr:nth-child(1) > td:nth-child(3) > a')
                     ->click('#user-table > tbody > tr:nth-child(1) > td:nth-child(3) > a');
-
            // verify returned id + redirection URL
-            PHPUnit::assertStringContainsString('/user/edit', $browser->driver->getCurrentURL());
+            $this->assertStringContainsString($this->user_url . '/edit', $browser->driver->getCurrentURL());
         });
     }
 
     /*
-     * validate user create redirection and go to /user/create
+     * Click registration button and go to registration page
      * @return void
      */
-    public function testRedirectSelectUserCreate()
+    public function testUserRegistrationPage()
     {
         $this->browse( function(Browser $browser)
         {
             $browser->visit($this->user_url)
-                    ->assertPathIs('/user')
+                    ->assertPathIs($this->user_url)
                     ->pause(3000)
                     ->assertVisible('div.data-table-wrapper > div:nth-child(2) > div:nth-child(2) > a')
                     ->click('div.data-table-wrapper > div:nth-child(2) > div:nth-child(2) > a')
-                    ->assertPathIs('/user/create');
+                    ->assertPathIs($this->user_url . '/create');
         });
     }
 
     /*
-     * Validate user table checkbox for select all / unselect all
-     * and validate check/ uncheck box for individual item
-     * @return void
+     * check and uncheck the first 5 rows and then click check all
      */
-    public function testBatchRowsChecked()
+    public function testCheckboxOfFirst5Rows()
     {
         $this->browse( function (Browser $browser)
         {
@@ -148,30 +148,39 @@ class UserTest extends DuskTestCase
             {
                 $browser->assertVisible('#user-table > tbody > tr:nth-child('.strval($i).') > td:nth-child(1)')
                         ->click('#user-table > tbody > tr:nth-child('.strval($i).') > td.select-checkbox') //checked
-                        ->pause(3000)
+                        ->pause(1000)
                         ->assertNotSelected('#user-table > tbody > tr:nth-child('.strval($i).') > td.select-checkbox', NULL)
                         ->click('#user-table > tbody > tr:nth-child('.strval($i).') > td.select-checkbox') //unchecked
-                        ->pause(3000)
+                        ->pause(1000)
                         ->assertNotChecked('#user-table > tbody > tr:nth-child('.strval($i).') > td.select-checkbox');
             }
+        });
+    }
 
+    public function testCheckboxForSelectAll()
+    {
+        $this->browse( function (Browser $browser)
+        {
+            $browser->visit($this->user_url)
+                    ->pause(3000) //wait for elements to load
+                    ->assertVisible('#user-table > tbody');
             // check select-all-check box checked
             $browser->check('#user-select-all')
-                    ->pause(5000)
+                    ->pause(1000)
                     ->assertChecked('#user-select-all')
                     // verify all unchecked
                     ->uncheck('#user-select-all')
-                    ->pause(5000)
+                    // ->pause(1000)
                     ->assertNotChecked('#user-select-all');
         });
     }
 
     /**
-     * Test user search name function
+     * Test case: Check search results when searching valid name
      */
-    public function testUserSearchName()
+    public function testUserSearchValidName()
     {
-        $user = User::take(3)->get();
+        $user = User::take(3)->whereNull('deleted_at')->get();
         $first_user = $user[0];
         $this->browse(function (Browser $browser) use ($first_user)
         {
@@ -181,6 +190,7 @@ class UserTest extends DuskTestCase
                     ->pause(2000)
                     ->type('#search-name', $first_user->name)
                     ->press(langtext('USER_B_004'))
+                    ->pause(1000)
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(2)', $first_user->name)
                     ->click('#user-detailed-search-reset')
                     ->click('#search-toggle-button');
@@ -189,10 +199,10 @@ class UserTest extends DuskTestCase
     }
 
     /**
-     * Test user search email function
-     * @depends testUserSearchName
+     * Test case: Check results when searching valid email address
+     * @depends testUserSearchValidName
      */
-    public function testUserSearchEmail($user)
+    public function testUserSearchValidEmail($user)
     {
         $second_user = $user[1];
         $this->browse(function (Browser $browser) use ($second_user)
@@ -207,13 +217,12 @@ class UserTest extends DuskTestCase
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(5)', $second_user->email)
                     ->click('#user-detailed-search-reset')
                     ->click('#search-toggle-button');
-
         });
     }
 
     /**
-     * Test user search login id function
-     * @depends testUserSearchName
+     * Test case: Check the results when searching valid login id
+     * @depends testUserSearchValidName
      */
     public function testUserSearchLoginId($user)
     {
@@ -226,21 +235,19 @@ class UserTest extends DuskTestCase
                     ->pause(2000)
                     ->type('#search-login-id', $third_user->login_id)
                     ->press(langtext('USER_B_004'))
-                    ->pause(1000)
+                    ->pause(2000)
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(4)', $third_user->login_id)
                     ->click('#user-detailed-search-reset')
                     ->click('#search-toggle-button');
-
         });
     }
 
     /**
-     * Test user search status function
-     * @depends testUserSearchName
+     * Test case: check results when searching user status
      */
-    public function testUserSearchStatus($user)
+    public function testUserSearchStatus()
     {
-        $user = User::where('status', 1)->first();
+        $user = User::where('status', 1)->whereNull('deleted_at')->first();
         $this->browse(function (Browser $browser) use ($user)
         {
             $browser->visit($this->user_url)
@@ -255,14 +262,13 @@ class UserTest extends DuskTestCase
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(5)', $user->email)
                     ->click('#user-detailed-search-reset')
                     ->click('#search-toggle-button');
-
         });
     }
 
     /**
-     * Test invalid search name
+     * Test case: check results when searching invalid name
      */
-    public function testInvalidSearchName()
+    public function testUserSearchInvalidName()
     {
         $this->browse(function (Browser $browser)
         {
@@ -280,9 +286,9 @@ class UserTest extends DuskTestCase
     }
 
     /**
-     * Test invalid search email
+     * Test caes: check results when searching invalid email
      */
-    public function testInvalidSearchEmail()
+    public function testUserSearchInvalidEmail()
     {
         $this->browse(function (Browser $browser)
         {
@@ -300,9 +306,9 @@ class UserTest extends DuskTestCase
     }
 
     /**
-     * Test invalid user search login id function
+     * Test case: check results when searching invalid user login id
      */
-    public function testInvalidSearchLoginId()
+    public function testUserSearchInvalidLoginId()
     {
         $this->browse(function (Browser $browser)
         {
@@ -316,33 +322,32 @@ class UserTest extends DuskTestCase
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', langtext('DATA_TABLE_EMPTY_TEXT'))
                     ->click('#user-detailed-search-reset')
                     ->click('#search-toggle-button');
-
         });
     }
 
-    /**
-     * Test invalid user search status function
-     * @depends testUserSearchName
-     */
-    public function testInvalidSearchStatus($user)
-    {
-        $user = User::where('status', 1)->first();
-        $this->browse(function (Browser $browser) use ($user)
-        {
-            $browser->visit($this->user_url)
-                    ->assertSee(langtext('SIDEBAR_LI_002'))
-                    ->click('#search-toggle-button')
-                    ->pause(2000)
-                    ->select('#search-status', 2)
-                    ->type('#search-email', $user->email)
-                    ->press(langtext('USER_B_004'))
-                    ->pause(1000)
-                    ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', langtext('DATA_TABLE_EMPTY_TEXT'))
-                    ->click('#user-detailed-search-reset')
-                    ->click('#search-toggle-button');
-
-        });
-    }
+    // /**
+    // * *************************************************************************************************************************
+    // * *************************************************************************************************************************
+    //  * Test case: check results when searching invalid user search status function
+    //  */
+    // public function testInvalidSearchStatus()
+    // {
+    //     $user = User::where('status', 1)->whereNull('deleted_at')->first();
+    //     $this->browse(function (Browser $browser) use ($user)
+    //     {
+    //         $browser->visit($this->user_url)
+    //                 ->assertSee(langtext('SIDEBAR_LI_002'))
+    //                 ->click('#search-toggle-button')
+    //                 ->pause(2000)
+    //                 ->select('#search-status', 2)
+    //                 ->type('#search-email', $user->email)
+    //                 ->press(langtext('USER_B_004'))
+    //                 ->pause(1000)
+    //                 ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', langtext('DATA_TABLE_EMPTY_TEXT'))
+    //                 ->click('#user-detailed-search-reset')
+    //                 ->click('#search-toggle-button');
+    //     });
+    // }
 
     /**
      * Test changing page
@@ -351,8 +356,8 @@ class UserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser)
         {
-            $user = User::skip(25)->first();
-            $user2 = User::skip(50)->first();
+            $user = User::skip(25)->whereNull('deleted_at')->first();
+            $user2 = User::skip(50)->whereNull('deleted_at')->first();
             $browser->visit($this->user_url)
                     ->pause(1000)
                     ->assertVisible('div.dataTables_paginate > ul.pagination > li:nth-child(2) > a')
@@ -375,16 +380,16 @@ class UserTest extends DuskTestCase
     }
 
     /**
-     * test checkbox row per page
+     * Test case: test pagination and click checkbox
      * rows by 25, 50 and 100
      * @return void
      */
-    public function testSelectRowsPerPage()
+    public function testUserPaginationAndSelectRowsPerPage()
     {
         $this->browse(function (Browser $browser)
         {
             $browser->visit($this->user_url)
-                    ->assertPathIs('/user');
+                    ->assertPathIs($this->user_url);
 
             $row_per_page = ['25', '50', '100'];
 
@@ -402,14 +407,14 @@ class UserTest extends DuskTestCase
                         ->assertNotSelected('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', NULL)
                         ->clickLink(langtext('DATA_TABLE_PAGINATE_NEXT')) //page change
                         ->pause(1000)
-                        ->assertVisible('#user-table > tbody > tr:nth-child(5) > td:nth-child(1)')
-                        ->check('#user-table > tbody > tr:nth-child(5) > td:nth-child(1)')
+                        ->assertVisible('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)')
+                        ->check('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)')
                         ->assertNotSelected('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', NULL)
                         ->clickLink(langtext('DATA_TABLE_PAGINATE_NEXT')) //page change
                         ->pause(1000)
-                        ->assertVisible('#user-table > tbody > tr:nth-child(3) > td:nth-child(1)')
-                        ->check('#user-table > tbody > tr:nth-child(3) > td:nth-child(1)')
-                        ->assertNotSelected('#user-table > tbody > tr:nth-child(3) > td:nth-child(1)', NULL);
+                        ->assertVisible('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)')
+                        ->check('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)')
+                        ->assertNotSelected('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', NULL);
             }
 
             // apply 25 again, as default and check table loaded
@@ -419,23 +424,6 @@ class UserTest extends DuskTestCase
                     ->pause(3000)
                     ->assertSelected('#user-table_length > label > select', $row_per_page[0])
                     ->assertVisible('#user-table > tbody');
-        });
-    }
-
-    /*
-     * End session for /user and logout
-     * @return void
-     */
-    public function testEndUserSession()
-    {
-        $this->browse(function (Browser $browser)
-        {
-            $browser->assertPathIs('/user') //verify leaving from /user
-                    ->assertTitle(env('APP_NAME').' - '.langtext('SIDEBAR_LI_002'))
-                    ->visit($this->logout_url)
-                    ->assertPathIs('/login') //verify logged out
-                    ->assertTitle(env('APP_NAME').' - '.langtext('LOGIN_T'))
-                    ->assertSee(langtext('LOGIN_T_001'));
         });
     }
 }
