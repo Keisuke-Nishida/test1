@@ -71,8 +71,8 @@ class LoginController extends Controller
             $this->username() => 'required|string',
             'password' => 'required|string',
         ], [
-            $this->username() . '.required' => Message::getMessage(Message::ERROR_001, ['ログインID']),
-            'password.required' => Message::getMessage(Message::ERROR_001, ['パスワード']),
+            $this->username() . '.required' => Message::getMessage(Message::ERROR_001, [langtext('LOGIN_P_001')]),
+            'password.required' => Message::getMessage(Message::ERROR_001, [langtext('LOGIN_P_002')]),
         ]);
     }
 
@@ -101,7 +101,7 @@ class LoginController extends Controller
      * ログイン後のリダイレクト先
      * @return string
      */
-    public function redirectPath()   
+    public function redirectPath()
     {
         return $this->redirectTo;
     }
