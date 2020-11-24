@@ -128,16 +128,20 @@ class UserController extends BaseController
                     }
                 }
             ],
-            'login_id' => 'required|string|min:4|max:10',
-            'email' => 'required|string|email|min:6|max:255',
             'role_id' => 'required|integer'
         ];
 
         if ($request->get('register_mode') == 'create') {
+            $rules['login_id'] = 'required|string|min:4|max:10|unique:user,login_id';
+            $rules['email'] = 'required|string|email|min:6|max:255|unique:user,email';
             $rules['password'] = 'required|string|min:7|max:15';
             $rules['password_confirmation'] = 'required|string|min:7|max:15|same:password';
         } elseif ($request->get('register_mode') == 'edit') {
+            $user = $this->mainService->find($request->get('id'));
+
             $rules['id'] = 'required|integer';
+            $rules['login_id'] = 'required|string|min:4|max:10|unique:user,login_id,' . $user->login_id . ',login_id';
+            $rules['email'] = 'required|string|email|min:6|max:255|unique:user,email,' . $user->email . ',email';
         }
 
         return $rules;        
@@ -166,10 +170,12 @@ class UserController extends BaseController
             'login_id.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_018')]),
             'login_id.min' => Message::getMessage(Message::ERROR_006, [Util::langtext('USER_L_018'), '4']),
             'login_id.max' => Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_018'), '10']),
+            'login_id.unique' => Message::getMessage(Message::ERROR_010, [Util::langtext('USER_L_018')]),
             'email.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_020')]),
             'email.email' => Message::getMessage(Message::ERROR_003, [Util::langtext('USER_L_020')]),
             'email.min' => Message::getMessage(Message::ERROR_006, [Util::langtext('USER_L_020'), '6']),
             'email.max' => Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_020'), '255']),
+            'email.unique' => Message::getMessage(Message::ERROR_010, [Util::langtext('USER_L_020')]),
             'role_id.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_022')]),
             'role_id.integer' => Message::getMessage(Message::ERROR_005, [Util::langtext('USER_L_022')])
         ];
@@ -230,6 +236,10 @@ class UserController extends BaseController
      */
     public function save(Request $request)
     {
+        if (!$request->exists('system_admin_flag')) {
+            $request->request->add(['system_admin_flag' => 0]);
+        }
+
         $validator = $this->validation($request);
 
         if ($validator->fails()) {

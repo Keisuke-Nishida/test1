@@ -16,6 +16,7 @@ class Message {
     const ERROR_007 = "ログイン情報がありません";
     const ERROR_008 = "%s must have %s characters";
     const ERROR_009 = "%s must be between %s to %s characters";
+    const ERROR_010 = "%s already exists";
 
     const INFO_001  = "%sの登録を行いました";
     const INFO_002  = "%sの編集を行いました";

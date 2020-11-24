@@ -155,7 +155,6 @@ class CustomerController extends BaseController
     public function validation_rules(Request $request)
     {
         $rules = [
-            'code' => 'required|string|numeric|digits_between:1,7',
             'name_kana' => 'nullable|string|min:1|max:255',
             'name' => 'required|string|min:1|max:255',
             'post_no' => 'nullable|string|numeric|digits:7',
@@ -175,8 +174,13 @@ class CustomerController extends BaseController
             'uriage_8' => 'nullable|integer|digits_between:1,2'
         ];
 
-        if ($request->get('register_mode') == 'edit') {
+        if ($request->get('register_mode') == 'create') {
+            $rules['code'] = 'required|string|numeric|digits_between:1,7|unique:customer,code';
+        } elseif ($request->get('register_mode') == 'edit') {
+            $customer = $this->mainService->find($request->get('id'));
+
             $rules['id'] = 'required|integer';
+            $rules['code'] = 'required|string|numeric|digits_between:1,7|unique:customer,code,' . $customer->code . ',code';
         }
 
         return $rules;        
@@ -194,6 +198,7 @@ class CustomerController extends BaseController
             'code.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('CUSTOMER_L_019')]),
             'code.numeric' => Message::getMessage(Message::ERROR_005, [Util::langtext('CUSTOMER_L_019')]),
             'code.digits_between' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUSTOMER_L_019'), '1', '7']),
+            'code.unique' => Message::getMessage(Message::ERROR_010, [Util::langtext('CUSTOMER_L_019')]),
             'name_kana.min' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUSTOMER_L_020'), '1', '255']),
             'name_kana.max' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUSTOMER_L_020'), '1', '255']),
             'name.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('CUSTOMER_L_021')]),
