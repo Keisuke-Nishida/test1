@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Lib\Message;
+use App\Lib\Util;
 use App\Models\Customer;
 use App\Models\Role;
 use App\Services\Models\AdminUserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
 class UserController extends BaseController
 {
     /**
@@ -23,7 +24,7 @@ class UserController extends BaseController
         parent::__construct();
         $this->mainService = $admin_service;
         $this->mainRoot = 'admin/user';
-        $this->mainTitle = 'ユーザ管理';
+        $this->mainTitle = Util::langtext('SIDEBAR_LI_002');
     }
 
     /**
@@ -80,7 +81,7 @@ class UserController extends BaseController
     public function create(Request $request)
     {
         return view($this->mainRoot . '/register', [
-            'action' => '登録',
+            'action' => Util::langtext('USER_T_001'),
             'register_mode' => 'create',
             'customers' => Customer::select('id', 'name')->whereNull('deleted_at')->get()->toArray(),
             'roles' => Role::select('id', 'name')->whereNull('deleted_at')->get()->toArray(),
@@ -98,7 +99,7 @@ class UserController extends BaseController
     public function edit(Request $request)
     {
         return view($this->mainRoot . '/register', [
-            'action' => '更新',
+            'action' => Util::langtext('USER_T_002'),
             'register_mode' => 'edit',
             'customers' => Customer::select('id', 'name')->whereNull('deleted_at')->get()->toArray(),
             'roles' => Role::select('id', 'name')->whereNull('deleted_at')->get()->toArray(),
@@ -135,6 +136,8 @@ class UserController extends BaseController
         if ($request->get('register_mode') == 'create') {
             $rules['password'] = 'required|string|min:7|max:15';
             $rules['password_confirmation'] = 'required|string|min:7|max:15|same:password';
+        } elseif ($request->get('register_mode') == 'edit') {
+            $rules['id'] = 'required|integer';
         }
 
         return $rules;        
@@ -149,36 +152,39 @@ class UserController extends BaseController
     public function validation_message(Request $request)
     {
         $messages = [
-            'name.required' => Message::getMessage(Message::ERROR_001, ['ユーザー名']),
-            'name.min' => Message::getMessage(Message::ERROR_006, ['ユーザー名', '4']),
-            'name.max' => Message::getMessage(Message::ERROR_002, ['ユーザー名', '50']),
-            'system_admin_flag.integer' => Message::getMessage(Message::ERROR_001, ['システム管理者フラグ']),
-            'system_admin_flag.min' => Message::getMessage(Message::ERROR_003, ['システム管理者フラグ']),
-            'system_admin_flag.max' => Message::getMessage(Message::ERROR_003, ['システム管理者フラグ']),
-            'status.required' => Message::getMessage(Message::ERROR_001, ['ユーザーステータス']),
-            'status.integer' => Message::getMessage(Message::ERROR_005, ['ユーザーステータス']),
-            'status.min' => Message::getMessage(Message::ERROR_003, ['ユーザーステータス']),
-            'status.max' => Message::getMessage(Message::ERROR_003, ['ユーザーステータス']),
-            'customer_id.integer' => Message::getMessage(Message::ERROR_001, ['得意先ID']),
-            'login_id.required' => Message::getMessage(Message::ERROR_001, ['ログインID']),
-            'login_id.min' => Message::getMessage(Message::ERROR_006, ['ログインID', '4']),
-            'login_id.max' => Message::getMessage(Message::ERROR_002, ['ログインID', '10']),
-            'email.required' => Message::getMessage(Message::ERROR_001, ['メールアドレス']),
-            'email.email' => Message::getMessage(Message::ERROR_003, ['メールアドレス']),
-            'email.min' => Message::getMessage(Message::ERROR_006, ['メールアドレス', '6']),
-            'email.max' => Message::getMessage(Message::ERROR_002, ['メールアドレス', '255']),
-            'role_id.required' => Message::getMessage(Message::ERROR_001, ['権限ID']),
-            'role_id.integer' => Message::getMessage(Message::ERROR_005, ['権限ID'])
+            'name.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_017')]),
+            'name.min' => Message::getMessage(Message::ERROR_006, [Util::langtext('USER_L_017'), '4']),
+            'name.max' => Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_017'), '50']),
+            'system_admin_flag.integer' => Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_023')]),
+            'system_admin_flag.min' => Message::getMessage(Message::ERROR_003, [Util::langtext('USER_L_023')]),
+            'system_admin_flag.max' => Message::getMessage(Message::ERROR_003, [Util::langtext('USER_L_023')]),
+            'status.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_024')]),
+            'status.integer' => Message::getMessage(Message::ERROR_005, [Util::langtext('USER_L_024')]),
+            'status.min' => Message::getMessage(Message::ERROR_003, [Util::langtext('USER_L_024')]),
+            'status.max' => Message::getMessage(Message::ERROR_003, [Util::langtext('USER_L_024')]),
+            'customer_id.integer' => Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_019')]),
+            'login_id.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_018')]),
+            'login_id.min' => Message::getMessage(Message::ERROR_006, [Util::langtext('USER_L_018'), '4']),
+            'login_id.max' => Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_018'), '10']),
+            'email.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_020')]),
+            'email.email' => Message::getMessage(Message::ERROR_003, [Util::langtext('USER_L_020')]),
+            'email.min' => Message::getMessage(Message::ERROR_006, [Util::langtext('USER_L_020'), '6']),
+            'email.max' => Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_020'), '255']),
+            'role_id.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_022')]),
+            'role_id.integer' => Message::getMessage(Message::ERROR_005, [Util::langtext('USER_L_022')])
         ];
 
         if ($request->get('register_mode') == 'create') {
-            $messages['password.required'] = Message::getMessage(Message::ERROR_001, ['パスワード']);
-            $messages['password.min'] = Message::getMessage(Message::ERROR_006, ['パスワード', '8']);
-            $messages['password.max'] = Message::getMessage(Message::ERROR_002, ['パスワード', '255']);
-            $messages['password_confirmation.required'] = Message::getMessage(Message::ERROR_001, ['パスワード']);
-            $messages['password_confirmation.min'] = Message::getMessage(Message::ERROR_006, ['パスワード', '8']);
-            $messages['password_confirmation.max'] = Message::getMessage(Message::ERROR_002, ['パスワード', '255']);
-            $messages['password_confirmation.same'] = Message::getMessage(Message::ERROR_002, ['パスワード', 'パスワード（確認）']);
+            $messages['password.required'] = Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_021')]);
+            $messages['password.min'] = Message::getMessage(Message::ERROR_006, [Util::langtext('USER_L_021'), '8']);
+            $messages['password.max'] = Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), '255']);
+            $messages['password_confirmation.required'] = Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_021')]);
+            $messages['password_confirmation.min'] = Message::getMessage(Message::ERROR_006, [Util::langtext('USER_L_021'), '8']);
+            $messages['password_confirmation.max'] = Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), '255']);
+            $messages['password_confirmation.same'] = Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), Util::langtext('USER_L_027')]);
+        } elseif ($request->get('register_mode') == 'edit') {
+            $messages['id.required'] = Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_029')]);
+            $messages['id.integer'] = Message::getMessage(Message::ERROR_005, [Util::langtext('USER_L_029')]);
         }
 
         return $messages;

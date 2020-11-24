@@ -40,7 +40,7 @@ class BaseController extends Controller
      */
     public function except()
     {
-        $base = ["_token", "register_mode"];
+        $base = ['_token', 'register_mode'];
         return array_merge($this->child_except(), $base);
     }
 
@@ -80,7 +80,7 @@ class BaseController extends Controller
      */
     public function index()
     {
-        return view($this->mainRoot.'/index');
+        return view($this->mainRoot . '/index');
     }
 
     /**
@@ -118,7 +118,7 @@ class BaseController extends Controller
         $search = $this->list_search_condition($request);
         $list = $this->mainService->searchList($search['condition'], $search['sort'], $search['relation']);
 
-        return ["data" => $list];
+        return ['data' => $list];
     }
 
     /**
@@ -128,7 +128,7 @@ class BaseController extends Controller
      */
     public function detail(Request $request)
     {
-        return view($this->mainRoot.'/detail', [
+        return view($this->mainRoot . '/detail', [
             'status' => 1,
             'data'   => $this->mainService->find($request->id),
         ]);
@@ -141,7 +141,7 @@ class BaseController extends Controller
      */
     public function create(Request $request)
     {
-        return view($this->mainRoot.'/register', [
+        return view($this->mainRoot . '/register', [
             'register_mode' => 'create',
             'data'          => $this->mainService->model()
         ]);
@@ -154,7 +154,7 @@ class BaseController extends Controller
      */
     public function edit(Request $request)
     {
-        return view($this->mainRoot.'/register', [
+        return view($this->mainRoot . '/register', [
             'register_mode' => 'edit',
             'data'          => $this->mainService->find($request->id),
         ]);
@@ -167,7 +167,7 @@ class BaseController extends Controller
      */
     public function isCreate(Request $request)
     {
-        return isset($request->register_mode) && $request->register_mode == "create";
+        return isset($request->register_mode) && $request->register_mode == 'create';
     }
 
     /**
@@ -177,7 +177,7 @@ class BaseController extends Controller
      */
     public function isEdit(Request $request)
     {
-        return isset($request->register_mode) && $request->register_mode == "edit";
+        return isset($request->register_mode) && $request->register_mode == 'edit';
     }
 
     /**
@@ -281,9 +281,9 @@ class BaseController extends Controller
     public function saveAfterRedirect(Request $request)
     {
         if ($this->isCreate($request)) {
-            return redirect($this->mainRoot."/index")->with('info_message', Message::getMessage(Message::INFO_001, [$this->mainTitle]));
+            return redirect($this->mainRoot . '/index')->with('info_message', Message::getMessage(Message::INFO_001, [$this->mainTitle]));
         } else {
-            return redirect($this->mainRoot."/index")->with('info_message', Message::getMessage(Message::INFO_002, [$this->mainTitle]));
+            return redirect($this->mainRoot . '/index')->with('info_message', Message::getMessage(Message::INFO_002, [$this->mainTitle]));
         }
     }
 
@@ -305,7 +305,7 @@ class BaseController extends Controller
             return ['status' => 1, 'message' => Message::getMessage(Message::INFO_003, [$this->mainTitle])];
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('remove error:'.$e->getMessage());
+            Log::error('remove error:' . $e->getMessage());
             return ['status' => -1, 'message' => $e->getMessage()];
         }
     }
@@ -334,7 +334,7 @@ class BaseController extends Controller
             return ['status' => 1, 'message' => Message::getMessage(Message::INFO_003, [$this->mainTitle])];
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('remove error:'.$e->getMessage());
+            Log::error('remove error:' . $e->getMessage());
             return ['status' => -1, 'message' => $e->getMessage()];
         }
     }

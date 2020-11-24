@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Auth;
 use App\Http\Controllers\Controller;
 use App\Lib\Constant;
 use App\Lib\Message;
+use App\Lib\Util;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -71,8 +72,8 @@ class LoginController extends Controller
             $this->username() => 'required|string',
             'password' => 'required|string',
         ], [
-            $this->username() . '.required' => Message::getMessage(Message::ERROR_001, [langtext('LOGIN_P_001')]),
-            'password.required' => Message::getMessage(Message::ERROR_001, [langtext('LOGIN_P_002')]),
+            $this->username() . '.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('LOGIN_P_001')]),
+            'password.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('LOGIN_P_002')]),
         ]);
     }
 

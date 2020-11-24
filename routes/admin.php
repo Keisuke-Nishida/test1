@@ -30,4 +30,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function(){
     Route::post('/user/save', 'Admin\UserController@save')->name('admin/user/save');
     Route::post('/user/delete_single', 'Admin\UserController@delete')->name('admin/user/delete_single');
     Route::post('/user/delete_multiple', 'Admin\UserController@deleteMultiple')->name('admin/user/delete_multiple');
+
+    Route::get('/customer', 'Admin\CustomerController@index')->name('admin/customer');
+    Route::get('/customer/index', 'Admin\CustomerController@index')->name('admin/customer/index');
+    Route::post('/customer/search', 'Admin\CustomerController@list_search')->name('admin/customer/search');
+    Route::get('/customer/create', 'Admin\CustomerController@create')->name('admin/customer/create');
+    Route::get('/customer/edit/{id}', 'Admin\CustomerController@edit')->name('admin/customer/edit');
+    Route::post('/customer/save', 'Admin\CustomerController@save')->name('admin/customer/save');
+    Route::post('/customer/delete_single', 'Admin\CustomerController@delete')->name('admin/customer/delete_single');
+    Route::post('/customer/delete_multiple', 'Admin\CustomerController@deleteMultiple')->name('admin/customer/delete_multiple');
 });

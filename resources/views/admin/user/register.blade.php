@@ -1,11 +1,11 @@
 @extends('admin.layouts.app')
 
 @section('app_title')
-ユーザー編集
+{{ Util::langtext('SIDEBAR_LI_002') . ' - ' . $action }}
 @endsection
 
 @section('app_bread')
-ユーザ管理
+{{ Util::langtext('SIDEBAR_LI_002') }}
 @endsection
 
 @section('app_contents')
@@ -21,54 +21,46 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">ユーザー名 <span class="text-danger">&#x203B;</span></label>
+                    <label class="col-md-3 col-form-label">{{ Util::langtext('USER_L_017') }} <span class="text-danger">&#x203B;</span></label>
                         <div class="col-md-9">
-                            @if (isset($data['name']))
-                            <input class="form-control" type="text" name="name" id="name" tabindex="1" value="{{ $data['name'] }}" />
-                            @else
-                            <input class="form-control" type="text" name="name" id="name" tabindex="1" value="" />
-                            @endif
+                            <input class="form-control" type="text" name="name" id="name" tabindex="1" value="{{ isset($data['name']) ? $data['name'] : '' }}" />
                             @include('admin.layouts.components.error_message', ['title' => 'name'])
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">パスワード<?php echo ($register_mode == 'create') ? ' <span class="text-danger">&#x203B;</span>' : ''; ?></label>
+                        <label class="col-md-3 col-form-label">{{ Util::langtext('USER_L_021') }}<?php echo ($register_mode == 'create') ? ' <span class="text-danger">&#x203B;</span>' : ''; ?></label>
                         <div class="col-md-9">
                             <input class="form-control" type="password" name="password" id="password" tabindex="3" value="" />
                             @include('admin.layouts.components.error_message', ['title' => 'password'])
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">パスワード（確認）<?php echo ($register_mode == 'create') ? ' <span class="text-danger">&#x203B;</span>' : ''; ?></label>
+                        <label class="col-md-3 col-form-label">{{ Util::langtext('USER_L_027') }}<?php echo ($register_mode == 'create') ? ' <span class="text-danger">&#x203B;</span>' : ''; ?></label>
                         <div class="col-md-9">
                             <input class="form-control" type="password" name="password_confirmation" id="confirm-password" tabindex="5" value="" />
                             @include('admin.layouts.components.error_message', ['title' => 'password_confirmation'])
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">システム管理者フラグ</label>
+                        <label class="col-md-3 col-form-label">{{ Util::langtext('USER_L_023') }}</label>
                         <div class="col-md-9 form-inline">
                             <div class="custom-control custom-checkbox custom-control-inline">
-                                @if (isset($data['system_admin_flag']))
-                                <input class="custom-control-input" type="checkbox" name="system_admin_flag" id="system-admin-flag" tabindex="7" value="1"<?php echo ($data['system_admin_flag']) ? ' checked' : ''; ?> />
-                                @else
-                                <input class="custom-control-input" type="checkbox" name="system_admin_flag" id="system-admin-flag" tabindex="7" value="1" />
-                                @endif
+                                <input class="custom-control-input" type="checkbox" name="system_admin_flag" id="system-admin-flag" tabindex="7" value="1"<?php echo (isset($data['system_admin_flag']) && $data['system_admin_flag']) ? ' checked' : ''; ?> />
                                 <label class="custom-control-label cursor-pointer mr-3" for="system-admin-flag">&nbsp;</label>
                             </div>
                             @include('admin.layouts.components.error_message', ['title' => 'system_admin_flag'])
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">ユーザーステータス</label>
+                        <label class="col-md-3 col-form-label">{{ Util::langtext('USER_L_024') }}</label>
                         <div class="col-md-9">
                             <select class="form-control" name="status" id="status" tabindex="9">
                                 @if (isset($data['status']))
-                                <option value="1"<?php echo ($data['status'] == 1) ? ' selected' : ''; ?>>管理者ユーザー</option>
-                                <option value="2"<?php echo ($data['status'] == 2) ? ' selected' : ''; ?>>得意先ユーザー</option>
+                                <option value="1"<?php echo ($data['status'] == 1) ? ' selected' : ''; ?>>{{ Util::langtext('USER_D_001') }}</option>
+                                <option value="2"<?php echo ($data['status'] == 2) ? ' selected' : ''; ?>>{{ Util::langtext('USER_D_002') }}</option>
                                 @else
-                                <option value="1">管理者ユーザー</option>
-                                <option value="2">得意先ユーザー</option>
+                                <option value="1">{{ Util::langtext('USER_D_001') }}</option>
+                                <option value="2">{{ Util::langtext('USER_D_002') }}</option>
                                 @endif
                             </select>
                             @include('admin.layouts.components.error_message', ['title' => 'status'])
@@ -77,13 +69,9 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">得意先ID</label>
+                        <label class="col-md-3 col-form-label">{{ Util::langtext('USER_L_019') }}</label>
                         <div class="col-md-9">
-                            @if (isset($data['status']))
-                            <select class="form-control" name="customer_id" id="customer-id"tabindex="2"<?php echo ($data['status'] == 1) ? ' disabled' : ''; ?>>
-                            @else
-                            <select class="form-control" name="customer_id" id="customer-id" tabindex="2" disabled>
-                            @endif
+                            <select class="form-control" name="customer_id" id="customer-id"tabindex="2"<?php echo ((isset($data['status']) && $data['status'] == 1) || !isset($data['status'])) ? ' disabled' : ''; ?>>
                                 <option></option>
                                 @foreach ($customers as $customer)
                                 @if (isset($data['customer_id']))
@@ -97,32 +85,23 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">ログインID <span class="text-danger">&#x203B;</span></label>
+                        <label class="col-md-3 col-form-label">{{ Util::langtext('USER_L_018') }} <span class="text-danger">&#x203B;</span></label>
                         <div class="col-md-9">
-                            @if (isset($data['login_id']))
-                            <input class="form-control" type="text" name="login_id" id="login-id" tabindex="4" value="{{ $data['login_id'] }}" />
-                            @else
-                            <input class="form-control" type="text" name="login_id" id="login-id" tabindex="4" value="" />
-                            @endif
+                            <input class="form-control" type="text" name="login_id" id="login-id" tabindex="4" value="{{ isset($data['login_id']) ? $data['login_id'] : '' }}" />
                             @include('admin.layouts.components.error_message', ['title' => 'login_id'])
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">メールアドレス <span class="text-danger">&#x203B;</span></label>
+                        <label class="col-md-3 col-form-label">{{ Util::langtext('USER_L_020') }} <span class="text-danger">&#x203B;</span></label>
                         <div class="col-md-9">
-                            @if (isset($data['login_id']))
-                            <input class="form-control" type="text" name="email" id="email" tabindex="6" value="{{ $data['email'] }}" />
-                            @else
-                            <input class="form-control" type="text" name="email" id="email" tabindex="6" value="" />
-                            @endif
+                            <input class="form-control" type="text" name="email" id="email" tabindex="6" value="{{ isset($data['login_id']) ? $data['email'] : '' }}" />
                             @include('admin.layouts.components.error_message', ['title' => 'email'])
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">権限ID <span class="text-danger">&#x203B;</span></label>
+                        <label class="col-md-3 col-form-label">{{ Util::langtext('USER_L_022') }} <span class="text-danger">&#x203B;</span></label>
                         <div class="col-md-9">
                             <select class="form-control" name="role_id" tabindex="8">
-                                <option value="1">Sample</option>
                                 @foreach ($roles as $role)
                                 <option value="{{ $role['id'] }}">{{ $role['name'] }}</option>
                                 @endforeach
@@ -131,7 +110,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">最終ログイン日時</label>
+                        <label class="col-md-3 col-form-label">{{ Util::langtext('USER_L_028') }}</label>
                         <div class="col-md-9">
                             @if (isset($data['login_id']))
                             <input class="form-control" type="text" id="last-login-time" tabindex="10" value="{{ $data['last_login_time'] }}" disabled />
@@ -142,16 +121,16 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <button class="btn btn-primary width-100" tabindex="11" type="submit">保存</button>
-                    <a class="btn btn-outline-secondary width-100" id="user-form-cancel" data-url="/admin/user/index" tabindex="12" href="#">キャンセル</a>
+                    <button class="btn btn-primary width-100" tabindex="11" type="submit">{{ Util::langtext('CUSTOMER_B_007') }}</button>
+                    <a class="btn btn-outline-secondary width-100" id="user-form-cancel" data-url="/admin/user/index" tabindex="12" href="#">{{ Util::langtext('CUSTOMER_B_008') }}</a>
                 </div>
             </div>
         </form>
     </div>
 </div>
 @include('admin.layouts.components.modal.confirm', [
-    'title'         => 'ユーザ管理',
-    'button_name'   => 'OK',
-    'message'       => \App\Lib\Message::getMessage(\App\Lib\Message::INFO_005, [])
+    'title' => Util::langtext('SIDEBAR_LI_002'),
+    'button_name' => 'OK',
+    'message' => \App\Lib\Message::getMessage(\App\Lib\Message::INFO_005, [])
 ])
 @endsection

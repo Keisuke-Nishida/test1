@@ -79,10 +79,12 @@ return [
     'USER_L_026' => '作成者ユーザーID',
     'USER_L_027' => 'パスワード（確認）',
     'USER_L_028' => '最終ログイン日時',
+    'USER_L_029' => 'ID',
     'USER_D_001' => '管理者ユーザー',
     'USER_D_002' => '得意先ユーザー',
     'USER_DLG_001' => 'Do you want to delete user [user_id]?',
     'USER_DLG_002' => 'Do you want to delete selected user/s?',
+    'USER_DLG_003' => 'ユーザ管理削除確認',
     'USER_M_001' => 'No user selected',
     'USER_E_001' => 'User not found',
     'USER_E_002' => 'Name must be between 4 to 50 characters',
@@ -104,7 +106,8 @@ return [
 
     // Customer texts
     'CUSTOMER_T_001' => '新期得意先登録',
-    'CUSTOMER_T_002' => '更新',
+    'CUSTOMER_T_002' => '登録',
+    'CUSTOMER_T_003' => '更新',
     'CUSTOMER_L_001' => '詳細検索',
     'CUSTOMER_L_002' => '得意先コード',
     'CUSTOMER_L_003' => '得意先名',
@@ -142,6 +145,7 @@ return [
     'CUSTOMER_L_035' => '売上口座区分 7',
     'CUSTOMER_L_036' => '売上口座区分 8',
     'CUSTOMER_L_037' => '基幹システム連携フラグ',
+    'CUSTOMER_L_038' => 'ID',
     'CUSTOMER_E_001' => 'Code must be between 1 to 7 characters',
     'CUSTOMER_E_002' => 'Name must be between 1 to 255 characters',
     'CUSTOMER_E_003' => 'Name must be between 1 to 255 characters',
@@ -178,6 +182,7 @@ return [
     'CUSTOMER_FL_005' => 'Error occured updating of customer',
     'CUSTOMER_DLG_001' => 'Do you want to delete customer [customer_id]?',
     'CUSTOMER_DLG_002' => 'Do you want to delete selected customer/s?',
+    'CUSTOMER_DLG_003' => '得意先管理削除確認',
     'CUSTOMER_M_001' => 'No customer selected',
 
     // Miscellaneous texts
@@ -189,4 +194,5 @@ return [
     'DATA_TABLE_PAGINATE_PREVIOUS' => '前',
     'DATA_TABLE_PAGINATE_NEXT' => '次',
     'DATA_TABLE_PAGINATE_LAST' => '最終',
+    'NO_DATA_SELECTED' => 'No data selected',
 ];

@@ -1,6 +1,7 @@
 <?php
 namespace App\Lib;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -23,7 +24,12 @@ class Util
     {
         $uri = Route::current()->uri();
         $uri = explode('/', $uri);
-        return strtolower($uri[0]);
+        
+        if (isset($uri[1])) {
+            return $uri[1];
+        } elseif (isset($uri[0])) {
+            return $uri[0];
+        }
     }
 
     public static function getCurrentAction()
@@ -31,8 +37,8 @@ class Util
         $uri = Route::current()->uri();
         $uri = explode('/', $uri);
 
-        if (isset($uri[1])) {
-            return strtolower($uri[1]);
+        if (isset($uri[2])) {
+            return strtolower($uri[2]);
         }
 
         return 'index';
@@ -47,5 +53,10 @@ class Util
         }
 
         return false;
+    }
+
+    public static function langtext($code)
+    {
+        return config('languages.' . env('LANG_CODE') . '.' . $code);
     }
 }

@@ -23,8 +23,8 @@
             <li class="nav-item dropdown mr-3">
             <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i> {{ session('login_id') . '  様' }}</a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#"><i class="fas fa-user-circle"></i> マイページ</a>
-                    <a class="dropdown-item" href="{{ route('admin/logout') }}"><i class="fa fa-lock"></i> ログアウト</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-user-circle"></i> {{ Util::langtext('MYPAGE_L_001') }}</a>
+                    <a class="dropdown-item" href="{{ route('admin/logout') }}"><i class="fa fa-lock"></i> {{ Util::langtext('LOGOUT_L_001') }}</a>
                 </div>
             </li>
         </ul>
@@ -36,34 +36,34 @@
             <nav class="sidebar-nav">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('dashboard') || Util::getCurrentScreen() == '') ? ' active' : ''; ?>" href="{{ route('admin/index') }}"><i class="fas fa-home fa-lg"></i> ダッシュボード</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('dashboard') || Util::getCurrentScreen() == '') ? ' active' : ''; ?>" href="{{ route('admin/index') }}"><i class="fas fa-home fa-lg"></i> {{ Util::langtext('SIDEBAR_LI_001') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('user')) ? ' active' : ''; ?>" href="{{ route('admin/user') }}"><i class="fas fa-user fa-fw"></i> ユーザ管理</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('user')) ? ' active' : ''; ?>" href="{{ route('admin/user') }}"><i class="fas fa-user fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_002') }}</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link<?php echo (Util::isMenuItemActive('customer')) ? ' active' : ''; ?>" href="#"><i class="far fa-building fa-fw"></i> 得意先管理</a>
+                    <a class="nav-link<?php echo (Util::isMenuItemActive('customer')) ? ' active' : ''; ?>" href="{{ route('admin/customer') }}"><i class="far fa-building fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_003') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('role')) ? ' active' : ''; ?>" href="#"><i class="fas fa-user-shield fa-fw"></i> 権限管理</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('role')) ? ' active' : ''; ?>" href="#"><i class="fas fa-user-shield fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_004') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('notice')) ? ' active' : ''; ?>" href="#"><i class="fas fa-bell fa-fw"></i> お知らせ管理</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('notice')) ? ' active' : ''; ?>" href="#"><i class="fas fa-bell fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_005') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('bulletin_board')) ? ' active' : ''; ?>" href="#"><i class="fas fa-chalkboard fa-fw"></i> 掲示板管理</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('bulletin_board')) ? ' active' : ''; ?>" href="#"><i class="fas fa-chalkboard fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_006') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('shipment')) ? ' active' : ''; ?>" href="#"><i class="fas fa-truck fa-fw"></i> 出荷情報</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('shipment')) ? ' active' : ''; ?>" href="#"><i class="fas fa-truck fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_007') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('invoice')) ? ' active' : ''; ?>" href="#"><i class="fas fa-file-alt fa-fw"></i> 請求情報</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('invoice')) ? ' active' : ''; ?>" href="#"><i class="fas fa-file-alt fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_008') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('schedule')) ? ' active' : ''; ?>" href="#"><i class="far fa-clock fa-fw"></i> スケジュール管理</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('schedule')) ? ' active' : ''; ?>" href="#"><i class="far fa-clock fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_009') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('message')) ? ' active' : ''; ?>" href="#"><i class="far fa-envelope fa-fw"></i> メッセージ管理</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('message')) ? ' active' : ''; ?>" href="#"><i class="far fa-envelope fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_010') }}</a>
                     </li>
                 </ul>
             </nav>
@@ -94,14 +94,15 @@
     <script src="https://cdn.datatables.net/v/bs4/dt-1.10.22/r-2.2.6/sl-1.3.1/datatables.min.js" integrity="sha384-c56bHgB/zM/a5D8wfSJPFcmznDhMyKIs+5b5/foJ/bgcoPTD9/gVJ2maDD2WHqEm" crossorigin="anonymous"></script>
     <script src="{{ asset('js/admin/common.js') }}"></script>
     <script>
-        var DATA_TABLE_EMPTY_TEXT = "データはありません。";
-        var DATA_TABLE_INFO_TEXT = "_TOTAL_ 件中 _START_ から _END_ まで表示";
-        var DATA_TABLE_INFO_EMPTY_TEXT = " 0 件中 0 から 0 まで表示";
-        var DATA_TABLE_LENGTH_TEXT = "教示件数 _MENU_";
-        var DATA_TABLE_PAGINATE_FIRST = "先頭";
-        var DATA_TABLE_PAGINATE_PREVIOUS = "前";
-        var DATA_TABLE_PAGINATE_NEXT = "次";
-        var DATA_TABLE_PAGINATE_LAST = "最終";
+        var DATA_TABLE_EMPTY_TEXT = "<?php echo Util::langtext('DATA_TABLE_EMPTY_TEXT'); ?>";
+        var DATA_TABLE_INFO_TEXT = "<?php echo Util::langtext('DATA_TABLE_INFO_TEXT'); ?>";
+        var DATA_TABLE_INFO_EMPTY_TEXT = "<?php echo Util::langtext('DATA_TABLE_INFO_EMPTY_TEXT'); ?>";
+        var DATA_TABLE_LENGTH_TEXT = "<?php echo Util::langtext('DATA_TABLE_LENGTH_TEXT'); ?>";
+        var DATA_TABLE_PAGINATE_FIRST = "<?php echo Util::langtext('DATA_TABLE_PAGINATE_FIRST'); ?>";
+        var DATA_TABLE_PAGINATE_PREVIOUS = "<?php echo Util::langtext('DATA_TABLE_PAGINATE_PREVIOUS'); ?>";
+        var DATA_TABLE_PAGINATE_NEXT = "<?php echo Util::langtext('DATA_TABLE_PAGINATE_NEXT'); ?>";
+        var DATA_TABLE_PAGINATE_LAST = "<?php echo Util::langtext('DATA_TABLE_PAGINATE_LAST'); ?>";
+        var NO_DATA_SELECTED = "<?php echo Util::langtext('NO_DATA_SELECTED'); ?>";
     </script>
     @if ($page)
     <script src="{{ asset('js/admin/' . $page . '.js') }}"></script>

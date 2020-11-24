@@ -6,7 +6,7 @@ function search_main_list()
         }
     });
 
-    table = $("#user-table").DataTable({
+    table = $("#customer-table").DataTable({
         "processing": true,
         "stateSave": true,
         "responsive": true,
@@ -15,12 +15,13 @@ function search_main_list()
         "ajax": {
             "type": "post",
             "dataType": "json",
-            "url": "/admin/user/search",
+            "url": "/admin/customer/search",
             "data": {
-                "name": $("#search-name").val(),
-                "login_id": $("#search-login-id").val(),
-                "status": $("#search-status").val(),
-                "email": $("#search-email").val()
+                "code": $("#search-customer-code").val(),
+                "name": $("#search-customer-name").val(),
+                "prefecture": $("#search-prefecture").val(),
+                "address": $("#search-customer-address").val(),
+                "tel": $("#search-customer-tel").val()
             },
             "timeout": 10000,
             "error": function (xhr, error, code) {
@@ -62,7 +63,7 @@ function search_main_list()
         {
             "orderable": false,
             "className": "link-cell",
-            "targets": [2, 9],
+            "targets": [3, 11, 12],
             "visible": true
         }],
         "columns": [
@@ -73,25 +74,34 @@ function search_main_list()
                     return "";
                 }
             },
+            { "data": "code" },
             { "data": "name" },
             {
                 "data": null,
                 "orderable": false,
                 "render": function(data, type, row) {
-                    return get_list_link("edit", 0, "/admin/user/edit/" + row["id"], "list-button");
+                    return get_list_link("edit", 0, "/admin/customer/edit/" + row["id"], "list-button");
                 }
             },
-            { "data": "login_id" },
-            { "data": "email" },
-            { "data": "last_login_time" },
-            { "data": "status" },
-            { "data": "customer_id" },
-            { "data": "system_admin_flag" },
+            { "data": "prefecture_name" },
+            { "data": "address_1" },
+            { "data": "address_2" },
+            { "data": "tel" },
+            { "data": "uriage_1" },
+            { "data": "uriage_2" },
+            { "data": "uriage_3" },
             {
                 "data": null,
                 "orderable": false,
                 "render": function(data, type, row) {
-                    return get_list_link("remove", row["id"], "/admin/user/delete_single", "list-button");
+                    return get_list_link("edit", 0, "/admin/customer/edit/" + row["id"], "list-button");
+                }
+            },
+            {
+                "data": null,
+                "orderable": false,
+                "render": function(data, type, row) {
+                    return get_list_link("remove", row["id"], "/admin/customer/delete_single", "list-button");
                 }
             }
         ],
@@ -100,10 +110,11 @@ function search_main_list()
 
 function clear_search_fields()
 {
-    $("#search-name").val("");
-    $("#search-login-id").val("");
-    $("#search-status").prop("selectedIndex", 0);
-    $("#search-email").val("");
+    $("#search-customer-code").val("");
+    $("#search-customer-name").val("");
+    $("#search-prefecture").prop("selectedIndex", 0);
+    $("#search-customer-address").val("");
+    $("#search-customer-tel").val("");
 }
 
 $(document).ready(function() {
@@ -113,19 +124,19 @@ $(document).ready(function() {
         toggle_search_cont();
     });
 
-    $("#user-detailed-search-submit").click(function() {
-        $("#user-table").DataTable().destroy();
+    $("#customer-detailed-search-submit").click(function() {
+        $("#customer-table").DataTable().destroy();
         search_main_list();
     });
 
-    $("#user-detailed-search-reset").click(function() {
+    $("#customer-detailed-search-reset").click(function() {
         clear_search_fields();
-        $("#user-table").DataTable().destroy();
+        $("#customer-table").DataTable().destroy();
         search_main_list();
     });
 
-    $("#user-select-all").click(function() {
-        if ($("#user-select-all").is(":checked")) {
+    $("#customer-select-all").click(function() {
+        if ($("#customer-select-all").is(":checked")) {
             table.rows({ page: "current" }).select();
         } else {
             table.rows({ page: "current" }).deselect();
@@ -138,7 +149,7 @@ $(document).ready(function() {
         $("#confirm_modal").modal("show");
     });
 
-    $("#user-multiple-delete-button").click(function(e) {
+    $("#customer-multiple-delete-button").click(function(e) {
         $("#confirm_url").val($(this).data("url"));
 
         selected_rows = table.rows({ selected: true }).data();
@@ -177,7 +188,7 @@ $(document).ready(function() {
                     $("#result_info_message").html(response.message);
                     $("#result_info_modal").modal("show");
                     clear_search_fields();                
-                    $("#user-table").DataTable().destroy();
+                    $("#customer-table").DataTable().destroy();
                     search_main_list();
                 } else {
                     $("#result_error_message").html(response.message);
@@ -194,22 +205,7 @@ $(document).ready(function() {
         $("#confirm_id").val("");
     });
 
-    if ($("#status").length) {
-        $("#status").change(function(e) {
-            status = $(this).val();
-
-            if (status == "1") {
-                $("#customer-id").prop("selectedIndex", 0);
-                $("#customer-id").prop("disabled", true);
-                $("#system-admin-flag").prop("disabled", false);
-            } else if (status == "2" || status == "") {
-                $("#customer-id").prop("disabled", false);
-                $("#system-admin-flag").prop("disabled", true);
-            }
-        });
-    }
-
-    $("#user-form-cancel").click(function(e) {
+    $("#customer-form-cancel").click(function(e) {
         $("#confirm_url").val($(this).data("url"));
         $("#confirm_modal").modal("show");
     });

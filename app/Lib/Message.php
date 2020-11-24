@@ -14,6 +14,8 @@ class Message {
     const ERROR_005 = "%sは数値のみ入力可能です";
     const ERROR_006 = "%sは最低%s文字以上入力してください";
     const ERROR_007 = "ログイン情報がありません";
+    const ERROR_008 = "%s must have %s characters";
+    const ERROR_009 = "%s must be between %s to %s characters";
 
     const INFO_001  = "%sの登録を行いました";
     const INFO_002  = "%sの編集を行いました";
