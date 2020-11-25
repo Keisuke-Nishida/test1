@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Route;
  */
 class Util
 {
+    // Methods used for Dusk unit testing
+    protected $selector;
+    
     /**
      * bcrypt暗号化パスワード生成
      * @param $password
@@ -58,5 +61,54 @@ class Util
     public static function langtext($code)
     {
         return config('languages.' . env('LANG_CODE') . '.' . $code);
+    }
+
+    /**
+     * Methods used for Dusk unit testing
+     * initiate for table row data
+     */
+    public function table_row_data($table_name, $row_num, $data_num)
+    {
+        $this->selector = "#$table_name > tbody > tr:nth-child($row_num) > td:nth-child($data_num)";
+        return $this;
+    }
+
+    /**
+     * Methods used for Dusk unit testing
+     * initiate for table row
+     */
+    public function table_row($table_name, $row_num)
+    {
+        $this->selector = "#$table_name > tbody > tr:nth-child($row_num)";
+        return $this;
+    }
+
+    /**
+     * Methods used for Dusk unit testing
+     * initiate for table row selected
+     */
+    public function table_row_selected($table_name, $row_num)
+    {
+        $this->selector = "#$table_name > tbody > tr:nth-child($row_num).selected";
+        return $this;
+    }
+
+    /**
+     * Methods used for Dusk unit testing
+     * adding href tag to the selector
+     */
+    public function href()
+    {
+        $this->selector = $this->selector . " > a";
+        return $this;
+    }
+
+    /**
+     * Methods used for Dusk unit testing
+     * return selector
+     */
+    public function getSelector()
+    {
+        return $this->selector;
     }
 }

@@ -9,6 +9,11 @@
         </testsuite>
         <testsuite name="User Reg Test">
             <file>tests/Browser/Admin/User/UserRegTest.php</file>
-        </testsuite>
+        </testsuite>      
+        <testsuite name="Customer Test">
+            <file>tests/Browser/Admin/Customer/CustomerListTest.php</file>
+            <file>tests/Browser/Admin/Customer/CustomerRegisterTest.php</file>
+            <file>tests/Browser/Admin/Customer/CustomerUpdateTest.php</file>
+         </testsuite>          
     </testsuites>
 </phpunit>

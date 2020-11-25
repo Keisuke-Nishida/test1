@@ -19,7 +19,7 @@
                                         <i class="fas fa-user"></i>
                                     </span>
                             </div>
-                            <input class="form-control" type="text" name="login_id" placeholder="ログインID">
+                            <input class="form-control" type="text" id="login-id" name="login_id" placeholder="ログインID">
                         </div>
                         @include('admin.layouts.components.error_message', ['title' => 'login_id'])
                         <div class="input-group mb-3">
@@ -28,7 +28,7 @@
                                         <i class="fas fa-key"></i>
                                     </span>
                             </div>
-                            <input class="form-control" type="password" name="password" placeholder="パスワード">
+                            <input class="form-control" type="password" id="password" name="password" placeholder="パスワード">
                         </div>
                         @include('admin.layouts.components.error_message', ['title' => 'password'])
                         <div class="input-group mb-4">

@@ -80,7 +80,7 @@ function search_main_list()
                 "data": null,
                 "orderable": false,
                 "render": function(data, type, row) {
-                    return get_list_link("edit", 0, "/admin/customer/edit/" + row["id"], "list-button");
+                    return get_list_link("edit", 0, "/admin/customer/edit/" + row["id"], "list-button", row["id"]);
                 }
             },
             { "data": "prefecture_name" },

@@ -23,7 +23,7 @@
                     <div class="form-group row">
                     <label class="col-md-3 col-form-label">{{ Util::langtext('CUSTOMER_L_019') }} <span class="text-danger">&#x203B;</span></label>
                         <div class="col-md-9">
-                            <input class="form-control" type="text" name="code" id="" tabindex="1" value="{{ isset($data['code']) ? $data['code'] : '' }}" />
+                            <input class="form-control" type="text" name="code" id="code" tabindex="1" value="{{ isset($data['code']) ? $data['code'] : '' }}" />
                             @include('admin.layouts.components.error_message', ['title' => 'code'])
                         </div>
                     </div>
