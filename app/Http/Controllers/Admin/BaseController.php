@@ -76,6 +76,7 @@ class BaseController extends Controller
 
     /**
      * index 検索が必要な場合はオーバーライドする
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
@@ -104,7 +105,7 @@ class BaseController extends Controller
 
         return [
             'condition' => [],
-            'sort'      => [],
+            'sort' => [],
             'relation' => [],
         ];
     }
@@ -143,7 +144,7 @@ class BaseController extends Controller
     {
         return view($this->mainRoot . '/register', [
             'register_mode' => 'create',
-            'data'          => $this->mainService->model()
+            'data' => $this->mainService->model()
         ]);
     }
 
@@ -156,7 +157,7 @@ class BaseController extends Controller
     {
         return view($this->mainRoot . '/register', [
             'register_mode' => 'edit',
-            'data'          => $this->mainService->find($request->id),
+            'data' => $this->mainService->find($request->id),
         ]);
     }
 

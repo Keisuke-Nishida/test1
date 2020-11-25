@@ -23,6 +23,13 @@ class CustomerDestination extends BaseModel
         return $this->belongsTo('App\Models\Customer', 'customer_id', 'id');
     }
 
+    /**
+     * belongsTo method to prefecture data
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function prefecture()
+    {
+        return $this->belongsTo('App\Models\Prefecture', 'prefecture_id', 'id');
+    }
 }
-
-

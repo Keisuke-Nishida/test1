@@ -1,11 +1,11 @@
 @extends('admin.layouts.app')
 
 @section('app_title')
-ユーザ管理
+{{ Util::langtext('SIDEBAR_LI_002') }}
 @endsection
 
 @section('app_bread')
-ユーザ管理
+{{ Util::langtext('SIDEBAR_LI_002') }}
 @endsection
 
 @section('app_contents')

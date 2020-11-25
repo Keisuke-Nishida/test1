@@ -6,6 +6,10 @@ function search_main_list()
         }
     });
 
+    if (table !== null) {
+        $("#customer-table").DataTable().destroy();
+    }
+
     table = $("#customer-table").DataTable({
         "processing": true,
         "stateSave": true,
@@ -94,7 +98,7 @@ function search_main_list()
                 "data": null,
                 "orderable": false,
                 "render": function(data, type, row) {
-                    return get_list_link("edit", 0, "/admin/customer/edit/" + row["id"], "list-button");
+                    return get_list_link("edit", 0, "/admin/customer/" + row["id"] + "/destination", "list-button");
                 }
             },
             {
@@ -188,7 +192,7 @@ $(document).ready(function() {
                     $("#result_info_message").html(response.message);
                     $("#result_info_modal").modal("show");
                     clear_search_fields();                
-                    $("#customer-table").DataTable().destroy();
+                    $("#customer-destination-table").DataTable().destroy();
                     search_main_list();
                 } else {
                     $("#result_error_message").html(response.message);
