@@ -7,7 +7,7 @@ use App\Models\User;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use App\Lib\Message;
-
+use App\Lib\Util;
 class UserListTest extends DuskTestCase
 {
     private $login_url = "/admin/login";
@@ -22,7 +22,7 @@ class UserListTest extends DuskTestCase
         $this->browse(function (Browser $browser)
         {
             $browser->visit($this->login_url)
-                    ->assertSee(langtext('LOGIN_T_001'))
+                    ->assertSee(Util::langtext('LOGIN_T_001'))
                     ->type('login_id', env('TEST_LOGIN_ID'))
                     ->type('password', env('TEST_PASSWORD'))
                     ->click('button[type="submit"]')
@@ -44,7 +44,7 @@ class UserListTest extends DuskTestCase
         {
             $browser->assertPathIs($this->user_url)
                     ->pause(6000) //give time to load elements first
-                    ->assertSeeIn('main.main > ol > li',langtext('SIDEBAR_LI_002'))
+                    ->assertSeeIn('main.main > ol > li',Util::langtext('SIDEBAR_LI_002'))
                     // check search fields as empty
                     ->value('#search-name',"")
                     ->value('#search-login-id',"")
@@ -69,9 +69,9 @@ class UserListTest extends DuskTestCase
     //     $this->browse(function (Browser $browser) {
     //         $browser->visit($this->user_url)
     //                 ->pause(1000)
-    //                 ->assertSee(langtext('SIDEBAR_LI_002'))
+    //                 ->assertSee(Util::langtext('SIDEBAR_LI_002'))
     //                 ->click('#user-multiple-delete-button')
-    //                 ->assertDialogOpened(langtext('USER_M_001'))
+    //                 ->assertDialogOpened(Util::langtext('USER_M_001'))
     //                 ->acceptDialog();
     //     });
     // }
@@ -84,16 +84,16 @@ class UserListTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $user = User::first();
             $browser->visit($this->user_url)
-                    ->assertSee(langtext('SIDEBAR_LI_002'))
+                    ->assertSee(Util::langtext('SIDEBAR_LI_002'))
                     ->pause(1000)
                     ->click('a[data-id="'.$user->id.'"]')
                     ->pause(1000)
-                    ->assertSee(Message::getMessage(Message::INFO_004, [langtext('SIDEBAR_LI_002')]))
+                    ->assertSee(Message::getMessage(Message::INFO_004, [Util::langtext('SIDEBAR_LI_002')]))
                     ->press('Close')
                     ->pause(1000);
                     // ->click('#confirm_button') // this will delete user from database
                     // ->pause(1000)
-                    // ->assertSee(Message::getMessage(Message::INFO_003, [langtext('SIDEBAR_LI_002')]))
+                    // ->assertSee(Message::getMessage(Message::INFO_003, [Util::langtext('SIDEBAR_LI_002')]))
                     // ->pause(1000);  //pause closing the dialog
         });
     }
@@ -186,11 +186,11 @@ class UserListTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($first_user)
         {
             $browser->visit($this->user_url)
-                    ->assertSee(langtext('SIDEBAR_LI_002'))
+                    ->assertSee(Util::langtext('SIDEBAR_LI_002'))
                     ->click('#search-toggle-button')
                     ->pause(2000)
                     ->type('#search-name', $first_user->name)
-                    ->press(langtext('USER_B_004'))
+                    ->press(Util::langtext('USER_B_004'))
                     ->pause(1000)
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(2)', $first_user->name)
                     ->click('#user-detailed-search-reset')
@@ -209,11 +209,11 @@ class UserListTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($second_user)
         {
             $browser->visit($this->user_url)
-                    ->assertSee(langtext('SIDEBAR_LI_002'))
+                    ->assertSee(Util::langtext('SIDEBAR_LI_002'))
                     ->click('#search-toggle-button')
                     ->pause(2000)
                     ->type('#search-email', $second_user->email)
-                    ->press(langtext('USER_B_004'))
+                    ->press(Util::langtext('USER_B_004'))
                     ->pause(1000)
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(5)', $second_user->email)
                     ->click('#user-detailed-search-reset')
@@ -231,11 +231,11 @@ class UserListTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($third_user)
         {
             $browser->visit($this->user_url)
-                    ->assertSee(langtext('SIDEBAR_LI_002'))
+                    ->assertSee(Util::langtext('SIDEBAR_LI_002'))
                     ->click('#search-toggle-button')
                     ->pause(2000)
                     ->type('#search-login-id', $third_user->login_id)
-                    ->press(langtext('USER_B_004'))
+                    ->press(Util::langtext('USER_B_004'))
                     ->pause(2000)
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(4)', $third_user->login_id)
                     ->click('#user-detailed-search-reset')
@@ -252,11 +252,11 @@ class UserListTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user)
         {
             $browser->visit($this->user_url)
-                    ->assertSee(langtext('SIDEBAR_LI_002'))
+                    ->assertSee(Util::langtext('SIDEBAR_LI_002'))
                     ->click('#search-toggle-button')
                     ->pause(2000)
                     ->select('#search-status', 1)
-                    ->press(langtext('USER_B_004'))
+                    ->press(Util::langtext('USER_B_004'))
                     ->pause(1000)
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(2)', $user->name)
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(4)', $user->login_id)
@@ -274,13 +274,13 @@ class UserListTest extends DuskTestCase
         $this->browse(function (Browser $browser)
         {
             $browser->visit($this->user_url)
-                    ->assertSee(langtext('SIDEBAR_LI_002'))
+                    ->assertSee(Util::langtext('SIDEBAR_LI_002'))
                     ->click('#search-toggle-button')
                     ->pause(2000)
                     ->type('#search-name', '@!qwerty:{">')
-                    ->press(langtext('USER_B_004'))
+                    ->press(Util::langtext('USER_B_004'))
                     ->pause(1000)
-                    ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', langtext('DATA_TABLE_EMPTY_TEXT'))
+                    ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', Util::langtext('DATA_TABLE_EMPTY_TEXT'))
                     ->click('#user-detailed-search-reset')
                     ->click('#search-toggle-button');
         });
@@ -294,13 +294,13 @@ class UserListTest extends DuskTestCase
         $this->browse(function (Browser $browser)
         {
             $browser->visit($this->user_url)
-                    ->assertSee(langtext('SIDEBAR_LI_002'))
+                    ->assertSee(Util::langtext('SIDEBAR_LI_002'))
                     ->click('#search-toggle-button')
                     ->pause(2000)
                     ->type('#search-email', 'asdasd')
-                    ->press(langtext('USER_B_004'))
+                    ->press(Util::langtext('USER_B_004'))
                     ->pause(1000)
-                    ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', langtext('DATA_TABLE_EMPTY_TEXT'))
+                    ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', Util::langtext('DATA_TABLE_EMPTY_TEXT'))
                     ->click('#user-detailed-search-reset')
                     ->click('#search-toggle-button');
         });
@@ -314,13 +314,13 @@ class UserListTest extends DuskTestCase
         $this->browse(function (Browser $browser)
         {
             $browser->visit($this->user_url)
-                    ->assertSee(langtext('SIDEBAR_LI_002'))
+                    ->assertSee(Util::langtext('SIDEBAR_LI_002'))
                     ->click('#search-toggle-button')
                     ->pause(2000)
                     ->type('#search-login-id', 'qwewads@@xac!~!')
-                    ->press(langtext('USER_B_004'))
+                    ->press(Util::langtext('USER_B_004'))
                     ->pause(1000)
-                    ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', langtext('DATA_TABLE_EMPTY_TEXT'))
+                    ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', Util::langtext('DATA_TABLE_EMPTY_TEXT'))
                     ->click('#user-detailed-search-reset')
                     ->click('#search-toggle-button');
         });
@@ -337,14 +337,14 @@ class UserListTest extends DuskTestCase
     //     $this->browse(function (Browser $browser) use ($user)
     //     {
     //         $browser->visit($this->user_url)
-    //                 ->assertSee(langtext('SIDEBAR_LI_002'))
+    //                 ->assertSee(Util::langtext('SIDEBAR_LI_002'))
     //                 ->click('#search-toggle-button')
     //                 ->pause(2000)
     //                 ->select('#search-status', 2)
     //                 ->type('#search-email', $user->email)
-    //                 ->press(langtext('USER_B_004'))
+    //                 ->press(Util::langtext('USER_B_004'))
     //                 ->pause(1000)
-    //                 ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', langtext('DATA_TABLE_EMPTY_TEXT'))
+    //                 ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', Util::langtext('DATA_TABLE_EMPTY_TEXT'))
     //                 ->click('#user-detailed-search-reset')
     //                 ->click('#search-toggle-button');
     //     });
@@ -368,12 +368,12 @@ class UserListTest extends DuskTestCase
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(4)', $user->login_id)
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(5)', $user->email)
                     // Click next page
-                    ->clickLink(langtext('DATA_TABLE_PAGINATE_NEXT'))
+                    ->clickLink(Util::langtext('DATA_TABLE_PAGINATE_NEXT'))
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(2)', $user2->name)
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(4)', $user2->login_id)
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(5)', $user2->email)
                     // Click prev page
-                    ->clickLink(langtext('DATA_TABLE_PAGINATE_PREVIOUS'))
+                    ->clickLink(Util::langtext('DATA_TABLE_PAGINATE_PREVIOUS'))
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(2)', $user->name)
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(4)', $user->login_id)
                     ->assertSeeIn('#user-table > tbody > tr:nth-child(1) > td:nth-child(5)', $user->email);
@@ -406,12 +406,12 @@ class UserListTest extends DuskTestCase
                         ->assertVisible('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)')
                         ->check('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)')
                         ->assertNotSelected('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', NULL)
-                        ->clickLink(langtext('DATA_TABLE_PAGINATE_NEXT')) //page change
+                        ->clickLink(Util::langtext('DATA_TABLE_PAGINATE_NEXT')) //page change
                         ->pause(1000)
                         ->assertVisible('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)')
                         ->check('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)')
                         ->assertNotSelected('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)', NULL)
-                        ->clickLink(langtext('DATA_TABLE_PAGINATE_NEXT')) //page change
+                        ->clickLink(Util::langtext('DATA_TABLE_PAGINATE_NEXT')) //page change
                         ->pause(1000)
                         ->assertVisible('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)')
                         ->check('#user-table > tbody > tr:nth-child(1) > td:nth-child(1)')

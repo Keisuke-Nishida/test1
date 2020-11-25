@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use App\Lib\Message;
-
+use App\Lib\Util;
 class LoginTest extends DuskTestCase
 {
 
@@ -19,7 +19,7 @@ class LoginTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser){
             $browser->visit($this->login_url)
-                    ->assertSee(langtext('LOGIN_T_001'))
+                    ->assertSee(Util::langtext('LOGIN_T_001'))
                     ->type('login_id', 'invalidusername')
                     ->type('password', 'invalidpassword')
                     ->click('button[type="submit"]')
@@ -34,11 +34,11 @@ class LoginTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser){
             $browser->visit($this->login_url)
-                    ->assertSee(langtext('LOGIN_T_001'))
+                    ->assertSee(Util::langtext('LOGIN_T_001'))
                     ->type('login_id', '')
                     ->type('password', env('TEST_PASSWORD'))
                     ->click('button[type="submit"]')
-                    ->assertSee(Message::getMessage(Message::ERROR_001, [langtext('LOGIN_P_001')]));
+                    ->assertSee(Message::getMessage(Message::ERROR_001, [Util::langtext('LOGIN_P_001')]));
         });
     }
 
@@ -49,11 +49,11 @@ class LoginTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser){
             $browser->visit($this->login_url)
-                    ->assertSee(langtext('LOGIN_T_001'))
+                    ->assertSee(Util::langtext('LOGIN_T_001'))
                     ->type('login_id', env('TEST_LOGIN_ID'))
                     ->type('password', '')
                     ->click('button[type="submit"]')
-                    ->assertSee(Message::getMessage(Message::ERROR_001, [langtext('LOGIN_P_002')]));
+                    ->assertSee(Message::getMessage(Message::ERROR_001, [Util::langtext('LOGIN_P_002')]));
         });
     }
 
@@ -64,7 +64,7 @@ class LoginTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser){
             $browser->visit($this->login_url)
-                    ->assertSee(langtext('LOGIN_T_001'))
+                    ->assertSee(Util::langtext('LOGIN_T_001'))
                     ->type('login_id', 'invalidlogin')
                     ->type('password', env('TEST_PASSWORD'))
                     ->click('button[type="submit"]')
@@ -79,7 +79,7 @@ class LoginTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser){
             $browser->visit($this->login_url)
-                    ->assertSee(langtext('LOGIN_T_001'))
+                    ->assertSee(Util::langtext('LOGIN_T_001'))
                     ->type('login_id', env('TEST_LOGIN_ID'))
                     ->type('password', 'invalidpassword')
                     ->click('button[type="submit"]')
@@ -94,7 +94,7 @@ class LoginTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit($this->login_url)
-                    ->assertSee(langtext('LOGIN_T_001'))
+                    ->assertSee(Util::langtext('LOGIN_T_001'))
                     ->type('login_id', env('TEST_LOGIN_ID'))
                     ->type('password', env('TEST_PASSWORD'))
                     ->click('button[type="submit"]')

@@ -7,5 +7,8 @@
         <testsuite name="User List Test">
             <file>tests/Browser/Admin/User/UserListTest.php</file>
         </testsuite>
+        <testsuite name="User Reg Test">
+            <file>tests/Browser/Admin/User/UserRegTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>
