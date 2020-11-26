@@ -135,14 +135,14 @@ class UserController extends BaseController
         if ($request->get('register_mode') == 'create') {
             $rules['login_id'] = 'required|string|min:4|max:10|unique:user,login_id';
             $rules['email'] = 'required|string|email|min:6|max:255|unique:user,email';
-            $rules['password'] = 'required|string|min:7|max:15';
-            $rules['password_confirmation'] = 'required|string|min:7|max:15|same:password';
+            $rules['password'] = 'required|string|min:8|max:255|confirmed';
         } elseif ($request->get('register_mode') == 'edit') {
             $user = $this->mainService->find($request->get('id'));
 
             $rules['id'] = 'required|integer';
             $rules['login_id'] = 'required|string|min:4|max:10|unique:user,login_id,' . $user->login_id . ',login_id';
             $rules['email'] = 'required|string|email|min:6|max:255|unique:user,email,' . $user->email . ',email';
+            $rules['password'] = 'string|nullable|min:8|max:255|confirmed';
         }
 
         return $rules;        
@@ -185,13 +185,20 @@ class UserController extends BaseController
             $messages['password.required'] = Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_021')]);
             $messages['password.min'] = Message::getMessage(Message::ERROR_006, [Util::langtext('USER_L_021'), '8']);
             $messages['password.max'] = Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), '255']);
+            $messages['password.confirmed'] = Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), Util::langtext('USER_L_027')]);
             $messages['password_confirmation.required'] = Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_021')]);
             $messages['password_confirmation.min'] = Message::getMessage(Message::ERROR_006, [Util::langtext('USER_L_021'), '8']);
             $messages['password_confirmation.max'] = Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), '255']);
-            $messages['password_confirmation.same'] = Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), Util::langtext('USER_L_027')]);
+            $messages['password_confirmation.confirmed'] = Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), Util::langtext('USER_L_027')]);
         } elseif ($request->get('register_mode') == 'edit') {
             $messages['id.required'] = Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_029')]);
             $messages['id.integer'] = Message::getMessage(Message::ERROR_005, [Util::langtext('USER_L_029')]);
+            $messages['password.min'] = Message::getMessage(Message::ERROR_006, [Util::langtext('USER_L_021'), '8']);
+            $messages['password.max'] = Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), '255']);
+            $messages['password.confirmed'] = Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), Util::langtext('USER_L_027')]);
+            $messages['password_confirmation.min'] = Message::getMessage(Message::ERROR_006, [Util::langtext('USER_L_021'), '8']);
+            $messages['password_confirmation.max'] = Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), '255']);
+            $messages['password_confirmation.confirmed'] = Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), Util::langtext('USER_L_027')]);
         }
 
         return $messages;
