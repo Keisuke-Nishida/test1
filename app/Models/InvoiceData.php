@@ -15,18 +15,25 @@ class InvoiceData extends BaseModel
     protected $table = 'invoice_data';
 
     /**
+     * 得意先マスタリレーション
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function customer() {
+        return $this->hasOne('App\Models\Customer', 'code', 'customer_code');
+    }
+    /**
+     * 得意先送り先マスタリレーション
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function customer_destination() {
+        return $this->hasOne('App\Models\CustomerDestination', 'code', 'customer_code');
+    }
+    /**
      * 扱便マスタリレーション
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function transport() {
         return $this->hasOne('App\Models\Transport', 'code', 'transport_type');
-    }
-    /**
-     * 状況マスタリレーション
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function condition() {
-        return $this->hasOne('App\Models\Condition', 'code', 'condition_code');
     }
     /**
      * 売上先都道府県マスタリレーション
