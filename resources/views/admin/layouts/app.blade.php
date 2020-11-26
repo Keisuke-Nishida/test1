@@ -48,7 +48,7 @@
                         <a class="nav-link<?php echo (Util::isMenuItemActive('role')) ? ' active' : ''; ?>" href="#"><i class="fas fa-user-shield fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_004') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('notice')) ? ' active' : ''; ?>" href="#"><i class="fas fa-bell fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_005') }}</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('notice_data')) ? ' active' : ''; ?>" href="{{ route('admin/notice_data') }}"><i class="fas fa-bell fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_005') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link<?php echo (Util::isMenuItemActive('bulletin_board')) ? ' active' : ''; ?>" href="#"><i class="fas fa-chalkboard fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_006') }}</a>

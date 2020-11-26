@@ -186,7 +186,29 @@ return [
     'CUSTOMER_DLG_003' => '得意先管理削除確認',
     'CUSTOMER_M_001' => 'No customer selected',
 
-    // Customer destination texts
+    'NOTICE_L_001' => 'お知らせ名', // Notice name
+    'NOTICE_L_002' => 'お知らせタイトル', // Notice title
+    'NOTICE_L_003' => 'お知らせ本文', // Notice body/text
+    'NOTICE_L_004' => '編集', // edit
+    'NOTICE_L_005' => 'お知らせタイトル', // title
+    'NOTICE_L_006' => 'お知らせ本文', // text/body
+    'NOTICE_L_007' => '配信開始日時', // delivery date
+    'NOTICE_L_008' => '配信終了日時', // delivery end date
+    'NOTICE_L_009' => '削除', // delete
+    'NOTICE_L_010' => '詳細検索', // detailed search
+    'NOTICE_L_011' => 'お知らせ一覧', // Notice List
+    'NOTICE_T_001' => '登録',
+    'NOTICE_T_002' => '更新',
+    'NOTICE_B_001' => '一括削除',
+    'NOTICE_B_002' => '新期お知らせ登録', // Registration button
+    'NOTICE_B_003' => 'クリア', // clear
+    'NOTICE_B_004' => '検索', // search
+    'NOTICE_B_005' => 'はい',
+    'NOTICE_B_006' => 'いいえ',
+    'NOTICE_B_007' => '保存',
+    'NOTICE_B_008' => 'キャンセル',
+
+  // Customer destination texts
     'CUST_DEST_T_001' => '得意先送り先',
     'CUST_DEST_L_001' => '詳細検索',
     'CUST_DEST_L_002' => '得意先送り先コード',

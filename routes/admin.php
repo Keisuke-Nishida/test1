@@ -40,6 +40,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function(){
     Route::post('/customer/delete_single', 'Admin\CustomerController@delete')->name('admin/customer/delete_single');
     Route::post('/customer/delete_multiple', 'Admin\CustomerController@deleteMultiple')->name('admin/customer/delete_multiple');
 
+    Route::get('/notice_data', 'Admin\NoticeDataController@index')->name('admin/notice_data');
+    Route::get('/notice_data/index', 'Admin\NoticeDataController@index')->name('admin/notice_data/index');
+    Route::post('/notice_data/search', 'Admin\NoticeDataController@list_search')->name('admin/notice_data/search');
+    Route::get('/notice_data/create', 'Admin\NoticeDataController@create')->name('admin/notice_data/create');
+    Route::get('/notice_data/edit/{id}', 'Admin\NoticeDataController@edit')->name('admin/notice_data/edit');
+    Route::post('/notice_data/save', 'Admin\NoticeDataController@save')->name('admin/notice_data/save');
+    Route::post('/notice_data/delete_single', 'Admin\NoticeDataController@delete')->name('admin/notice_data/delete_single');
+    Route::post('/notice_data/delete_multiple', 'Admin\NoticeDataController@deleteMultiple')->name('admin/notice_data/delete_multiple');
+
     Route::get('/customer/{customer_id}/destination', 'Admin\CustomerDestinationController@indexGet')->name('admin/customer/destination');
     Route::get('/customer/{customer_id}/destination/index', 'Admin\CustomerDestinationController@indexGet')->name('admin/customer/destination/index');
     Route::post('/customer/destination/search', 'Admin\CustomerDestinationController@list_search')->name('admin/customer/destination/search');
@@ -48,4 +57,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function(){
     Route::post('/customer/destination/save', 'Admin\CustomerDestinationController@save')->name('admin/customer/destination/save');
     Route::post('/customer/destination/delete_single', 'Admin\CustomerDestinationController@delete')->name('admin/customer/destination/delete_single');
     Route::post('/customer/destination/delete_multiple', 'Admin\CustomerDestinationController@deleteMultiple')->name('admin/customer/destination/delete_multiple');
+
 });
