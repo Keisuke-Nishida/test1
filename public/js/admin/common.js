@@ -60,10 +60,10 @@ function get_list_link(type, id, link, extra_class, link_id = null)
     }
 
     if (type == "edit") {
-        return '<a href="' + link + '" id="'+ type +'-id-'+ link_id +'" class="btn btn-primary ' + extra_class + '" data-toggle="tooltip" title="編集" data-placement="top"><i class="fas fa-edit fa-fw"></i></a>';
+        return '<a href="' + link + '" id="' + type + '-id-' + link_id + '" class="btn btn-primary ' + extra_class + '" data-toggle="tooltip" title="編集" data-placement="top"><i class="fas fa-edit fa-fw"></i></a>';
     }
 
     if (type == "remove") {
-        return '<a href="javascript:void(0)" id="'+type+'-id-'+id+'" class="btn btn-danger btn-remove ' + extra_class + '" data-toggle="tooltip" title="削除" data-placement="top" data-id="' + id + '" data-url="' + link + '"><i class="fas fa-trash-alt fa-fw"></i></a>';
+        return '<a href="javascript:void(0)" id="' + type + '-id-' + id + '" class="btn btn-danger btn-remove ' + extra_class + '" data-toggle="tooltip" title="削除" data-placement="top" data-id="' + id + '" data-url="' + link + '"><i class="fas fa-trash-alt fa-fw"></i></a>';
     }
 }

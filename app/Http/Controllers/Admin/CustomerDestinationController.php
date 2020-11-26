@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Lib\Util;
+use App\Lib\Message;
 use App\Models\Prefecture;
 use App\Services\Models\CustomerDestinationService;
+use App\Services\Models\CustomerService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CustomerDestinationController extends BaseController
 {
@@ -104,5 +107,169 @@ class CustomerDestinationController extends BaseController
         }
         
         return ["data" => $data];
+    }
+
+    /**
+     * Method for overriding create method of BaseController class
+     * 
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create(Request $request)
+    {
+        $customer = new CustomerService();
+
+        return view($this->mainRoot . '/register', [
+            'action' => Util::langtext('CUST_DEST_T_002'),
+            'register_mode' => 'create',
+            'customer_id' => $request->customer_id,
+            'customer_name' => $customer->model()->find($request->customer_id)->name,
+            'prefectures' => Prefecture::select('id', 'name')->whereNull('deleted_at')->get()->toArray(),
+            'page' => 'customer_destination',
+            'data' => [],
+        ]);
+    }
+
+    /**
+     * Method for overriding edit method of BaseController class
+     * 
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function editGet($customer_id, $customer_destination_id)
+    {
+        $customer = new CustomerService();
+
+        return view($this->mainRoot . '/register', [
+            'action' => Util::langtext('CUST_DEST_T_003'),
+            'register_mode' => 'edit',
+            'customer_id' => $customer_id,
+            'customer_name' => $customer->model()->find($customer_id)->name,
+            'prefectures' => Prefecture::select('id', 'name')->whereNull('deleted_at')->get()->toArray(),
+            'page' => 'customer_destination',
+            'data' => $this->mainService->find($customer_destination_id),
+        ]);
+    }
+
+    /**
+     * Method for overriding validation_rules method of BaseController class
+     * 
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function validation_rules(Request $request)
+    {
+        $rules = [
+            'customer_id' => 'required|integer',
+            'name_kana' => 'nullable|string|min:1|max:255',
+            'name' => 'required|string|min:1|max:255',
+            'post_no' => 'nullable|string|numeric|digits:7',
+            'prefecture' => 'nullable|integer',
+            'address_1' => 'nullable|string|min:1|max:255',
+            'address_2' => 'nullable|string|min:1|max:255',
+            'tel' => 'nullable|string|min:4|max:20',
+            'fax' => 'nullable|string|min:4|max:20',
+            'kiduke_kanji' => 'nullable|string|min:1|max:255',
+        ];
+
+        if ($request->get('register_mode') == 'create') {
+            $rules['code'] = 'required|string|numeric|digits_between:1,10|unique:customer_destination,code';
+        } elseif ($request->get('register_mode') == 'edit') {
+            $customer_destination = $this->mainService->find($request->id);
+
+            $rules['id'] = 'required|integer';
+            $rules['code'] = 'required|string|numeric|digits_between:1,10|unique:customer_destination,code,' . $customer_destination->code . ',code';
+        }
+
+        return $rules;        
+    }
+
+    /**
+     * Method for overriding validation_message method of BaseController class
+     * 
+     * @param Request $request
+     * @return array|void
+     */
+    public function validation_message(Request $request)
+    {
+        $messages = [
+            'code.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('CUST_DEST_L_018')]),
+            'code.numeric' => Message::getMessage(Message::ERROR_005, [Util::langtext('CUST_DEST_L_018')]),
+            'code.digits_between' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_018'), '1', '10']),
+            'code.unique' => Message::getMessage(Message::ERROR_010, [Util::langtext('CUST_DEST_L_018')]),
+            'name_kana.min' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_020'), '1', '255']),
+            'name_kana.max' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_020'), '1', '255']),
+            'name.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('CUST_DEST_L_019')]),
+            'name.min' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_019'), '1', '255']),
+            'name.max' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_019'), '1', '255']),
+            'post_no.numeric' => Message::getMessage(Message::ERROR_005, [Util::langtext('CUST_DEST_L_022')]),
+            'post_no.digits' =>  Message::getMessage(Message::ERROR_008, [Util::langtext('CUST_DEST_L_022'), '7']),
+            'prefecture_id.integer' => Message::getMessage(Message::ERROR_005, [Util::langtext('CUST_DEST_L_021')]),
+            'address_1.min' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_023'), '1', '255']),
+            'address_1.max' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_023'), '1', '255']),
+            'address_2.min' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_024'), '1', '255']),
+            'address_2.max' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_024'), '1', '255']),
+            'tel.min' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_025'), '4', '20']),
+            'tel.max' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_025'), '4', '20']),
+            'fax.min' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_026'), '4', '20']),
+            'fax.max' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_026'), '4', '20']),
+            'kiduke_kanji.min' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_027'), '1', '255']),
+            'kiduke_kanji.max' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_027'), '1', '255']),
+        ];
+
+        if ($request->get('register_mode') == 'edit') {
+            $messages['id.required'] = Message::getMessage(Message::ERROR_001, [Util::langtext('CUST_DEST_L_028')]);
+            $messages['id.integer'] = Message::getMessage(Message::ERROR_005, [Util::langtext('CUST_DEST_L_028')]);
+        }
+
+        return $messages;
+    }
+
+    /**
+     * Method for overriding save method of BaseController class
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function save(Request $request)
+    {
+        $validator = $this->validation($request);
+
+        if ($validator->fails()) {
+            return $this->validationFailRedirect($request, $validator);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $input = $this->saveBefore($request);
+            $model = $this->mainService->save($input);
+            $this->saveAfter($request, $model);
+
+            DB::commit();
+
+            return $this->saveAfterRedirectParams([
+                'customer_id' => $model->customer_id,
+                'customer_destination_id' => $model->id,
+            ], $request->register_mode);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('database register error:' . $e->getMessage());
+            throw new \Exception($e);
+        }
+    }
+
+    /**
+     * 保存処理後リダイレクト先
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     */
+    public function saveAfterRedirectParams($params, $register_mode)
+    {
+        if ($register_mode == 'create') {
+            return redirect()->route('admin/customer/destination', $params)->with('info_message', Message::getMessage(Message::INFO_001, [$this->mainTitle]));
+        } else {
+            return redirect()->route('admin/customer/destination', $params)->with('info_message', Message::getMessage(Message::INFO_002, [$this->mainTitle]));
+        }
     }
 }

@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                    <label class="col-md-3 col-form-label">{{ Util::langtext('CUSTOMER_L_019') }} <span class="text-danger">&#x203B;</span></label>
+                        <label class="col-md-3 col-form-label">{{ Util::langtext('CUSTOMER_L_019') }} <span class="text-danger">&#x203B;</span></label>
                         <div class="col-md-9">
                             <input class="form-control" type="text" name="code" id="code" tabindex="1" value="{{ isset($data['code']) ? $data['code'] : '' }}" />
                             @include('admin.layouts.components.error_message', ['title' => 'code'])
@@ -96,10 +96,10 @@
                         <label class="col-md-3 col-form-label">{{ Util::langtext('CUSTOMER_L_037') }}</label>
                         <div class="col-md-9">
                             <div class="custom-control custom-checkbox custom-control-inline">
-                                <input class="custom-control-input" type="checkbox" name="core_system_flag" id="core-system-flag" tabindex="19" value="1"{{ (isset($data['core_system_flag']) && $data['core_system_flag']) ? ' checked' : '' }} />
+                                <input class="custom-control-input" type="checkbox" name="core_system_status" id="core-system-flag" tabindex="19" value="1"{{ (isset($data['core_system_status']) && $data['core_system_status']) ? ' checked' : '' }} />
                                 <label class="custom-control-label cursor-pointer mr-3" for="core-system-flag">&nbsp;</label>
                             </div>
-                            @include('admin.layouts.components.error_message', ['title' => 'core_system_flag'])
+                            @include('admin.layouts.components.error_message', ['title' => 'core_system_status'])
                         </div>
                     </div>
                 </div>

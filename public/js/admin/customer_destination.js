@@ -85,7 +85,7 @@ function search_main_list()
                 "data": null,
                 "orderable": false,
                 "render": function(data, type, row) {
-                    return get_list_link("edit", 0, "/admin/customer/" + $("customer_id").val() + "/destination/" + row["id"] + "/edit/", "list-button");
+                    return get_list_link("edit", 0, "/admin/customer/" + $("#customer-id").val() + "/destination/" + row["id"] + "/edit/", "list-button", row["id"]);
                 }
             },
             { "data": "prefecture_name" },
@@ -199,5 +199,10 @@ $(document).ready(function() {
     $("#confirm_modal").on("hidden.bs.modal", function() {
         $("#confirm_url").val("");
         $("#confirm_id").val("");
+    });
+
+    $("#customer-destination-form-cancel").click(function(e) {
+        $("#confirm_url").val($(this).data("url"));
+        $("#confirm_modal").modal("show");
     });
 });

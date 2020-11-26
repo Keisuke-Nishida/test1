@@ -210,6 +210,8 @@ return [
 
   // Customer destination texts
     'CUST_DEST_T_001' => '得意先送り先',
+    'CUST_DEST_T_002' => '登録',
+    'CUST_DEST_T_003' => '更新',
     'CUST_DEST_L_001' => '詳細検索',
     'CUST_DEST_L_002' => '得意先送り先コード',
     'CUST_DEST_L_003' => '得意先送り先名',
@@ -225,8 +227,23 @@ return [
     'CUST_DEST_L_013' => 'TEL',
     'CUST_DEST_L_014' => '気付先漢字',
     'CUST_DEST_L_015' => '削除',
+    'CUST_DEST_L_016' => '得意先ID',
+    'CUST_DEST_L_017' => '得意先名',
+    'CUST_DEST_L_018' => '得意先送り先コード',
+    'CUST_DEST_L_019' => '得意先送り先名',
+    'CUST_DEST_L_020' => '得意先送り先名カナ',
+    'CUST_DEST_L_021' => '都道府県',
+    'CUST_DEST_L_022' => '郵便番号',
+    'CUST_DEST_L_023' => '住所1',
+    'CUST_DEST_L_024' => '住所2',
+    'CUST_DEST_L_025' => 'TEL',
+    'CUST_DEST_L_026' => 'FAX',
+    'CUST_DEST_L_027' => '気付先漢字',
+    'CUST_DEST_L_028' => 'ID',
     'CUST_DEST_B_001' => 'クリア',
     'CUST_DEST_B_002' => '検索',
+    'CUST_DEST_B_003' => '保存',
+    'CUST_DEST_B_004' => 'キャンセル',
     'CUST_DEST_DLG_001' => '得意先送り先削除確認',
 
     // Miscellaneous texts

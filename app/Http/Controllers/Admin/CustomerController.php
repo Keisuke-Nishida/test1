@@ -252,8 +252,8 @@ class CustomerController extends BaseController
      */
     public function save(Request $request)
     {
-        if (!$request->exists('core_system_flag')) {
-            $request->request->add(['core_system_flag' => 0]);
+        if (!$request->exists('core_system_status')) {
+            $request->request->add(['core_system_status' => 0]);
         }
 
         $validator = $this->validation($request);

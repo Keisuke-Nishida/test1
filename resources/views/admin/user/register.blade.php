@@ -113,7 +113,7 @@
                         <label class="col-md-3 col-form-label">{{ Util::langtext('USER_L_028') }}</label>
                         <div class="col-md-9">
                             @if (isset($data['login_id']))
-                            <input class="form-control" type="text" id="last-login-time" tabindex="10" value="{{ $data['last_login_time'] }}" disabled />
+                            <input class="form-control" type="text" id="last-login-time" tabindex="10" value="{{ $data['last_login_time'] }}" readonly disabled />
                             @endif
                         </div>
                     </div>
