@@ -60,12 +60,12 @@ function search_main_list()
             "orderable": false,
             "className": "select-checkbox",
             "targets": 0,
-            "visible": true
+            "visible": true,
         },
         {
             "orderable": false,
             "className": "link-cell",
-            "targets": [2, 7],
+            "targets": [0, 2, 7],
             "visible": true
         }],
         "columns": [
@@ -199,4 +199,22 @@ $(document).ready(function() {
         $("#confirm_url").val($(this).data("url"));
         $("#confirm_modal").modal("show");
     });
+});
+
+$(function () {
+
+    $("#notice_data_start_date").datetimepicker({
+        format: "Y/m/d",
+        onShow: function (ct) {
+        },
+        timepicker: false,
+    });
+
+    $("#notice_data_end_date").datetimepicker({
+        format: "Y/m/d",
+        onShow: function (ct) {
+        },
+        timepicker: false,
+    });
+
 });

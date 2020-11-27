@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui@2.1.12/dist/css/coreui.min.css" integrity="sha384-CV/XOmWmdqGAuBEWrqJ3CM7BmhB3uaJDuNDGVsusdXb/6/kdU159Yt3IezfzWWX3" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.10.22/r-2.2.6/sl-1.3.1/datatables.min.css" integrity="sha384-K3I/E0puv+yTOSbpjz468Q/yUllDGwgnhET3a/dwkvW0aSflRQZuedm3sNuCtaPu" crossorigin="anonymous" />
+    <!-- datetimepicker -->
+    <link rel="stylesheet" href="{{asset('css/web/datetimepicker/jquery.datetimepicker.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/admin/style.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="theme-color" content="#fafafa" />
@@ -93,6 +95,9 @@
     <script src="https://unpkg.com/@coreui/coreui@2.1.12/dist/js/coreui.min.js" integrity="sha384-TxyxA9MKinm4ESUqZNLJzZgM55aOc7BVSDytm867dxHLhyGwmATEv3IKVbYFohrb" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/v/bs4/dt-1.10.22/r-2.2.6/sl-1.3.1/datatables.min.js" integrity="sha384-c56bHgB/zM/a5D8wfSJPFcmznDhMyKIs+5b5/foJ/bgcoPTD9/gVJ2maDD2WHqEm" crossorigin="anonymous"></script>
     <script src="{{ asset('js/admin/common.js') }}"></script>
+    {{-- datetimepicker --}}
+<script src="{{ asset('js/admin/datetimepicker/jquery.datetimepicker.full.min.js')}}"></script>
+
     <script>
         var DATA_TABLE_EMPTY_TEXT = "<?php echo Util::langtext('DATA_TABLE_EMPTY_TEXT'); ?>";
         var DATA_TABLE_INFO_TEXT = "<?php echo Util::langtext('DATA_TABLE_INFO_TEXT'); ?>";

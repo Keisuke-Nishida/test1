@@ -197,6 +197,8 @@ return [
     'NOTICE_L_009' => '削除', // delete
     'NOTICE_L_010' => '詳細検索', // detailed search
     'NOTICE_L_011' => 'お知らせ一覧', // Notice List
+    'NOTICE_L_012' => '時', // Hour
+    'NOTICE_L_013' => '分', // Minute
     'NOTICE_T_001' => '登録',
     'NOTICE_T_002' => '更新',
     'NOTICE_B_001' => '一括削除',

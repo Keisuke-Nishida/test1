@@ -111,6 +111,7 @@ class NoticeDataController extends BaseController
         $rules = [
             'name' => 'required|string|min:4|max:50',
             'title' => 'required|string|min:4|max:255',
+            'body' => 'required',
         ];
 
         return $rules;
@@ -131,27 +132,11 @@ class NoticeDataController extends BaseController
             'title.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('NOTICE_L_002')]),
             'title.min' => Message::getMessage(Message::ERROR_006, [Util::langtext('NOTICE_L_002'), '4']),
             'title.max' => Message::getMessage(Message::ERROR_002, [Util::langtext('NOTICE_L_002'), '255']),
+            'body.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('NOTICE_L_003')]),
         ];
 
         return $messages;
     }
-
-    // /**
-    //  * Method for overriding except method of BaseController class
-    //  *
-    //  * @return array
-    //  */
-    // public function except()
-    // {
-    //     $base = ['_token', 'register_mode'];
-
-    //     if (!request()->get('password')) {
-    //         $base[] = 'password';
-    //         $base[] = 'password_confirmation';
-    //     }
-
-    //     return array_merge($this->child_except(), $base);
-    // }
 
     /**
      * Method for overriding save_before method of BaseController class
@@ -176,6 +161,10 @@ class NoticeDataController extends BaseController
      */
     public function save(Request $request)
     {
+        $start_time = $request->notice_data_start_date . " " . $request->start . ":" . $request->start_minute . ":00";
+        $end_time = $request->notice_data_end_date . " " . $request->end . ":" . $request->end_minute . ":00";
+        $request->request->add(["start_time" => $start_time]);
+        $request->request->add(["end_time" => $end_time]);
 
         $validator = $this->validation($request);
 
