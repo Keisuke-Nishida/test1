@@ -69,7 +69,7 @@
             </div>
             <div class="row">
                 <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2"><a class="btn btn-danger btn-icon w-100" data-url="/admin/customer/destination/delete_multiple" id="customer-destination-multiple-delete-button" data-delete-type="multiple" href="#">{{ Util::langtext('CUST_DEST_B_001') }}</a></div>
-                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 offset-xl-8 offset-lg-8 offset-md-8 offset-sm-8 offset-8"><a class="btn btn-primary btn-icon w-100" href="{{ route('admin/customer/destination/create', ['customer_id' => $customer_id]) }}">{{ Util::langtext('CUST_DEST_B_002') }}</a></div>
+                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 offset-xl-8 offset-lg-8 offset-md-8 offset-sm-8 offset-8"><a class="btn btn-primary btn-icon w-100" id="customer-destination-create" href="{{ route('admin/customer/destination/create', ['customer_id' => $customer_id]) }}">{{ Util::langtext('CUST_DEST_B_002') }}</a></div>
             </div>
             <div class="data-table-cont">
                 <table class="table table-striped table-bordered datatable table-sm" id="customer-destination-table">

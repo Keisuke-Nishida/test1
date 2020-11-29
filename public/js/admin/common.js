@@ -53,14 +53,14 @@ function toggle_search_cont()
     });
 }
 
-function get_list_link(type, id, link, extra_class, link_id = null)
+function get_list_link(type, id, link, extra_class, link_id = null, title = null)
 {
     if (type == "detail") {
         return '<a href="javascript:void(0)" class="btn btn-success btn-detail ' + extra_class + '" data-toggle="tooltip" title="詳細" data-placement="top" data-id="' + id + '"><i class="fas fa-search fa-fw"></i></a>';
     }
 
     if (type == "edit") {
-        return '<a href="' + link + '" id="' + type + '-id-' + link_id + '" class="btn btn-primary ' + extra_class + '" data-toggle="tooltip" title="編集" data-placement="top"><i class="fas fa-edit fa-fw"></i></a>';
+        return '<a href="' + link + '" id="'+ title +'-id-'+ link_id +'" class="btn btn-primary ' + extra_class + '" data-toggle="tooltip" title="編集" data-placement="top"><i class="fas fa-edit fa-fw"></i></a>';
     }
 
     if (type == "remove") {
