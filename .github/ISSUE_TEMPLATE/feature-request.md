@@ -1,6 +1,6 @@
 ---
-name: Feature request (技能要望）
-about: Adding feaure upon request (技能要望）
+name: Feature request (機能要望）
+about: Adding feaure upon request (機能要望）
 title: ''
 labels: 'Type:enhancement'
 assignees: ''
@@ -11,8 +11,8 @@ assignees: ''
 >DB設計書_ver1.06->1.6 テキストデータ入力
 >テキストデータ入力は英数のみにする
 
-**Describe origin of this issue 技能追加の根源となる不具合・不具合についての記載**
-A clear and concise description of what the problem is. 
+**Describe origin of this issue 機能追加の元となる、不具合・不具合についての記載**
+A clear and concise description of what the problem is.
 
 **Describe the solution you'd like 希望するソリューションを説明する**
 A clear and concise description of what you want to happen.

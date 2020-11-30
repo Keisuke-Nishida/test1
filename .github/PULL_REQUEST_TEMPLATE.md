@@ -3,7 +3,7 @@ e.g. #1234
 
 ## Overview（概要）
 - A clear and concise description of what the problem was in code/logic level.
-- コード/ロジックレベルの問題を明確かつ簡潔に説明します。
+- コード/ロジックレベルの問題を明確かつ簡潔に説明する。
 
 ## Fix（修正内容）
 - Describe how issue was resolved with clear and concise explanation.
@@ -11,4 +11,4 @@ e.g. #1234
 
 ## Details（詳細）
 - If applicable, provide details of problem and fix.
-- 該当する場合は、問題の詳細と修正を提供します。
+- 該当する場合は、問題の詳細と修正を提供する。
