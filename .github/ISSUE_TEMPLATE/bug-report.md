@@ -36,9 +36,10 @@ If applicable, add screenshots to help explain your problem.
 
 #### **Env (環境):**
 - Cluster: [e.g. stg]
+ - Server Version [e.g 1.0.0.1]
+ - App Version [e.g. 22]
  - OS: [e.g. windows]
  - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
 
 #### **Additional context（備考）**
 Add any other context about the problem here.
