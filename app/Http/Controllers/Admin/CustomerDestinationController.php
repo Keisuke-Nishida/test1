@@ -173,12 +173,12 @@ class CustomerDestinationController extends BaseController
         ];
 
         if ($request->get('register_mode') == 'create') {
-            $rules['code'] = 'required|string|numeric|digits_between:1,10|unique:customer_destination,code';
+            $rules['code'] = 'required|string|numeric|digits_between:1,7|unique:customer_destination,code';
         } elseif ($request->get('register_mode') == 'edit') {
             $customer_destination = $this->mainService->find($request->id);
 
             $rules['id'] = 'required|integer';
-            $rules['code'] = 'required|string|numeric|digits_between:1,10|unique:customer_destination,code,' . $customer_destination->code . ',code';
+            $rules['code'] = 'required|string|numeric|digits_between:1,7|unique:customer_destination,code,' . $customer_destination->code . ',code';
         }
 
         return $rules;        
@@ -195,7 +195,7 @@ class CustomerDestinationController extends BaseController
         $messages = [
             'code.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('CUST_DEST_L_018')]),
             'code.numeric' => Message::getMessage(Message::ERROR_005, [Util::langtext('CUST_DEST_L_018')]),
-            'code.digits_between' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_018'), '1', '10']),
+            'code.digits_between' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_018'), '1', '7']),
             'code.unique' => Message::getMessage(Message::ERROR_010, [Util::langtext('CUST_DEST_L_018')]),
             'name_kana.min' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_020'), '1', '255']),
             'name_kana.max' => Message::getMessage(Message::ERROR_009, [Util::langtext('CUST_DEST_L_020'), '1', '255']),
