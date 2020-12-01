@@ -9,7 +9,7 @@ use App\Models\ShipmentData;
  * Class ShipmentDataService
  * @package App\Services\Models
  */
-class ShipmentDataService extends BaseService
+class ShipmentDetailDataService extends BaseService
 {
     /**
      * コンストラクタ
