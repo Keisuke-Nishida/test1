@@ -47,7 +47,7 @@
                     <a class="nav-link<?php echo (Util::isMenuItemActive('customer')) ? ' active' : ''; ?>" href="{{ route('admin/customer') }}"><i class="far fa-building fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_003') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('role')) ? ' active' : ''; ?>" href="#"><i class="fas fa-user-shield fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_004') }}</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('role')) ? ' active' : ''; ?>" href="{{ route('admin/role_menu') }}"><i class="fas fa-user-shield fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_004') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link<?php echo (Util::isMenuItemActive('notice_data')) ? ' active' : ''; ?>" href="{{ route('admin/notice_data') }}"><i class="fas fa-bell fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_005') }}</a>

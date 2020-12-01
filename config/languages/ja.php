@@ -249,6 +249,23 @@ return [
     'CUST_DEST_B_004' => 'キャンセル',
     'CUST_DEST_DLG_001' => '得意先送り先削除確認',
 
+    // Role menu texts
+    'ROLE_MENU_L_001' => '詳細検索',
+    'ROLE_MENU_L_002' => '権限名',
+    'ROLE_MENU_L_003' => '権限種別',
+    'ROLE_MENU_L_004' => '利用可能なメニュー',
+    'ROLE_MENU_L_005' => '権限名',
+    'ROLE_MENU_L_006' => '編集',
+    'ROLE_MENU_L_007' => '権限種別',
+    'ROLE_MENU_L_008' => '利用可能なメニュー',
+    'ROLE_MENU_L_009' => '削除',
+    'ROLE_MENU_L_010' => '削除',
+    'ROLE_MENU_B_001' => 'クリア',
+    'ROLE_MENU_B_002' => '検索',
+    'ROLE_MENU_B_003' => '一括削除',
+    'ROLE_MENU_B_004' => '新期ユーザー登録',
+    'ROLE_MENU_DLG_001' => '権限管理削除確認',
+
     'BULLETIN_BOARD_L_001' => '掲示板名', // bulletin board name
     'BULLETIN_BOARD_L_002' => '掲示板タイトル', // bulletin board title
     'BULLETIN_BOARD_L_003' => '掲示板本文', // bulletin board body

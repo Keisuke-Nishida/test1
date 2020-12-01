@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Lib\Util;
 use App\Lib\Message;
+use App\Lib\Util;
 use App\Models\Prefecture;
 use App\Services\Models\CustomerDestinationService;
 use App\Services\Models\CustomerService;
@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Log;
 
 class CustomerDestinationController extends BaseController
 {
+    /**
+     * Create a new CustomerDestinationController instance
+     * 
+     * @param AdminUserService $admin_service
+     * @return void
+     */
     public function __construct(CustomerDestinationService $customer_destination_service)
     {
         parent::__construct();

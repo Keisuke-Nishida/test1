@@ -58,6 +58,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function(){
     Route::post('/customer/destination/delete_single', 'Admin\CustomerDestinationController@delete')->name('admin/customer/destination/delete_single');
     Route::post('/customer/destination/delete_multiple', 'Admin\CustomerDestinationController@deleteMultiple')->name('admin/customer/destination/delete_multiple');
 
+    Route::get('/role_menu', 'Admin\RoleMenuController@index')->name('admin/role_menu');
+    Route::get('/role_menu/index', 'Admin\RoleMenuController@index')->name('admin/role_menu/index');
+    Route::post('/role_menu/search', 'Admin\RoleMenuController@list_search')->name('admin/role_menu/search');
+    Route::get('/role_menu/create', 'Admin\RoleMenuController@create')->name('admin/role_menu/create');
+    Route::get('/role_menu/edit/{id}', 'Admin\RoleMenuController@edit')->name('admin/role_menu/edit');
+    Route::post('/role_menu/save', 'Admin\RoleMenuController@save')->name('admin/role_menu/save');
+    Route::post('/role_menu/delete_single', 'Admin\RoleMenuController@delete')->name('admin/role_menu/delete_single');
+    Route::post('/role_menu/delete_multiple', 'Admin\RoleMenuController@deleteMultiple')->name('admin/role_menu/delete_multiple');
+
     Route::get('/bulletin_board', 'Admin\BulletinBoardController@index')->name('admin/bulletin_board');
     Route::get('/bulletin_board/index', 'Admin\BulletinBoardController@index')->name('admin/bulletin_board/index');
     Route::post('/bulletin_board/search', 'Admin\BulletinBoardController@list_search')->name('admin/bulletin_board/search');
@@ -66,6 +75,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function(){
     Route::post('/bulletin_board/save', 'Admin\BulletinBoardController@save')->name('admin/bulletin_board/save');
     Route::post('/bulletin_board/delete_single', 'Admin\BulletinBoardController@delete')->name('admin/bulletin_board/delete_single');
     Route::post('/bulletin_board/delete_multiple', 'Admin\BulletinBoardController@deleteMultiple')->name('admin/bulletin_board/delete_multiple');
-
 
 });

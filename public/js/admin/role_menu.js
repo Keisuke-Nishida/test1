@@ -7,10 +7,10 @@ function search_main_list()
     });
 
     if (table !== null) {
-        $("#customer-table").DataTable().destroy();
+        $("#role-menu-table").DataTable().destroy();
     }
 
-    table = $("#customer-table").DataTable({
+    table = $("#role-menu-table").DataTable({
         "processing": true,
         "stateSave": true,
         "responsive": true,
@@ -19,13 +19,11 @@ function search_main_list()
         "ajax": {
             "type": "post",
             "dataType": "json",
-            "url": "/admin/customer/search",
+            "url": "/admin/role_menu/search",
             "data": {
-                "code": $("#search-customer-code").val(),
-                "name": $("#search-customer-name").val(),
-                "prefecture": $("#search-prefecture").val(),
-                "address": $("#search-customer-address").val(),
-                "tel": $("#search-customer-tel").val()
+                "name": $("#search-name").val(),
+                "type": $("#search-type").val(),
+                "menu_id": $("#search-menu").val(),
             },
             "timeout": 10000,
             "error": function (xhr, error, code) {
@@ -65,10 +63,22 @@ function search_main_list()
             "visible": true
         },
         {
+            "orderable": true,
+            "className": "link-cell",
+            "targets": [1, 3],
+            "visible": true
+        },
+        {
             "orderable": false,
             "className": "link-cell",
-            "targets": [3, 11, 12],
+            "targets": [2, 4, 5],
             "visible": true
+        },
+        {
+            "orderable": false,
+            "targets": [4],
+            "visible": true,
+            "width": "315px"
         }],
         "columns": [
             {
@@ -78,34 +88,21 @@ function search_main_list()
                     return "";
                 }
             },
-            { "data": "code" },
-            { "data": "name" },
+            { "data": "role_name" },
             {
                 "data": null,
                 "orderable": false,
                 "render": function(data, type, row) {
-                    return get_list_link("edit", 0, "/admin/customer/edit/" + row["id"], "list-button", row["id"], "edit");
+                    return get_list_link("edit", 0, "/admin/role_menu/edit/" + row["role_id"], "list-button", row["role_id"]);
                 }
             },
-            { "data": "prefecture_name" },
-            { "data": "address_1" },
-            { "data": "address_2" },
-            { "data": "tel" },
-            { "data": "uriage_1" },
-            { "data": "uriage_2" },
-            { "data": "uriage_3" },
+            { "data": "role_type" },
+            { "data": "menu_names" },
             {
                 "data": null,
                 "orderable": false,
                 "render": function(data, type, row) {
-                    return get_list_link("edit", 0, "/admin/customer/" + row["id"] + "/destination", "list-button", row["id"], "destination");
-                }
-            },
-            {
-                "data": null,
-                "orderable": false,
-                "render": function(data, type, row) {
-                    return get_list_link("remove", row["id"], "/admin/customer/delete_single", "list-button");
+                    return get_list_link("remove", row["role_id"], "/admin/role_menu/delete_single", "list-button");
                 }
             }
         ],
@@ -114,11 +111,9 @@ function search_main_list()
 
 function clear_search_fields()
 {
-    $("#search-customer-code").val("");
-    $("#search-customer-name").val("");
-    $("#search-prefecture").prop("selectedIndex", 0);
-    $("#search-customer-address").val("");
-    $("#search-customer-tel").val("");
+    $("#search-name").val("");
+    $("#search-type").prop("selectedIndex", 0);
+    $("#search-menu").prop("selectedIndex", 0);
 }
 
 $(document).ready(function() {
@@ -128,19 +123,19 @@ $(document).ready(function() {
         toggle_search_cont();
     });
 
-    $("#customer-detailed-search-submit").click(function() {
-        $("#customer-table").DataTable().destroy();
+    $("#role-menu-detailed-search-submit").click(function() {
+        $("#role-menu-table").DataTable().destroy();
         search_main_list();
     });
 
-    $("#customer-detailed-search-reset").click(function() {
+    $("#role-menu-detailed-search-reset").click(function() {
         clear_search_fields();
-        $("#customer-table").DataTable().destroy();
+        $("#role-menu-table").DataTable().destroy();
         search_main_list();
     });
 
-    $("#customer-select-all").click(function() {
-        if ($("#customer-select-all").is(":checked")) {
+    $("#role-menu-select-all").click(function() {
+        if ($("#role-menu-select-all").is(":checked")) {
             table.rows({ page: "current" }).select();
         } else {
             table.rows({ page: "current" }).deselect();
@@ -153,7 +148,7 @@ $(document).ready(function() {
         $("#confirm_modal").modal("show");
     });
 
-    $("#customer-multiple-delete-button").click(function(e) {
+    $("#role-menu-multiple-delete-button").click(function(e) {
         $("#confirm_url").val($(this).data("url"));
 
         selected_rows = table.rows({ selected: true }).data();
@@ -164,7 +159,7 @@ $(document).ready(function() {
             return false;   
         }
 
-        selected_rows = selected_rows.map(a => a.id);
+        selected_rows = selected_rows.map(a => a.role_id);
         selected_rows = selected_rows.join(",");
 
         $("#confirm_id").val(selected_rows);
@@ -185,14 +180,14 @@ $(document).ready(function() {
                 "url": $("#confirm_url").val(),
                 "type": "POST",
                 "data": {
-                    "id": $("#confirm_id").val()
+                    "role_id": $("#confirm_id").val()
                 }
             }).done(function(response){
                 if (response.status == 1) {
                     $("#result_info_message").html(response.message);
                     $("#result_info_modal").modal("show");
                     clear_search_fields();                
-                    $("#customer-table").DataTable().destroy();
+                    $("#role-menu-table").DataTable().destroy();
                     search_main_list();
                 } else {
                     $("#result_error_message").html(response.message);
@@ -209,7 +204,7 @@ $(document).ready(function() {
         $("#confirm_id").val("");
     });
 
-    $("#customer-form-cancel").click(function(e) {
+    $("#role-menu-form-cancel").click(function(e) {
         $("#confirm_url").val($(this).data("url"));
         $("#confirm_modal").modal("show");
     });
