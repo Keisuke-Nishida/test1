@@ -209,6 +209,7 @@ return [
     'NOTICE_B_006' => 'いいえ',
     'NOTICE_B_007' => '保存',
     'NOTICE_B_008' => 'キャンセル',
+    'NOTICE_DLG_001' => '掲示板管理削除確認', // dialog title
 
   // Customer destination texts
     'CUST_DEST_T_001' => '得意先送り先',
@@ -247,6 +248,32 @@ return [
     'CUST_DEST_B_003' => '保存',
     'CUST_DEST_B_004' => 'キャンセル',
     'CUST_DEST_DLG_001' => '得意先送り先削除確認',
+
+    'BULLETIN_BOARD_L_001' => '掲示板名', // bulletin board name
+    'BULLETIN_BOARD_L_002' => '掲示板タイトル', // bulletin board title
+    'BULLETIN_BOARD_L_003' => '掲示板本文', // bulletin board body
+    'BULLETIN_BOARD_L_004' => '削除', // delete
+    'BULLETIN_BOARD_L_005' => '掲示板一覧', // bulletin list
+    'BULLETIN_BOARD_L_006' => '詳細検索', // detailed search
+    'BULLETIN_BOARD_L_007' => '編集', // edit
+    'BULLETIN_BOARD_L_008' => 'ファイル名', // filename
+    'BULLETIN_BOARD_L_009' => '配信開始日時', // delivery start time
+    'BULLETIN_BOARD_L_010' => '配信終了日時', // delivery end date
+    'BULLETIN_BOARD_L_011' => '削除', // delete
+    'BULLETIN_BOARD_L_012' => '時', // Hour
+    'BULLETIN_BOARD_L_013' => '分', // Minute
+    'BULLETIN_BOARD_L_014' => 'gif, jpeg, jpg, png, pdf, docx', // Minute
+    'BULLETIN_BOARD_T_001' => '登録', // registration
+    'BULLETIN_BOARD_T_002' => '更新', // update
+    'BULLETIN_BOARD_B_001' => '削除', // delete
+    'BULLETIN_BOARD_B_002' => 'クリア', // clear
+    'BULLETIN_BOARD_B_003' => '検索', // search
+    'BULLETIN_BOARD_B_004' => '一括削除', // bulk delete
+    'BULLETIN_BOARD_B_005' => '新規登録', // registration
+    'BULLETIN_BOARD_B_006' => '保存', // save
+    'BULLETIN_BOARD_B_007' => 'キャンセル',
+    'BULLETIN_BOARD_B_008' => 'ファイルを削除', // delete file
+    'BULLETIN_BOARD_DLG_001' => '掲示板管理削除確認', // dialog title
 
     // Miscellaneous texts
     'DATA_TABLE_EMPTY_TEXT' => 'データはありません。',

@@ -74,13 +74,13 @@
         </div>
     </div>
 </div>
-@include('admin.layouts.components.modal.message', ['title' => Util::langtext('SIDEBAR_LI_002')])
-@include('admin.layouts.components.modal.result_info', ['title' => Util::langtext('SIDEBAR_LI_002')])
-@include('admin.layouts.components.modal.result_error', ['title' => Util::langtext('SIDEBAR_LI_002')])
-@include('admin.layouts.components.modal.message', ['title' => Util::langtext('SIDEBAR_LI_002')])
+@include('admin.layouts.components.modal.message', ['title' => Util::langtext('SIDEBAR_LI_005')])
+@include('admin.layouts.components.modal.result_info', ['title' => Util::langtext('SIDEBAR_LI_005')])
+@include('admin.layouts.components.modal.result_error', ['title' => Util::langtext('SIDEBAR_LI_005')])
+@include('admin.layouts.components.modal.message', ['title' => Util::langtext('SIDEBAR_LI_005')])
 @include('admin.layouts.components.modal.confirm', [
-    'title'         => Util::langtext('USER_DLG_003'),
-    'button_name'   => Util::langtext('USER_L_010'),
-    'message'       => \App\Lib\Message::getMessage(\App\Lib\Message::INFO_004, [Util::langtext('SIDEBAR_LI_002')])
+    'title'         => Util::langtext('NOTICE_DLG_001'),
+    'button_name'   => Util::langtext('NOTICE_L_009'),
+    'message'       => \App\Lib\Message::getMessage(\App\Lib\Message::INFO_004, [Util::langtext('SIDEBAR_LI_005')])
 ])
 @endsection

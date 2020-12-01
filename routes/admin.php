@@ -58,4 +58,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function(){
     Route::post('/customer/destination/delete_single', 'Admin\CustomerDestinationController@delete')->name('admin/customer/destination/delete_single');
     Route::post('/customer/destination/delete_multiple', 'Admin\CustomerDestinationController@deleteMultiple')->name('admin/customer/destination/delete_multiple');
 
+    Route::get('/bulletin_board', 'Admin\BulletinBoardController@index')->name('admin/bulletin_board');
+    Route::get('/bulletin_board/index', 'Admin\BulletinBoardController@index')->name('admin/bulletin_board/index');
+    Route::post('/bulletin_board/search', 'Admin\BulletinBoardController@list_search')->name('admin/bulletin_board/search');
+    Route::get('/bulletin_board/create', 'Admin\BulletinBoardController@create')->name('admin/bulletin_board/create');
+    Route::get('/bulletin_board/edit/{id}', 'Admin\BulletinBoardController@edit')->name('admin/bulletin_board/edit');
+    Route::post('/bulletin_board/save', 'Admin\BulletinBoardController@save')->name('admin/bulletin_board/save');
+    Route::post('/bulletin_board/delete_single', 'Admin\BulletinBoardController@delete')->name('admin/bulletin_board/delete_single');
+    Route::post('/bulletin_board/delete_multiple', 'Admin\BulletinBoardController@deleteMultiple')->name('admin/bulletin_board/delete_multiple');
+
+
 });

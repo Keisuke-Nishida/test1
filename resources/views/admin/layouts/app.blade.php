@@ -53,7 +53,7 @@
                         <a class="nav-link<?php echo (Util::isMenuItemActive('notice_data')) ? ' active' : ''; ?>" href="{{ route('admin/notice_data') }}"><i class="fas fa-bell fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_005') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('bulletin_board')) ? ' active' : ''; ?>" href="#"><i class="fas fa-chalkboard fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_006') }}</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('bulletin_board')) ? ' active' : ''; ?>" href="{{ route('admin/bulletin_board') }}"><i class="fas fa-chalkboard fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_006') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link<?php echo (Util::isMenuItemActive('shipment')) ? ' active' : ''; ?>" href="#"><i class="fas fa-truck fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_007') }}</a>
