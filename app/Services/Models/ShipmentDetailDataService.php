@@ -2,7 +2,7 @@
 
 namespace App\Services\Models;
 
-use App\Models\ShipmentData;
+use App\Models\ShipmentDetailData;
 
 /**
  * 出荷データサービス
