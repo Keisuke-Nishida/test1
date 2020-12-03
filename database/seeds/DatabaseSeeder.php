@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             PrefectureTableSeeder::class,
             TransportTableSeeder::class,
             VoucherTableSeeder::class,
+            MessageTableSeeder::class,
             SampleTableSeeder::class
         ]);
     }
