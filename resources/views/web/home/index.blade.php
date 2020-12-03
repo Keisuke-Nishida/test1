@@ -46,13 +46,16 @@
                     <h2 class="content__title p-2">最新のお知らせ</h2>
                     <ul class="article-list list-unstyled mt-2">
                         <li class="article-list__item media  p-2 mt-2">
-                            <a class="text-decoration-none" href="../notice/detail.blade.html">
+                            <a class="text-decoration-none" href="/notice/detail/{{ $data_notice->id }}">
                                 <div class="media-body">
-                                    <h3 class="article-list__title m-0">湖南市市民産業交流施設「ここぴあ」...</h3>
-                                    <small class="article-list__date"><i class="far fa-clock fa-fw"></i>
-                                        2020.01.01</small>
+                                    <h3 class="article-list__title m-0">
+                                        <u>{{ Str::limit($data_notice->title, $limit_title_length) }}</u>
+                                    </h3>
+                                    <small class="article-list__date">
+                                        <i class="far fa-clock fa-fw"></i> {{ $data_notice->start_time }}
+                                    </small>
                                     <p class="article-list__text mb-0 text-secondary" style="font-size: 0.9em;">
-                                        本誌『タキイ最前線』2017年秋種特集号より連載スタートした「ここぴあ通信」...
+                                        {{ Str::limit($data_notice->body, $limit_body_length) }}
                                     </p>
                                 </div>
                             </a>
@@ -69,18 +72,21 @@
                 <div class="col bg-white shadow p-4 mt-4 ml-lg-5 content__card--round">
                     <h2 class="content__title p-2">最新の掲示板</h2>
                     <ul class="article-list list-unstyled mt-2">
-                        <a class="text-decoration-none" href="../bulletin_board/detail.blade.html">
+                        <a class="text-decoration-none" href="/bulletin_board/detail/{{ $data_bulletin_board->id }}">
                             <li class="article-list__item media p-2 mt-2">
-                                <div class="col-3">
-                                    <img src="/images/bbs_image1.png" width="100%">
+                                <div class="col-3 p-2">
+                                    <img src="{{ $data_bulletin_board->image_url }}" width="100%">
                                 </div>
                                 <div class="col-9">
-                                    <h3 class="article-list__title m-0"><u>2020年秋 種特集号 vol.50</u></h3>
-                                    <small class="article-list__date"><i class="far fa-clock fa-fw"></i>
-                                        2020.10.01</small>
+                                    <h3 class="article-list__title m-0">
+                                        <u>{{ Str::limit($data_bulletin_board->title, $limit_title_length) }}</u>
+                                    </h3>
+                                    <small class="article-list__date">
+                                        <i class="far fa-clock fa-fw"></i> {{ $data_bulletin_board->start_time }}
+                                    </small>
                                     <p class="article-list__text mb-0 mb-0 text-secondary"
                                        style="font-size: 0.9em;">
-                                        ・特別付録　家庭菜園の基礎知識　野菜作りをはじめよう...
+                                        {{ Str::limit($data_bulletin_board->body, $limit_body_length) }}
                                     </p>
                                 </div>
                             </li>
