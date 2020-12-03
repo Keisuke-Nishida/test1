@@ -155,7 +155,7 @@ class NoticeListTest extends DuskTestCase
                     ->assertVisible("#remove-id-$notice_data->id")
                     ->click("#remove-id-$notice_data->id")
                     ->pause(1000)
-                    ->assertSee(Message::getMessage(\App\Lib\Message::INFO_004, [Util::langtext('SIDEBAR_LI_002')]))
+                    ->assertSee(Message::getMessage(Message::INFO_004, [Util::langtext('SIDEBAR_LI_005')]))
                     ->press('Close')
                      //pause closing the dialog
                     ->pause(1000);
