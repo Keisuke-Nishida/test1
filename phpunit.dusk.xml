@@ -17,8 +17,10 @@
         </testsuite>
         <testsuite name="User Reg Test">
             <file>tests/Browser/Admin/Notice/NoticeListTest.php</file>
+        </testsuite>
         <testsuite name="Customer Destination Test">
             <file>tests/Browser/Admin/Customer/Destination/CustomerDestinationListTest.php</file>
+            <file>tests/Browser/Admin/Customer/Destination/CustomerDestinationCreateTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
