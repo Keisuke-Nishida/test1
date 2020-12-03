@@ -22,5 +22,10 @@
             <file>tests/Browser/Admin/Customer/Destination/CustomerDestinationListTest.php</file>
             <file>tests/Browser/Admin/Customer/Destination/CustomerDestinationCreateTest.php</file>
         </testsuite>
+        <testsuite name="Notice Test">
+            <file>tests/Browser/Admin/Notice/NoticeListTest.php</file>
+            <file>tests/Browser/Admin/Notice/NoticeRegisterTest.php</file>
+            <file>tests/Browser/Admin/Notice/NoticeUpdateTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>
