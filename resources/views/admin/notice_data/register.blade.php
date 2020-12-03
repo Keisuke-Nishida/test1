@@ -1,11 +1,11 @@
 @extends('admin.layouts.app')
 
 @section('app_title')
-{{ Util::langtext('SIDEBAR_LI_005') . ' - ' . $action }}
+{{ Util::langtext('SIDEBAR_LI_005')  }}
 @endsection
 
 @section('app_bread')
-{{ Util::langtext('SIDEBAR_LI_005') }}
+{{ Util::langtext('NOTICE_T_003'). ' - ' . $action }}
 @endsection
 
 @php

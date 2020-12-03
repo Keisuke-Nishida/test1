@@ -76,4 +76,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function(){
     Route::post('/bulletin_board/delete_single', 'Admin\BulletinBoardController@delete')->name('admin/bulletin_board/delete_single');
     Route::post('/bulletin_board/delete_multiple', 'Admin\BulletinBoardController@deleteMultiple')->name('admin/bulletin_board/delete_multiple');
 
+    Route::get('/schedule', 'Admin\ScheduleController@index')->name('admin/schedule');
+    Route::get('/schedule/index', 'Admin\ScheduleController@index')->name('admin/schedule/index');
+    Route::post('/schedule/search', 'Admin\ScheduleController@list_search')->name('admin/schedule/search');
+    Route::get('/schedule/create', 'Admin\ScheduleController@create')->name('admin/schedule/create');
+    Route::get('/schedule/edit/{id}', 'Admin\ScheduleController@edit')->name('admin/schedule/edit');
+    Route::post('/schedule/save', 'Admin\ScheduleController@save')->name('admin/schedule/save');
+    Route::post('/schedule/delete_single', 'Admin\ScheduleController@delete')->name('admin/schedule/delete_single');
+    Route::post('/schedule/delete_multiple', 'Admin\ScheduleController@deleteMultiple')->name('admin/schedule/delete_multiple');
+
 });

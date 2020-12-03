@@ -201,6 +201,7 @@ return [
     'NOTICE_L_013' => '分', // Minute
     'NOTICE_T_001' => '登録',
     'NOTICE_T_002' => '更新',
+    'NOTICE_T_003' => 'お知らせ',
     'NOTICE_B_001' => '一括削除',
     'NOTICE_B_002' => '新期お知らせ登録', // Registration button
     'NOTICE_B_003' => 'クリア', // clear
@@ -282,6 +283,7 @@ return [
     'BULLETIN_BOARD_L_014' => 'gif, jpeg, jpg, png, pdf, docx', // Minute
     'BULLETIN_BOARD_T_001' => '登録', // registration
     'BULLETIN_BOARD_T_002' => '更新', // update
+    'BULLETIN_BOARD_T_003' => '掲示板', // Bulletin board
     'BULLETIN_BOARD_B_001' => '削除', // delete
     'BULLETIN_BOARD_B_002' => 'クリア', // clear
     'BULLETIN_BOARD_B_003' => '検索', // search
@@ -291,6 +293,35 @@ return [
     'BULLETIN_BOARD_B_007' => 'キャンセル',
     'BULLETIN_BOARD_B_008' => 'ファイルを削除', // delete file
     'BULLETIN_BOARD_DLG_001' => '掲示板管理削除確認', // dialog title
+
+    'SCHEDULE_L_001' => 'スケジュール名', // Schedule name
+    'SCHEDULE_L_002' => 'スケジュール種別', // Schedule type
+    'SCHEDULE_L_003' => '実行開始時間', // execution start time
+    'SCHEDULE_L_004' => '実行終了時間', // execution end time
+    'SCHEDULE_L_005' => '実行間隔(分)', // execution interval
+    'SCHEDULE_L_006' => 'リトライ回数', // number of retries
+    'SCHEDULE_L_007' => '当日キャンセルフラグ', // cancel flag
+    'SCHEDULE_L_008' => '最終実行日時', // last run time
+    'SCHEDULE_L_009' => '削除', // display result
+    'SCHEDULE_L_010' => '編集', // edit
+    'SCHEDULE_L_011' => '詳細検索', // detailed search
+    'SCHEDULE_L_012' => 'スケジュール一覧', // Page label
+    'SCHEDULE_L_013' => '時', // Hour
+    'SCHEDULE_L_014' => '分', // Minute
+    'SCHEDULE_B_001' => '一括削除', // bulk delete
+    'SCHEDULE_B_002' => '新規登録', // registration
+    'SCHEDULE_B_003' => '削除', // delete button
+    'SCHEDULE_B_004' => 'クリア', // clear
+    'SCHEDULE_B_005' => '検索', // search
+    'SCHEDULE_B_006' => '保存', // save
+    'SCHEDULE_B_007' => 'キャンセル',
+    'SCHEDULE_DD_001' => '出荷連携', // dropdown
+    'SCHEDULE_DD_002' => '請求連携', // dropdown
+    'SCHEDULE_DD_003' => '得意先連携', // dropdown
+    'SCHEDULE_DLG_001' => 'スケジュール管理理削除確認', //
+    'SCHEDULE_T_001' => '登録',
+    'SCHEDULE_T_002' => '編集', // registration
+    'SCHEDULE_T_003' => 'スケジュール', // Schedule
 
     // Miscellaneous texts
     'DATA_TABLE_EMPTY_TEXT' => 'データはありません。',

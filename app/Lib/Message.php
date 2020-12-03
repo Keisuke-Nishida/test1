@@ -19,6 +19,7 @@ class Message {
     const ERROR_010 = "%s already exists";
     const ERROR_011 = "Invalid file type. Allowed extentions: %s";
     const ERROR_012 = "File is too large. Maximum upload size is %sMB";
+    const ERROR_013 = "Enter integer betwen %s and %s";
 
     const INFO_001  = "%sの登録を行いました";
     const INFO_002  = "%sの編集を行いました";

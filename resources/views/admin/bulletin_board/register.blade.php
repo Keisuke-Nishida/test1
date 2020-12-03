@@ -5,7 +5,7 @@
 @endsection
 
 @section('app_bread')
-{{ Util::langtext('SIDEBAR_LI_006') }}
+{{ Util::langtext('BULLETIN_BOARD_T_003') . $action }}
 @endsection
 
 @php
