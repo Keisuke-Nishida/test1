@@ -133,14 +133,14 @@ class UserRegTest extends DuskTestCase
            $faker = Faker::create();
            $password = '11111111';
            $browser->visit($this->user_reg_url)
-                   ->type('name', $faker->name)
-                   ->type('password', $password)
-                   ->type('password_confirmation', '')
-                   ->type('login_id', time())
-                   ->type('email', $faker->email)
-                   ->click('button[type="submit"]')
-                   ->pause(1000)
-                   ->assertSee(Message::getMessage(Message::ERROR_001, [Util::langtext('USER_L_021')]));
+                  ->type('name', $faker->name)
+                  ->type('password', $password)
+                  ->type('password_confirmation', '')
+                  ->type('login_id', time())
+                  ->type('email', $faker->email)
+                  ->click('button[type="submit"]')
+                  ->pause(1000)
+                  ->assertSee(Message::getMessage(Message::ERROR_002, [Util::langtext('USER_L_021'), Util::langtext('USER_L_027')]));
         });
      }
 
