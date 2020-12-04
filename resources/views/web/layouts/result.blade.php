@@ -19,32 +19,14 @@
         <div class="page__breadcrumb col-auto d-flex align-items-end">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0">
-                    @if (isset($check_result) && $check_result == "resultEmail")
-                        <li class="breadcrumb-item active" aria-current="page">
-                            {{-- 送信確認 --}}
-                            {{ $title }}
-                        </li>
-                    @elseif (isset($check_result) && $check_result == "confirmEmail")
-                        <li class="breadcrumb-item">
-                            <a class="link__main" href="/">HOME</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">
-                            {{-- メッセージ --}}
-                            {{ $title }}
-                        </li>
-                    @elseif (isset($check_result)&& $check_result == "changePassword")
-                        <li class="breadcrumb-item">
-                            <a class="link__main" href="/">HOME</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">
-                            {{ $title }}
-                        </li>
-                    @else
+                    @if ($isLinkToHome)
                         <li class="breadcrumb-item">
                             <a class="link__main" href="/">HOME</a>
                         </li>
                     @endif
-
+                    <li class="breadcrumb-item active" aria-current="page">
+                        {{ $title }}
+                    </li>
                 </ol>
             </nav>
         </div>
@@ -56,15 +38,7 @@
     <div class="article mb-5 mt-3">
         <div class="content col bg-white shadow p-3 content__card--round">
             <div class="m-5 text-center">
-                @if (isset($check_result) && $check_result == "resultEmail")
                     {!! $message !!}
-                @elseif (isset($check_result) && $check_result == "confirmEmail")
-                    {{ $message }}
-                @elseif (isset($check_result)&& $check_result == "changePassword")
-                    {{ $message }}
-                @else
-
-                @endif
             </div>
         </div>
     </div>
