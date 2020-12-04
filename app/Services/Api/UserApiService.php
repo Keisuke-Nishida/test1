@@ -4,8 +4,6 @@ namespace App\Services\Api;
 
 use App\Services\Api\BaseApiService;
 use App\Services\Models\UserService;
-use App\Services\Models\UserAgreeDataService;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -26,30 +24,23 @@ class UserApiService extends BaseApiService
      * ログイン画面のフォームに入力されたログインIDとパスワードから
      * Userのデータを取得する
      *
-     * @return Model
+     * @param  mixed $request
+     * @return mixed
      */
     public function getUserData($request)
     {
         $conditions = ["login_id" => $request["login_id"]];
-
-        $all_user_data = $this->modelService->searchList($conditions);
+        $user_list = $this->modelService->searchList($conditions);
+        $user_data = NULL;
 
         // ログインIDがユニークでない場合はpasswordでの検証も必要
-        foreach ($all_user_data as $data) {
-            if ($this->validatePassword($request, $data->password)) {
-                $user_data = $data;
+        foreach ($user_list as $user) {
+            if ($this->validatePassword($request, $user->password)) {
+                $user_data = $user;
             }
         }
 
-        // ユーザーのデータが有る場合
-        if (isset($user_data)) {
-            return $user_data;
-        }
-
-        // ユーザーのデータが無い場合
-        if (!isset($user_data)) {
-            return;
-        }
+        return $user_data;
     }
 
     /**
