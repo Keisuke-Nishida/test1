@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             TransportTableSeeder::class,
             VoucherTableSeeder::class,
             MessageTableSeeder::class,
+            NoticeDataTableSeeder::class,
+            BulletinBoardDataTableSeeder::class,
             SampleTableSeeder::class
         ]);
     }
