@@ -46,4 +46,17 @@ class NoticeController extends BaseController
             'limit_body_length'  => $this->limit_body_length,
         ]);
     }
+
+    /**
+     * 詳細
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function detail($id)
+    {
+        $data = $this->mainService->find($id);
+        return parent::detail($id)->with([
+            'data' => $data,
+            'limit_title_length' => $this->limit_title_length,
+        ]);
+    }
 }
