@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  compose:
+    image: composer:latest
+    command: "composer update"
+    volumes:
+      - ./wbs:/var/www
+    working_dir: "/var/www"
+    init: true
+
+  app:
+    image: phppm/nginx
+    command: --debug=1 --app-env=dev --bootstrap=laravel --static-directory=public
+    volumes:
+      - ./wbs:/var/www
+    ports:
+      - "80:80"
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: rdbms
+      DB_DATABASE: forge
+      DB_USERNAME: devel
+      DB_PASSWORD: devel
+    depends_on:
+      - compose
+      - rdbms
+
+  rdbms:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: forge
+      MYSQL_USER: devel
+      MYSQL_PASSWORD: devel
+      MYSQL_ROOT_PASSWORD: root
+      TZ: "Asia/Tokyo"
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  db-data:
