@@ -8,6 +8,8 @@ const initBeforeLogin = function () {
     toggleDisabled();
 };
 
+const CSRF_TOKEN = $("input[name='_token']").val();
+
 /**
  * 利用規約に同意するのチェックボックスに
  * チェックを入れたときに利用規約に同意して登録するの
@@ -37,7 +39,6 @@ const toggleDisabled = function () {
  */
 const beforeLogin = function () {
     $("#login").on("click", function () {
-        const CSRF_TOKEN = $("input[name='_token']").val();
         const login_id = $("#login_id").val();
         const password = $("#password").val();
         const remember = $("#remember").val();
@@ -56,23 +57,22 @@ const beforeLogin = function () {
             .done(function (response) {
                 // エラーメッセージの初期化
                 $(document).find(".errors").remove();
-
                 // モーダル表示時
-                if ("modal_flg" in response) {
+                if (!response.login) {
                     // モーダルの表示
                     displayModalAgree(response);
 
-                    // モーダルが非表示になった場合、処理を終える
+                    // モーダルが非表示になった場合、リロードして蓄積されたデータを削除する
                     $("#modalAgree").on("hidden.bs.modal", function (e) {
                         location.reload();
                     });
 
                     // モーダルの入力に対するバリデーション
-                    validateModalForm(response.modal_flg);
+                    validateModalForm(response.status);
                 }
 
                 // 通常ログイン時
-                if (response.login && !("modal_flg" in response)) {
+                if (response.login) {
                     // 通常のログインを行う
                     $("#form-login").attr("action", "/login");
                     $("#form-login").submit();
@@ -91,11 +91,10 @@ const beforeLogin = function () {
 
 /**
  * 利用規約モーダルのバリデーション
- * @param {number} modal_flg
+ * @param {string} status
  */
-const validateModalForm = function (modal_flg) {
+const validateModalForm = function (status) {
     $("#button_agree").on("click", function () {
-        const CSRF_TOKEN = $("input[name='_token']").val();
         const login_id = $("#login_id").val();
         const password = $("#password").val();
         const email = $("#email").val();
@@ -110,18 +109,17 @@ const validateModalForm = function (modal_flg) {
                 password: password,
                 email: email,
                 check_agree: checkAgree,
-                modal_flg: modal_flg,
+                status: status,
             },
             dataType: "json",
         })
             .done(function (response) {
-                let modal_flg = response.modal_flg;
+                let status = response.status;
 
                 // エラーメッセージの初期化
                 $(document).find(".errors").remove();
 
-                if (modal_flg == 1) {
-                    console.log("modal_flg", modal_flg);
+                if (status == "first_login") {
                     // メールの送信
                     // TODO:後ほど実装
                     // sendRegistrationMail(response.user_id);
@@ -129,14 +127,13 @@ const validateModalForm = function (modal_flg) {
                     $("#form_agree").attr("action", "/api/resultEmail");
                     $("#form_agree").submit();
                 }
-                if (modal_flg == 2) {
-                    console.log("modal_flg", modal_flg);
+
+                if (status == "update_agreement") {
                     // ユーザーの利用規約同意データの更新
                     saveUserAgreeData(response.user_id);
                 }
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log("XMLHttpRequest", XMLHttpRequest);
                 // エラーメッセージの初期化
                 $(document).find(".errors").remove();
 
@@ -152,7 +149,6 @@ const validateModalForm = function (modal_flg) {
  * @param {number} user_id
  */
 const saveUserAgreeData = function (user_id) {
-    const CSRF_TOKEN = $("input[name='_token']").val();
     $.ajax({
         type: "POST",
         url: "/api/saveUserAgreeData",
@@ -163,7 +159,6 @@ const saveUserAgreeData = function (user_id) {
         dataType: "json",
     })
         .done(function (response) {
-            console.log("response", response);
             // エラーメッセージの初期化
             $(document).find(".errors").remove();
 
@@ -179,7 +174,6 @@ const saveUserAgreeData = function (user_id) {
             }
         })
         .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log("XMLHttpRequest", XMLHttpRequest);
             // エラーメッセージの初期化
             $(document).find(".errors").remove();
 
@@ -219,7 +213,7 @@ const displayErrorMessage = function (response, errorThrown) {
     $.each(response.errors, function (index, error) {
         let errorMessage = setErrorDiv();
         errorMessage.append(error);
-        $("#" + index + "")
+        $("#" + index)
             .parent()
             .after(errorMessage);
     });
@@ -227,21 +221,21 @@ const displayErrorMessage = function (response, errorThrown) {
 
 /**
  * ボタン押下したときに利用規約モーダル表示
- * @param {number} response
+ * @param {array} response
  */
 const displayModalAgree = function (response) {
-    let modal_flg = response.modal_flg;
+    let status = response.status;
     let message = response.message;
 
     // 最新の利用規約の内容を表示
     $("#privacy_body").append(message);
 
     // 初回ログイン時にメールアドレス入力欄がなかったら生成
-    if (modal_flg == 1) {
+    if (status == "first_login") {
         $("input[name='email']").parent().show();
     }
     // 利用規約更新時はメールアドレスの入力欄を削除
-    if (modal_flg == 2) {
+    if (status == "update_agreement") {
         $("input[name='email']").parent().hide();
     }
     $("#modalAgree").modal("show");
