@@ -85,7 +85,7 @@ class LoginController extends BaseController
         // 同意履歴が存在する場合
         if ($is_agreement_history) {
             $is_more_recent = $this->isLastUpdateDateMoreRecent($request);
-            
+
             // 最終更新日時のほうが新しい日付の場合
             if ($is_more_recent) {
                 // 免責事項同意のモーダル表示（※メールアドレス入力欄非表示）
@@ -215,6 +215,19 @@ class LoginController extends BaseController
             "isLinkToHome" => false,
             "title"        => "送信確認",
             "message"      => Message::getMessage(Message::INFO_007),
+        ]);
+    }
+
+    /**
+     * メールによる認証完了画面
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showCompletedAuthByEmail()
+    {
+        return view('web.layouts.result')->with([
+            "isLinkToHome" => true,
+            "title"        => "メッセージ",
+            "message"      => Message::getMessage(Message::INFO_008),
         ]);
     }
 
