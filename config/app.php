@@ -228,6 +228,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Util' => App\Lib\Util::class,
+        'Constant' => App\Lib\Constant::class,
     ],
 
 ];

@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Lib\Constant;
 use App\Lib\Message;
 use App\Lib\Util;
-use App\Models\Role;
 use App\Services\Models\NoticeDataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+
 class NoticeDataController extends BaseController
 {
     /**
-     * Create a new UserController instance
+     * Create a new NoticeDataController instance
      *
      * @param NoticeDataService $admin_service
      * @return void
@@ -23,6 +24,7 @@ class NoticeDataController extends BaseController
         $this->mainService = $admin_service;
         $this->mainRoot = 'admin/notice_data';
         $this->mainTitle = Util::langtext('SIDEBAR_LI_005');
+        $this->menuKey = Util::getUserRolePrefix('admin') . Constant::MENU_NOTICE;
     }
 
     /**
@@ -32,6 +34,10 @@ class NoticeDataController extends BaseController
      */
     public function index()
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view('admin.notice_data.index', ['page' => 'notice_data']);
     }
 
@@ -75,6 +81,10 @@ class NoticeDataController extends BaseController
      */
     public function create(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'action' => Util::langtext('NOTICE_T_001'),
             'register_mode' => 'create',
@@ -91,6 +101,10 @@ class NoticeDataController extends BaseController
      */
     public function edit(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'action' => Util::langtext('NOTICE_T_002'),
             'register_mode' => 'edit',
@@ -160,6 +174,10 @@ class NoticeDataController extends BaseController
      */
     public function save(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         $start_time = $request->notice_data_start_date . " " . $request->start . ":" . $request->start_minute . ":00";
         $end_time = $request->notice_data_end_date . " " . $request->end . ":" . $request->end_minute . ":00";
         $request->request->add(["start_time" => $start_time]);

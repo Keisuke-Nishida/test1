@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Lib\Constant;
 use App\Lib\Message;
 use App\Lib\Util;
 use App\Models\Prefecture;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 class CustomerController extends BaseController
 {
     /**
-     * Create a new UserController instance
+     * Create a new CustomerController instance
      * 
      * @param AdminUserService $admin_service
      * @return void
@@ -24,6 +25,7 @@ class CustomerController extends BaseController
         $this->mainService = $customer_service;
         $this->mainRoot = 'admin/customer';
         $this->mainTitle = Util::langtext('SIDEBAR_LI_003');
+        $this->menuKey = Util::getUserRolePrefix('admin') . Constant::MENU_CUSTOMER;
     }
 
     /**
@@ -33,6 +35,10 @@ class CustomerController extends BaseController
      */
     public function index()
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view('admin.customer.index', [
             'page' => 'customer',
             'prefectures' => Prefecture::select('id', 'name')->whereNull('deleted_at')->get()->toArray(),
@@ -91,6 +97,10 @@ class CustomerController extends BaseController
      */
     public function list_search(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return ['data' => []];
+        }
+
         $search = $this->list_search_condition($request);
         $list = $this->mainService->searchList($search['condition'], $search['sort'], $search['relation']);
         $data = [];
@@ -109,7 +119,7 @@ class CustomerController extends BaseController
             }
         }
         
-        return ["data" => $data];
+        return ['data' => $data];
     }
 
     /**
@@ -120,6 +130,10 @@ class CustomerController extends BaseController
      */
     public function create(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'action' => Util::langtext('CUSTOMER_T_002'),
             'register_mode' => 'create',
@@ -137,6 +151,10 @@ class CustomerController extends BaseController
      */
     public function edit(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'action' => Util::langtext('CUSTOMER_T_003'),
             'register_mode' => 'edit',
@@ -252,6 +270,10 @@ class CustomerController extends BaseController
      */
     public function save(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         if (!$request->exists('core_system_status')) {
             $request->request->add(['core_system_status' => 0]);
         }

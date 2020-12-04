@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Lib\Constant;
 use App\Lib\Message;
 use App\Lib\Util;
 use App\Models\Menu;
 use App\Services\Models\RoleMenuService;
-use App\Services\Models\RoleService;
 use App\Models\Role;
-use App\Models\RoleMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +27,7 @@ class RoleMenuController extends BaseController
         $this->mainService = $role_menu_service;
         $this->mainRoot = 'admin/role_menu';
         $this->mainTitle = Util::langtext('SIDEBAR_LI_004');
+        $this->menuKey = Util::getUserRolePrefix('admin') . Constant::MENU_ROLE;
     }
 
     /**
@@ -37,6 +37,10 @@ class RoleMenuController extends BaseController
      */
     public function index()
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view('admin.role_menu.index', [
             'roles' => Role::select('id', 'name')->get()->toArray(),
             'menus' => Menu::select('id', 'name')->get()->toArray(),
@@ -51,6 +55,10 @@ class RoleMenuController extends BaseController
      */
     public function list_search(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return ['data' => []];
+        }
+
         $query = $this->mainService->model();
         $query = $query->select(
             'role.id AS role_id',
@@ -114,6 +122,10 @@ class RoleMenuController extends BaseController
      */
     public function delete(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return ['status' => -1, 'message' => 'Unauthorized'];
+        }
+
         try {
             DB::beginTransaction();
 
@@ -159,6 +171,10 @@ class RoleMenuController extends BaseController
      */
     public function deleteMultiple(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return ['status' => -1, 'message' => 'Unauthorized'];
+        }
+
         try {
             DB::beginTransaction();
 
@@ -203,6 +219,10 @@ class RoleMenuController extends BaseController
      */
     public function create(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         $menus = Menu::select('id', 'name', 'type')
             ->orderBy('id', 'ASC')
             ->get()
@@ -237,6 +257,10 @@ class RoleMenuController extends BaseController
      */
     public function edit(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         $menus = Menu::select('id', 'name', 'type')
             ->orderBy('id', 'ASC')
             ->get()
@@ -345,6 +369,10 @@ class RoleMenuController extends BaseController
      */
     public function save(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         $validator = $this->validation($request);
 
         if ($validator->fails()) {

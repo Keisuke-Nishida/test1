@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Lib\Constant;
 use App\Lib\Message;
 use App\Lib\Util;
 use App\Models\Prefecture;
@@ -25,6 +26,7 @@ class CustomerDestinationController extends BaseController
         $this->mainService = $customer_destination_service;
         $this->mainRoot = 'admin/customer_destination';
         $this->mainTitle = Util::langtext('SIDEBAR_SUB_LI_001');
+        $this->menuKey = Util::getUserRolePrefix('admin') . Constant::MENU_CUSTOMER_DESTINATION;
     }
 
     /**
@@ -34,6 +36,10 @@ class CustomerDestinationController extends BaseController
      */
     public function indexGet($customer_id)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view('admin.customer_destination.index', [
             'page' => 'customer_destination',
             'customer_id' => $customer_id,
@@ -94,6 +100,10 @@ class CustomerDestinationController extends BaseController
      */
     public function list_search(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return ['data' => []];
+        }
+
         $search = $this->list_search_condition($request);
         $list = $this->mainService->searchList($search['condition'], $search['sort'], $search['relation']);
         $data = [];
@@ -112,7 +122,7 @@ class CustomerDestinationController extends BaseController
             }
         }
         
-        return ["data" => $data];
+        return ['data' => $data];
     }
 
     /**
@@ -123,6 +133,10 @@ class CustomerDestinationController extends BaseController
      */
     public function create(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         $customer = new CustomerService();
 
         return view($this->mainRoot . '/register', [
@@ -144,6 +158,10 @@ class CustomerDestinationController extends BaseController
      */
     public function editGet($customer_id, $customer_destination_id)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         $customer = new CustomerService();
 
         return view($this->mainRoot . '/register', [
@@ -240,6 +258,10 @@ class CustomerDestinationController extends BaseController
      */
     public function save(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         $validator = $this->validation($request);
 
         if ($validator->fails()) {

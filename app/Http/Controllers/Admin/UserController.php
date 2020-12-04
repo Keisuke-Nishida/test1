@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Lib\Constant;
 use App\Lib\Message;
 use App\Lib\Util;
 use App\Models\Customer;
 use App\Models\Role;
 use App\Services\Models\AdminUserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Env;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -26,6 +26,7 @@ class UserController extends BaseController
         $this->mainService = $admin_service;
         $this->mainRoot = 'admin/user';
         $this->mainTitle = Util::langtext('SIDEBAR_LI_002');
+        $this->menuKey = Util::getUserRolePrefix('admin') . Constant::MENU_USER;
     }
 
     /**
@@ -35,6 +36,10 @@ class UserController extends BaseController
      */
     public function index()
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view('admin.user.index', ['page' => 'user']);
     }
 
@@ -81,6 +86,10 @@ class UserController extends BaseController
      */
     public function create(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'action' => Util::langtext('USER_T_001'),
             'register_mode' => 'create',
@@ -99,6 +108,10 @@ class UserController extends BaseController
      */
     public function edit(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'action' => Util::langtext('USER_T_002'),
             'register_mode' => 'edit',
@@ -244,6 +257,10 @@ class UserController extends BaseController
      */
     public function save(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         if (!$request->exists('system_admin_flag')) {
             $request->request->add(['system_admin_flag' => 0]);
         }

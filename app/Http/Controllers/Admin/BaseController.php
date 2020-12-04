@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Lib\Message;
+use App\Lib\Util;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -23,6 +24,8 @@ class BaseController extends Controller
     protected $mainRoot;
     // メインタイトル
     protected $mainTitle;
+
+    protected $menuKey;
 
     /**
      * Create a new controller instance.
@@ -81,6 +84,10 @@ class BaseController extends Controller
      */
     public function index()
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/index');
     }
 
@@ -116,6 +123,10 @@ class BaseController extends Controller
      */
     public function list_search(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return ['data' => []];
+        }
+
         $search = $this->list_search_condition($request);
         $list = $this->mainService->searchList($search['condition'], $search['sort'], $search['relation']);
 
@@ -142,6 +153,10 @@ class BaseController extends Controller
      */
     public function create(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'register_mode' => 'create',
             'data' => $this->mainService->model()
@@ -155,6 +170,10 @@ class BaseController extends Controller
      */
     public function edit(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'register_mode' => 'edit',
             'data' => $this->mainService->find($request->id),
@@ -238,6 +257,10 @@ class BaseController extends Controller
      */
     public function save(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         // バリデーション
         $validator = $this->validation($request);
 
@@ -297,6 +320,10 @@ class BaseController extends Controller
     public function delete(Request $request)
     {
         try {
+            if (!Util::isAdminUserAllowed($this->menuKey)) {
+                return ['status' => -1, 'message' => 'Unauthorized'];
+            }
+
             DB::beginTransaction();
 
             $this->mainService->delete($request->id);
@@ -321,6 +348,10 @@ class BaseController extends Controller
     public function deleteMultiple(Request $request)
     {
         try {
+            if (!Util::isAdminUserAllowed($this->menuKey)) {
+                return ['status' => -1, 'message' => 'Unauthorized'];
+            }
+
             DB::beginTransaction();
 
             $ids = $request->get('id');

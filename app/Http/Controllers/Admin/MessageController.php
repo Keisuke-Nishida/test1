@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Lib\Message;
 use App\Lib\Util;
-use App\Models\Role;
 use App\Services\Models\MessageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 class MessageController extends BaseController
 {
     /**
-     * Create a new UserController instance
+     * Create a new MessageController instance
      *
      * @param MessageService $admin_service
      * @return void

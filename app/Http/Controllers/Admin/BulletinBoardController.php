@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Lib\Constant;
 use App\Lib\Message;
 use App\Lib\Util;
 use App\Services\Models\BulletinBoardDataService;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 class BulletinBoardController extends BaseController
 {
     /**
-     * Create a new UserController instance
+     * Create a new BulletinBoardController instance
      *
      * @param BulletinBoardDataService $admin_service
      * @return void
@@ -24,6 +25,7 @@ class BulletinBoardController extends BaseController
         $this->mainService = $admin_service;
         $this->mainRoot = 'admin/bulletin_board';
         $this->mainTitle = Util::langtext('SIDEBAR_LI_006');
+        $this->menuKey = Util::getUserRolePrefix('admin') . Constant::MENU_BULLETIN_BOARD;
     }
 
     /**
@@ -33,6 +35,10 @@ class BulletinBoardController extends BaseController
      */
     public function index()
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view('admin.bulletin_board.index', ['page' => 'bulletin_board_data']);
     }
 
@@ -76,6 +82,10 @@ class BulletinBoardController extends BaseController
      */
     public function create(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'action' => Util::langtext('BULLETIN_BOARD_T_001'),
             'register_mode' => 'create',
@@ -92,6 +102,10 @@ class BulletinBoardController extends BaseController
      */
     public function edit(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'action' => Util::langtext('BULLETIN_BOARD_T_002'),
             'register_mode' => 'edit',
@@ -166,6 +180,10 @@ class BulletinBoardController extends BaseController
      */
     public function save(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         $validator = $this->validation($request);
 
         if ($validator->fails()) {

@@ -35,38 +35,62 @@
     <div class="app-body">
         @auth
         <div class="sidebar">
+            @php
+            $menus = Util::getAdminMenus();
+            $role_prefix = Util::getUserRolePrefix('admin');
+            @endphp
             <nav class="sidebar-nav">
                 <ul class="nav">
+                    @if (in_array($role_prefix . Constant::MENU_HOME, $menus))
                     <li class="nav-item">
                         <a class="nav-link<?php echo (Util::isMenuItemActive('dashboard') || Util::getCurrentScreen() == '') ? ' active' : ''; ?>" href="{{ route('admin/index') }}"><i class="fas fa-home fa-lg"></i> {{ Util::langtext('SIDEBAR_LI_001') }}</a>
                     </li>
+                    @endif
+                    @if (in_array($role_prefix . Constant::MENU_USER, $menus))
                     <li class="nav-item">
                         <a class="nav-link<?php echo (Util::isMenuItemActive('user')) ? ' active' : ''; ?>" href="{{ route('admin/user') }}"><i class="fas fa-user fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_002') }}</a>
                     </li>
+                    @endif
+                    @if (in_array($role_prefix . Constant::MENU_CUSTOMER, $menus))
                     <li class="nav-item">
-                    <a class="nav-link<?php echo (Util::isMenuItemActive('customer')) ? ' active' : ''; ?>" href="{{ route('admin/customer') }}"><i class="far fa-building fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_003') }}</a>
+                        <a class="nav-link<?php echo (Util::isMenuItemActive('customer')) ? ' active' : ''; ?>" href="{{ route('admin/customer') }}"><i class="far fa-building fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_003') }}</a>
                     </li>
+                    @endif
+                    @if (in_array($role_prefix . Constant::MENU_ROLE, $menus))
                     <li class="nav-item">
                         <a class="nav-link<?php echo (Util::isMenuItemActive('role')) ? ' active' : ''; ?>" href="{{ route('admin/role_menu') }}"><i class="fas fa-user-shield fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_004') }}</a>
                     </li>
+                    @endif
+                    @if (in_array($role_prefix . Constant::MENU_NOTICE, $menus))
                     <li class="nav-item">
                         <a class="nav-link<?php echo (Util::isMenuItemActive('notice_data')) ? ' active' : ''; ?>" href="{{ route('admin/notice_data') }}"><i class="fas fa-bell fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_005') }}</a>
                     </li>
+                    @endif
+                    @if (in_array($role_prefix . Constant::MENU_BULLETIN_BOARD, $menus))
                     <li class="nav-item">
                         <a class="nav-link<?php echo (Util::isMenuItemActive('bulletin_board')) ? ' active' : ''; ?>" href="{{ route('admin/bulletin_board') }}"><i class="fas fa-chalkboard fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_006') }}</a>
                     </li>
+                    @endif
+                    @if (in_array($role_prefix . Constant::MENU_SHIPMENT, $menus))
                     <li class="nav-item">
                         <a class="nav-link<?php echo (Util::isMenuItemActive('shipment')) ? ' active' : ''; ?>" href="#"><i class="fas fa-truck fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_007') }}</a>
                     </li>
+                    @endif
+                    @if (in_array($role_prefix . Constant::MENU_INVOICE, $menus))
                     <li class="nav-item">
                         <a class="nav-link<?php echo (Util::isMenuItemActive('invoice')) ? ' active' : ''; ?>" href="#"><i class="fas fa-file-alt fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_008') }}</a>
                     </li>
+                    @endif
+                    @if (in_array($role_prefix . Constant::MENU_SCHEDULE, $menus))
                     <li class="nav-item">
                         <a class="nav-link<?php echo (Util::isMenuItemActive('schedule')) ? ' active' : ''; ?>" href="{{ route('admin/schedule') }}"><i class="far fa-clock fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_009') }}</a>
                     </li>
+                    @endif
+                    @if (in_array($role_prefix . Constant::MENU_MESSAGE, $menus))
                     <li class="nav-item">
                     <a class="nav-link<?php echo (Util::isMenuItemActive('message')) ? ' active' : ''; ?>" href="{{ route('admin/message') }}"><i class="far fa-envelope fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_010') }}</a>
                     </li>
+                    @endif
                 </ul>
             </nav>
         </div>

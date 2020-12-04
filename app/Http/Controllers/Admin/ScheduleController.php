@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Lib\Constant;
 use App\Lib\Message;
 use App\Lib\Util;
-use App\Models\Role;
 use App\Services\Models\ScheduleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+
 class ScheduleController extends BaseController
 {
     /**
      * Create a new UserController instance
      *
-     * @param ScheduleService $admin_service
+     * @param ScheduleController $admin_service
      * @return void
      */
     public function __construct(ScheduleService $admin_service)
@@ -23,6 +24,7 @@ class ScheduleController extends BaseController
         $this->mainService = $admin_service;
         $this->mainRoot = 'admin/schedule';
         $this->mainTitle = Util::langtext('SIDEBAR_LI_009');
+        $this->menuKey = Util::getUserRolePrefix('admin') . Constant::MENU_SCHEDULE;
     }
 
     /**
@@ -32,6 +34,10 @@ class ScheduleController extends BaseController
      */
     public function index()
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view('admin.schedule.index', ['page' => 'schedule']);
     }
 
@@ -70,6 +76,10 @@ class ScheduleController extends BaseController
      */
     public function create(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'action' => Util::langtext('SCHEDULE_T_001'),
             'register_mode' => 'create',
@@ -86,6 +96,10 @@ class ScheduleController extends BaseController
      */
     public function edit(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'action' => Util::langtext('SCHEDULE_T_002'),
             'register_mode' => 'edit',
@@ -159,10 +173,15 @@ class ScheduleController extends BaseController
      */
     public function save(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         $start_time = $request->start_time_hour . ":" . $request->start_time_min;
         $end_time = $request->end_time_hour . ":" . $request->end_time_min;
         $request->request->add(["start_time" => $start_time]);
         $request->request->add(["end_time" => $end_time]);
+
         if(!$request->exists('cancel_flag')){
             $request->request->add(['cancel_flag'=>0]);
         }

@@ -103,7 +103,11 @@
                         <div class="col-md-9">
                             <select class="form-control" name="role_id" tabindex="8">
                                 @foreach ($roles as $role)
+                                @if (isset($data['role_id']))
+                                <option value="{{ $role['id'] }}"<?php echo ($data['role_id'] == $role['id']) ? ' selected' : ''; ?>>{{ $role['name'] }}</option>
+                                @else
                                 <option value="{{ $role['id'] }}">{{ $role['name'] }}</option>
+                                @endif
                                 @endforeach
                             </select>
                             @include('admin.layouts.components.error_message', ['title' => 'role_id'])

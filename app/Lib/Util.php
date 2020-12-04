@@ -1,6 +1,7 @@
 <?php
 namespace App\Lib;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,9 @@ class Util
         return bcrypt($password);
     }
 
+    /**
+     * Get name of screen currently displayed
+     */
     public static function getCurrentScreen()
     {
         $uri = Route::current()->uri();
@@ -35,6 +39,9 @@ class Util
         }
     }
 
+    /**
+     * Get name of action of a screen currently displayed
+     */
     public static function getCurrentAction()
     {
         $uri = Route::current()->uri();
@@ -47,6 +54,9 @@ class Util
         return 'index';
     }
 
+    /**
+     * Check if currently displayed screen matches with $name
+     */
     public static function isMenuItemActive($name)
     {
         $uri = self::getCurrentScreen();
@@ -58,9 +68,49 @@ class Util
         return false;
     }
 
+    /**
+     * Get language text by code
+     */
     public static function langtext($code)
     {
         return config('languages.' . env('LANG_CODE') . '.' . $code);
+    }
+
+    /**
+     * Get prefix based on logged in user's user status for permission use
+     */
+    public static function getUserRolePrefix($guard_name)
+    {
+        $type  = Auth::guard($guard_name)->user()->role->type;
+
+        if ($type == 1) {
+            return Constant::ADMIN_MENU_PREFIX;
+        } elseif ($type == 2) {
+            return Constant::FRONT_MENU_PREFIX;
+        }
+    }
+
+    /**
+     * Get allowed menus for admin site user
+     */
+    public static function getAdminMenus()
+    {       
+        $role_menus = Auth::guard('admin')->user()->role->role_menu;
+        $menus = [];
+
+        foreach ($role_menus as $role_menu) {
+            $menus[] = $role_menu->menu->key;
+        }
+
+        return $menus;
+    }
+
+    /**
+     * Determine if admin site user is allowed to a menu item
+     */
+    public static function isAdminUserAllowed($name)
+    {
+        return in_array($name, self::getAdminMenus());
     }
 
     /**
