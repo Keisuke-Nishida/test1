@@ -4,10 +4,8 @@
         <testsuite name="Login Tests">
             <file>tests/Browser/Admin/LoginTest.php</file>
         </testsuite>
-        <testsuite name="User List Test">
+        <testsuite name="User Test">
             <file>tests/Browser/Admin/User/UserListTest.php</file>
-        </testsuite>
-        <testsuite name="User Reg Test">
             <file>tests/Browser/Admin/User/UserRegTest.php</file>
         </testsuite>
         <testsuite name="Customer Test">
@@ -15,12 +13,10 @@
             <file>tests/Browser/Admin/Customer/CustomerRegisterTest.php</file>
             <file>tests/Browser/Admin/Customer/CustomerUpdateTest.php</file>
         </testsuite>
-        <testsuite name="User Reg Test">
-            <file>tests/Browser/Admin/Notice/NoticeListTest.php</file>
-        </testsuite>
         <testsuite name="Customer Destination Test">
             <file>tests/Browser/Admin/Customer/Destination/CustomerDestinationListTest.php</file>
             <file>tests/Browser/Admin/Customer/Destination/CustomerDestinationCreateTest.php</file>
+            <file>tests/Browser/Admin/Customer/Destination/CustomerDestinationUpdateTest.php</file>
         </testsuite>
         <testsuite name="Notice Test">
             <file>tests/Browser/Admin/Notice/NoticeListTest.php</file>
