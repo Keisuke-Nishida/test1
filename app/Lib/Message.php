@@ -24,6 +24,7 @@ class Message
     const ERROR_012 = "パスワードには、英大文字・英小文字・数字それぞれを最低1文字ずつ含む必要があります";
     const ERROR_013 = "%sは%s文字以下にしてください";
     const ERROR_014 = "%sは%sは異なる%sにしてください";
+    const ERROR_015 = "%sを保存できませんでした";
 
     const INFO_001  = "%sの登録を行いました";
     const INFO_002  = "%sの編集を行いました";
