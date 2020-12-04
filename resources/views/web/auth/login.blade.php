@@ -23,56 +23,55 @@
 
 <body class="page">
 
-<form class="form-login  bg-white p-5 shadow content__card--round " action="/login" method="post">
+<form id="form-login" class="form-login" action="/login" method="post">
     {{ csrf_field() }}
-    <div class="text-center">
-        <h1>Web情報閲覧サービス</h1>
-    </div>
-
-    <!-- ロゴ1 -->
-    <div class="text-center mt-3">
-        <img src="/images/logo.png" alt="">
-    </div>
-
-    <div class="mt-4">
-        <!-- ログインIDフォーム -->
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <div class="input-group-text">
-                    <i class="fa fa-user fa-fw" aria-hidden="true"></i>
-                </div>
-            </div>
-            <input type="text" id="login_id" name="login_id" class="form-control" placeholder="ログインID" value="{{ old('login_id') }}">
+    <div class="bg-white p-5 shadow content__card--round ">
+        <div class="text-center">
+            <h1>Web情報閲覧サービス</h1>
         </div>
-        @include('web.layouts.components.error_message', ['title' => 'login_id'])
 
-        <!-- パスワードフォーム -->
-        <div class="input-group mt-2">
-            <div class="input-group-prepend">
-                <div class="input-group-text">
-                    <i class="fa fa-key fa-fw" aria-hidden="true"></i>
-                </div>
-            </div>
-            <input type="password" id="password" name="password" class="form-control" placeholder="パスワード" value="{{ old('password') }}">
+        <!-- ロゴ1 -->
+        <div class="text-center mt-3">
+            <img src="/images/logo.png" alt="">
         </div>
-        @include('web.layouts.components.error_message', ['title' => 'password'])
+
+        <div class="mt-4">
+            <!-- ログインIDフォーム -->
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fa fa-user fa-fw" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <input type="text" id="login_id" name="login_id" class="form-control" placeholder="ログインID" value="{{ old('login_id') }}">
+            </div>
+            @include('web.layouts.components.error_message', ['title' => 'login_id'])
+
+            <!-- パスワードフォーム -->
+            <div class="input-group mt-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fa fa-key fa-fw" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <input type="password" id="password" name="password" class="form-control" placeholder="パスワード" value="{{ old('password') }}">
+            </div>
+            @include('web.layouts.components.error_message', ['title' => 'password'])
+        </div>
+
+        <!-- ログイン状態保存チェックボックス -->
+        <div class="custom-control custom-checkbox mt-2 cursor-pointer">
+            <input type="checkbox" class="custom-control-input" id="remember" name="remember">
+            <label class="custom-control-label" for="remember">ログイン状態を保存</label>
+        </div>
+
+        <!-- ログインボタン -->
+        <button type="button" id="login" class="button__login btn button__main btn-block mt-4">ログイン</button>
+
+        <div class="mt-2 text-center">
+            <a class="link__main" href="/reset_password">パスワードを忘れた方はこちら</a>
+        </div>
     </div>
-
-    <!-- ログイン状態保存チェックボックス -->
-    <div class="custom-control custom-checkbox mt-2 cursor-pointer">
-        <input type="checkbox" class="custom-control-input" id="remember" name="remember">
-        <label class="custom-control-label" for="remember">ログイン状態を保存</label>
-    </div>
-
-    <!-- ログインボタン -->
-    <button type="submit" class="button__login btn button__main btn-block mt-4">ログイン</button>
-
-    <a id="agree_login" class="button__login btn button__main btn-block mt-4">ログイン</a>
-
-    <div class="mt-2 text-center">
-        <a class="link__main" href="/reset_password">パスワードを忘れた方はこちら</a>
-    </div>
-
 </form>
 
 <!-- ロゴ2 -->
