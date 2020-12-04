@@ -69,39 +69,39 @@ class LoginController extends BaseController
         // 利用規約のメッセージの取得
         $message_data = $this->messageApiService->getMessageTermsOfUseData();
         // 同意履歴の取得
-        $hasAgreement = $this->userAgreeDataApiService->hasImmunityAgreement($user_data);
+        $is_agreement_history = $this->userAgreeDataApiService->isAgreementHistory($user_data);
 
         // 同意履歴が存在しない場合（※初回ログイン）
-        if (!$hasAgreement) {
+        if (!$is_agreement_history) {
             // 免責事項同意のモーダル表示（※メールアドレス入力欄表示）
             $response = [
-                "message"   => "first_login",
+                "status"   => "first_login",
                 "login"     => false,
-                "modal_flg" => 1,
                 "message"   => $message_data->value
             ];
             return $this->success($response);
         }
 
         // 同意履歴が存在する場合
-        if ($hasAgreement) {
+        if ($is_agreement_history) {
+            $is_more_recent = $this->isLastUpdateDateMoreRecent($request);
+            
             // 最終更新日時のほうが新しい日付の場合
-            if ($this->isLastUpdateDateMoreRecent($request)) {
+            if ($is_more_recent) {
                 // 免責事項同意のモーダル表示（※メールアドレス入力欄非表示）
                 $response = [
-                    "message"   => "update_agreement",
+                    "status"   => "update_agreement",
                     "login"     => false,
-                    "modal_flg" => 2,
                     "message"   => $message_data->value
                 ];
                 return $this->success($response);
             }
 
             // 最終更新日時のほうが古い日付の場合
-            if (!$this->isLastUpdateDateMoreRecent($request)) {
+            if (!$is_more_recent) {
                 // 通常のLogin処理へ進ませる
                 $response = [
-                    "message" => "login",
+                    "status" => "login",
                     "login"   => true
                 ];
                 return $this->success($response);
@@ -136,7 +136,7 @@ class LoginController extends BaseController
         $user = $this->userApiService->getUserData($request);
 
         // 初回登録時はメールアドレスのバリデーションが必要
-        if ($request->modal_flg == 1) {
+        if ($request->status == "first_login") {
             $this->validate($request, [
                 'email'       => [
                     'required', 'string', 'email',
@@ -152,12 +152,13 @@ class LoginController extends BaseController
             ]);
 
             $response = [
-                "login"     => false,
-                "modal_flg" => 1,
+                "login"  => false,
+                "status" => "first_login",
             ];
         }
 
-        if ($request->modal_flg == 2) {
+        // 同意更新時
+        if ($request->status == "update_agreement") {
             $this->validate($request, [
                 'check_agree' => 'required'
             ], [
@@ -165,9 +166,9 @@ class LoginController extends BaseController
             ]);
 
             $response = [
-                "login"     => true,
-                "user_id"   => $user->id,
-                "modal_flg" => 2,
+                "login"   => true,
+                "user_id" => $user->id,
+                "status"  => "update_agreement",
             ];
         }
 
@@ -211,7 +212,7 @@ class LoginController extends BaseController
     public function showResultEmail()
     {
         return view('web.layouts.result')->with([
-            "check_result" => "resultEmail",
+            "isLinkToHome" => false,
             "title"        => "送信確認",
             "message"      => Message::getMessage(Message::INFO_007),
         ]);
@@ -227,7 +228,7 @@ class LoginController extends BaseController
      * @param  mixed $var
      * @return bool
      */
-    public function isLastUpdateDateMoreRecent($request): bool
+    public function isLastUpdateDateMoreRecent(Request $request): bool
     {
         $user = $this->userApiService->getUserData($request);
         $message = $this->messageApiService->getMessageTermsOfUseData();
@@ -262,7 +263,7 @@ class LoginController extends BaseController
             \DB::rollBack();
             $status = 2;
             $response = [
-                'message' => "同意情報を保存できませんでした",
+                'message'    => Message::getMessage(Message::ERROR_015, ["同意情報"]),
                 'error_data' => $e->getMessage()
             ];
             return $this->error($status, $response);
