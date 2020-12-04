@@ -38,17 +38,15 @@ class UserAgreeDataApiService extends BaseApiService
     }
 
     /**
-     * hasImmunityAgreement
+     * isAgreementHistory
      * getUserData()で取得したデータを使用して
      * user_agree_dataテーブルにユーザの同意履歴のデータの有無を返却する
      *
      * @param  mixed $user_data
      * @return bool
      */
-    public function hasImmunityAgreement($user_data): bool
+    public function isAgreementHistory($user_data): bool
     {
-        $has_agreement = $this->modelService->searchOne(["user_id" => $user_data->id]);
-
-        return isset($has_agreement);
+        return $this->modelService->searchExists(["user_id" => $user_data->id]);
     }
 }
