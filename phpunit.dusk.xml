@@ -23,5 +23,8 @@
             <file>tests/Browser/Admin/Notice/NoticeRegisterTest.php</file>
             <file>tests/Browser/Admin/Notice/NoticeUpdateTest.php</file>
         </testsuite>
+        <testsuite name="Role Test">
+            <file>tests/Browser/Admin/Role/RoleListTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>

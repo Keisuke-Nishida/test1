@@ -93,7 +93,7 @@ function search_main_list()
                 "data": null,
                 "orderable": false,
                 "render": function(data, type, row) {
-                    return get_list_link("edit", 0, "/admin/role_menu/edit/" + row["role_id"], "list-button", row["role_id"]);
+                    return get_list_link("edit", 0, "/admin/role_menu/edit/" + row["role_id"], "list-button", row["role_id"], "edit");
                 }
             },
             { "data": "role_type" },
