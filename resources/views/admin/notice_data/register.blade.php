@@ -111,8 +111,8 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <button class="btn btn-primary width-100" tabindex="11" type="submit">{{ Util::langtext('CUSTOMER_B_007') }}</button>
-                    <a class="btn btn-outline-secondary width-100" id="notice_data-form-cancel" data-url="/admin/notice_data/index" tabindex="12" href="#">{{ Util::langtext('CUSTOMER_B_008') }}</a>
+                    <button class="btn btn-primary width-100" tabindex="11" type="submit">{{ Util::langtext('NOTICE_B_007') }}</button>
+                    <a class="btn btn-outline-secondary width-100" id="notice_data-form-cancel" data-url="/admin/notice_data/index" tabindex="12" href="#">{{ Util::langtext('NOTICE_B_008') }}</a>
                 </div>
             </div>
         </form>

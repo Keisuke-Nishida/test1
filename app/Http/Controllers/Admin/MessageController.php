@@ -5,24 +5,25 @@ namespace App\Http\Controllers\Admin;
 use App\Lib\Message;
 use App\Lib\Util;
 use App\Models\Role;
-use App\Services\Models\NoticeDataService;
+use App\Services\Models\MessageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-class NoticeDataController extends BaseController
+
+class MessageController extends BaseController
 {
     /**
      * Create a new UserController instance
      *
-     * @param NoticeDataService $admin_service
+     * @param MessageService $admin_service
      * @return void
      */
-    public function __construct(NoticeDataService $admin_service)
+    public function __construct(MessageService $admin_service)
     {
         parent::__construct();
         $this->mainService = $admin_service;
-        $this->mainRoot = 'admin/notice_data';
-        $this->mainTitle = Util::langtext('SIDEBAR_LI_005');
+        $this->mainRoot = 'admin/message';
+        $this->mainTitle = Util::langtext('SIDEBAR_LI_010');
     }
 
     /**
@@ -32,7 +33,7 @@ class NoticeDataController extends BaseController
      */
     public function index()
     {
-        return view('admin.notice_data.index', ['page' => 'notice_data']);
+        return view('admin.message.index', ['page' => 'message']);
     }
 
     /**
@@ -50,12 +51,12 @@ class NoticeDataController extends BaseController
         }
 
         if ($request->title) {
-            $conditions['title@like'] = $request->title;
+            $conditions['key@like'] = $request->title;
         }
 
 
         if ($request->body) {
-            $conditions['body@like'] = $request->body;
+            $conditions['value@like'] = $request->body;
         }
 
         $conditions['deleted_at'] = null;
@@ -76,9 +77,9 @@ class NoticeDataController extends BaseController
     public function create(Request $request)
     {
         return view($this->mainRoot . '/register', [
-            'action' => Util::langtext('NOTICE_T_001'),
+            'action' => Util::langtext('MESSAGE_T_001'),
             'register_mode' => 'create',
-            'page' => 'notice_data',
+            'page' => 'message',
             'data' => [],
         ]);
     }
@@ -92,9 +93,9 @@ class NoticeDataController extends BaseController
     public function edit(Request $request)
     {
         return view($this->mainRoot . '/register', [
-            'action' => Util::langtext('NOTICE_T_002'),
+            'action' => Util::langtext('MESSAGE_T_002'),
             'register_mode' => 'edit',
-            'page' => 'notice_data',
+            'page' => 'message',
             'data' => $this->mainService->find($request->id),
         ]);
     }
@@ -108,9 +109,9 @@ class NoticeDataController extends BaseController
     public function validation_rules(Request $request)
     {
         $rules = [
-            'name' => 'required|string|min:4|max:50',
-            'title' => 'required|string|min:4|max:255',
-            'body' => 'required',
+            'name' => 'required|string|min:1|max:50',
+            'key' => 'required|string|min:1|max:50',
+            'value' => 'required|string|min:1|max:255',
         ];
 
         return $rules;
@@ -125,13 +126,15 @@ class NoticeDataController extends BaseController
     public function validation_message(Request $request)
     {
         $messages = [
-            'name.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('NOTICE_L_001')]),
-            'name.min' => Message::getMessage(Message::ERROR_006, [Util::langtext('NOTICE_L_001'), '4']),
-            'name.max' => Message::getMessage(Message::ERROR_002, [Util::langtext('NOTICE_L_001'), '50']),
-            'title.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('NOTICE_L_002')]),
-            'title.min' => Message::getMessage(Message::ERROR_006, [Util::langtext('NOTICE_L_002'), '4']),
-            'title.max' => Message::getMessage(Message::ERROR_002, [Util::langtext('NOTICE_L_002'), '255']),
-            'body.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('NOTICE_L_003')]),
+            'name.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('MESSAGE_L_001')]),
+            'name.min' => Message::getMessage(Message::ERROR_006, [Util::langtext('MESSAGE_L_001'), '1']),
+            'name.max' => Message::getMessage(Message::ERROR_002, [Util::langtext('MESSAGE_L_001'), '50']),
+            'key.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('MESSAGE_L_002')]),
+            'key.min' => Message::getMessage(Message::ERROR_006, [Util::langtext('MESSAGE_L_002'), '1']),
+            'key.max' => Message::getMessage(Message::ERROR_002, [Util::langtext('MESSAGE_L_002'), '50']),
+            'value.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('MESSAGE_L_003')]),
+            'value.min' => Message::getMessage(Message::ERROR_006, [Util::langtext('MESSAGE_L_003'), '1']),
+            'value.max' => Message::getMessage(Message::ERROR_002, [Util::langtext('MESSAGE_L_003'), '255']),
         ];
 
         return $messages;

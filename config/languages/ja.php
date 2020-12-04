@@ -208,7 +208,7 @@ return [
     'NOTICE_B_004' => '検索', // search
     'NOTICE_B_005' => 'はい',
     'NOTICE_B_006' => 'いいえ',
-    'NOTICE_B_007' => '保存',
+    'NOTICE_B_007' => '保存', // save
     'NOTICE_B_008' => 'キャンセル',
     'NOTICE_DLG_001' => '掲示板管理削除確認', // dialog title
 
@@ -333,6 +333,28 @@ return [
     'SCHEDULE_T_001' => '登録',
     'SCHEDULE_T_002' => '編集', // registration
     'SCHEDULE_T_003' => 'スケジュール', // Schedule
+
+    'MESSAGE_L_001' => 'メッセージ名', // Message name
+    'MESSAGE_L_002' => 'メッセージキー', // Message key
+    'MESSAGE_L_003' => 'メッセージ値', // Message value
+    'MESSAGE_L_004' => '編集', // edit
+    '
+    ' => '削除', // delete
+    'MESSAGE_L_006' => '詳細検索', // detailed search
+    'MESSAGE_L_010' => 'メッセージ一覧', // Message List
+    'MESSAGE_T_001' => '登録', // registration
+    'MESSAGE_T_002' => '更新', // edit
+    'MESSAGE_T_003' => 'メッセージ', // Message
+    'MESSAGE_B_001' => '一括削除', // bulk delete
+    'MESSAGE_B_002' => '新規登録', // Registration button
+    'MESSAGE_B_003' => 'クリア', // clear
+    'MESSAGE_B_004' => '検索', // search
+    'MESSAGE_B_005' => 'はい',
+    'MESSAGE_B_006' => 'いいえ',
+    'MESSAGE_B_007' => '保存', // save
+    'MESSAGE_B_008' => 'キャンセル', // cancel
+    'MESSAGE_B_009' => '削除', // delete
+    'MESSAGE_DLG_001' => 'メッセージ管理削除確認', // dialog title
 
     // Miscellaneous texts
     'DATA_TABLE_EMPTY_TEXT' => 'データはありません。',

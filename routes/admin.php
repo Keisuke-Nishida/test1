@@ -85,4 +85,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function(){
     Route::post('/schedule/delete_single', 'Admin\ScheduleController@delete')->name('admin/schedule/delete_single');
     Route::post('/schedule/delete_multiple', 'Admin\ScheduleController@deleteMultiple')->name('admin/schedule/delete_multiple');
 
+    Route::get('/message', 'Admin\MessageController@index')->name('admin/message');
+    Route::get('/message/index', 'Admin\MessageController@index')->name('admin/message/index');
+    Route::post('/message/search', 'Admin\MessageController@list_search')->name('admin/message/search');
+    Route::get('/message/create', 'Admin\MessageController@create')->name('admin/message/create');
+    Route::get('/message/edit/{id}', 'Admin\MessageController@edit')->name('admin/message/edit');
+    Route::post('/message/save', 'Admin\MessageController@save')->name('admin/message/save');
+    Route::post('/message/delete_single', 'Admin\MessageController@delete')->name('admin/message/delete_single');
+    Route::post('/message/delete_multiple', 'Admin\MessageController@deleteMultiple')->name('admin/message/delete_multiple');
+
+
 });

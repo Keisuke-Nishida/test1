@@ -65,7 +65,7 @@
                         <a class="nav-link<?php echo (Util::isMenuItemActive('schedule')) ? ' active' : ''; ?>" href="{{ route('admin/schedule') }}"><i class="far fa-clock fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_009') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?php echo (Util::isMenuItemActive('message')) ? ' active' : ''; ?>" href="#"><i class="far fa-envelope fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_010') }}</a>
+                    <a class="nav-link<?php echo (Util::isMenuItemActive('message')) ? ' active' : ''; ?>" href="{{ route('admin/message') }}"><i class="far fa-envelope fa-fw"></i> {{ Util::langtext('SIDEBAR_LI_010') }}</a>
                     </li>
                 </ul>
             </nav>
