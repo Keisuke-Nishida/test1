@@ -202,6 +202,7 @@ class LoginController extends Controller
 
         if($customer->core_system_status == Constant::STATUS_NON_LINKED) {
             $customer->core_system_status = Constant::STATUS_WAITING_FOR_LINKAGE;
+            $customer->updated_by = $user->id;
             $customer->save();
         }
     }
