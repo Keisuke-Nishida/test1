@@ -132,7 +132,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::guard('web')->logout();
+        $this->guard()->logout();
 
         return $this->loggedOut($request);
     }
@@ -180,10 +180,10 @@ class LoginController extends Controller
         }
         $request->session()->regenerate();
         $this->clearLoginAttempts($request);
-        $cookies = \Auth::getCookieJar();
-        $value = $cookies->queued(\Auth::getRecallerName())->getValue();
+        $cookies = $this->guard()->getCookieJar();
+        $value = $cookies->queued($this->guard()->getRecallerName())->getValue();
         // ログイン保存の時間を変更
-        $cookies->queue(\Auth::getRecallerName(), $value, Constant::REMEMBER_TOKEN_TIME);
+        $cookies->queue($this->guard()->getRecallerName(), $value, Constant::REMEMBER_TOKEN_TIME);
 
         return $this->authenticated($request, $this->guard()->user())
             ?: redirect()->intended($this->redirectPath());
