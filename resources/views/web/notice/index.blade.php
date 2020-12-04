@@ -55,7 +55,7 @@
                 <!-- ページネーション -->
                 <div class="content__bottom__link text-center">
                     <div class="content__bottom__link pagination justify-content-center justify-content-md-end">
-                        {{ $list->onEachSide(1)->links('web.layouts.components.pagination.custom') }}
+                        {{ $list->links('pagination::web/custom') }}
                     </div>
                 </div>
             </div>
