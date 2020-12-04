@@ -62,7 +62,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function(){
     Route::get('/role_menu/index', 'Admin\RoleMenuController@index')->name('admin/role_menu/index');
     Route::post('/role_menu/search', 'Admin\RoleMenuController@list_search')->name('admin/role_menu/search');
     Route::get('/role_menu/create', 'Admin\RoleMenuController@create')->name('admin/role_menu/create');
-    Route::get('/role_menu/edit/{id}', 'Admin\RoleMenuController@edit')->name('admin/role_menu/edit');
+    Route::get('/role_menu/edit/{role_id}', 'Admin\RoleMenuController@edit')->name('admin/role_menu/edit');
     Route::post('/role_menu/save', 'Admin\RoleMenuController@save')->name('admin/role_menu/save');
     Route::post('/role_menu/delete_single', 'Admin\RoleMenuController@delete')->name('admin/role_menu/delete_single');
     Route::post('/role_menu/delete_multiple', 'Admin\RoleMenuController@deleteMultiple')->name('admin/role_menu/delete_multiple');

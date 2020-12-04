@@ -6,6 +6,7 @@ use App\Lib\Message;
 use App\Lib\Util;
 use App\Models\Menu;
 use App\Services\Models\RoleMenuService;
+use App\Services\Models\RoleService;
 use App\Models\Role;
 use App\Models\RoleMenu;
 use Illuminate\Http\Request;
@@ -52,13 +53,13 @@ class RoleMenuController extends BaseController
     {
         $query = $this->mainService->model();
         $query = $query->select(
-            'role_menu.role_id',
+            'role.id AS role_id',
             'role.name AS role_name',
             'role.type AS role_type',
             'role_menu.menu_id',
             'menu.name AS menu_name'
-        )->join('role', 'role_menu.role_id', '=', 'role.id')
-        ->join('menu', 'role_menu.menu_id', '=', 'menu.id');
+        )->rightJoin('role', 'role_menu.role_id', '=', 'role.id')
+        ->leftJoin('menu', 'role_menu.menu_id', '=', 'menu.id');
 
         if ($request->name) {
             $query = $query->where('role.name', 'LIKE', '%' . $request->name . '%');
@@ -71,7 +72,7 @@ class RoleMenuController extends BaseController
         $role_menus = $query->whereNull('role_menu.deleted_at')
             ->whereNull('role.deleted_at')
             ->whereNull('menu.deleted_at')
-            ->orderBy('role_menu.id', 'ASC')
+            ->orderBy('role.id', 'ASC')
             ->get();
         $list = [];
 
@@ -80,7 +81,7 @@ class RoleMenuController extends BaseController
             $list[$role_menu->role_name]['role_name'] = $role_menu->role_name;
             $list[$role_menu->role_name]['role_type'] = $role_menu->role_type;
             $list[$role_menu->role_name]['menu_id'][] = $role_menu->menu_id;
-            $list[$role_menu->role_name]['menu_name'][] = $role_menu->menu_name;
+            $list[$role_menu->role_name]['menu_name'][] = ($role_menu->menu_name) ? $role_menu->menu_name : '';
         }
 
         $list = array_map(function($values) {
@@ -123,10 +124,20 @@ class RoleMenuController extends BaseController
             $user_id = (isset(Auth::user()->id)) ? Auth::user()->id : 1;
             $now = date('Y-m-d H:i:s');
 
-            foreach ($role_menus as $role_menu) {
-                $role_menu->deleted_by = $user_id;
-                $role_menu->deleted_at = $now;
-                $role_menu->save();
+            if ($role_menus->count()) {
+                foreach ($role_menus as $role_menu) {
+                    $role_menu->deleted_by = $user_id;
+                    $role_menu->deleted_at = $now;
+                    $role_menu->save();
+                }
+            }
+
+            $role = Role::where('id', $request->role_id)->first();
+
+            if ($role) {
+                $role->deleted_by = $user_id;
+                $role->deleted_at = $now;
+                $role->save();
             }
 
             DB::commit();
@@ -158,10 +169,20 @@ class RoleMenuController extends BaseController
             $user_id = (isset(Auth::user()->id)) ? Auth::user()->id : 1;
             $now = date('Y-m-d H:i:s');
 
-            foreach ($role_menus as $role_menu) {
-                $role_menu->deleted_by = $user_id;
-                $role_menu->deleted_at = $now;
-                $role_menu->save();
+            if ($role_menus->count()) {
+                foreach ($role_menus as $role_menu) {
+                    $role_menu->deleted_by = $user_id;
+                    $role_menu->deleted_at = $now;
+                    $role_menu->save();
+                }
+            }
+
+            $role = Role::where('id', $request->role_id)->first();
+
+            if ($role) {
+                $role->deleted_by = $user_id;
+                $role->deleted_at = $now;
+                $role->save();
             }
 
             DB::commit();
@@ -171,6 +192,213 @@ class RoleMenuController extends BaseController
             DB::rollBack();
             Log::error('remove error:' . $e->getMessage());
             return ['status' => -1, 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Method for overriding create method of BaseController class
+     * 
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create(Request $request)
+    {
+        $menus = Menu::select('id', 'name', 'type')
+            ->orderBy('id', 'ASC')
+            ->get()
+            ->toArray();
+        $menu_data = [];
+
+        foreach ($menus as $menu) {
+            $menu_data[$menu['type']][] = [
+                'id' => $menu['id'],
+                'name' => $menu['name']
+            ];
+        }
+
+        $available = $menu_data[1];
+        $menu_data = json_encode($menu_data);
+
+        return view($this->mainRoot . '/register', [
+            'action' => Util::langtext('ROLE_MENU_T_002'),
+            'register_mode' => 'create',
+            'menu_data' => $menu_data,
+            'available' => $available,
+            'page' => 'role_menu',
+            'data' => [],
+        ]);
+    }
+
+    /**
+     * Method for overriding edit method of BaseController class
+     * 
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(Request $request)
+    {
+        $menus = Menu::select('id', 'name', 'type')
+            ->orderBy('id', 'ASC')
+            ->get()
+            ->toArray();
+        $menu_data = [];
+
+        foreach ($menus as $menu) {
+            $menu_data[$menu['type']][] = [
+                'id' => $menu['id'],
+                'name' => $menu['name']
+            ];
+        }
+
+        $role_menus = $this->mainService->model()->where('role_id', $request->role_id)->get();
+        $selected_type = $role_menus[0]->role->type;
+        $selected_menu_data = [];
+
+        foreach ($role_menus as $role_menu) {
+            $selected_menu_data[$role_menu->role->type][] = [
+                'id' => $role_menu->menu->id,
+                'name' => $role_menu->menu->name
+            ];
+        }
+
+        $trimmed_menu_data = array_udiff($menu_data[$selected_type], $selected_menu_data[$selected_type], function($a, $b) {
+            return $a['id'] - $b['id'];
+        });
+        $menu_data[$selected_type] = $trimmed_menu_data;
+        $menu_data = json_encode($menu_data);
+
+        return view($this->mainRoot . '/register', [
+            'action' => Util::langtext('ROLE_MENU_T_003'),
+            'register_mode' => 'edit',
+            'menu_data' => $menu_data,
+            'available' => $trimmed_menu_data,
+            'page' => 'role_menu',
+            'data' => [
+                'role_id' => $request->role_id,
+                'name' => $role_menus[0]->role->name,
+                'type' => $role_menus[0]->role->type,
+                'selected_menus' => $selected_menu_data[$selected_type]
+            ],
+        ]);
+    }
+
+    /**
+     * Method for overriding validation_rules method of BaseController class
+     * 
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function validation_rules(Request $request)
+    {
+        $rules = [
+            'type' => 'required|integer|min:1|max:2',
+            'selected_menus' => 'array',
+            'selected_menus.*' => 'integer',
+        ];
+
+        if ($request->get('register_mode') == 'create') {
+            $rules['name'] = 'required|string|min:1|max:50|unique:role,name';
+        } elseif ($request->get('register_mode') == 'edit') {
+            $role = Role::where('id', $request->role_id)->first();
+
+            $rules['role_id'] = 'required|integer';
+            $rules['name'] = 'required|string|min:1|max:50|unique:role,name,' . $role->name . ',name';
+        }
+
+        return $rules;        
+    }
+
+    /**
+     * Method for overriding validation_message method of BaseController class
+     * 
+     * @param Request $request
+     * @return array|void
+     */
+    public function validation_message(Request $request)
+    {
+        $messages = [
+            'name.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('ROLE_MENU_L_011')]),
+            'name.min' => Message::getMessage(Message::ERROR_006, [Util::langtext('ROLE_MENU_L_011'), '1']),
+            'name.max' => Message::getMessage(Message::ERROR_006, [Util::langtext('ROLE_MENU_L_011'), '50']),
+            'type.required' => Message::getMessage(Message::ERROR_001, [Util::langtext('ROLE_MENU_L_012')]),
+            'type.integer' => Message::getMessage(Message::ERROR_005, [Util::langtext('ROLE_MENU_L_012')]),
+            'type.min' => Message::getMessage(Message::ERROR_003, [Util::langtext('ROLE_MENU_L_012')]),
+            'type.max' => Message::getMessage(Message::ERROR_003, [Util::langtext('ROLE_MENU_L_012')]),
+            'selected_menus.array' => Message::getMessage(Message::ERROR_003, [Util::langtext('ROLE_MENU_L_014')]),
+            'selected_menus.*' => Message::getMessage(Message::ERROR_005, [Util::langtext('ROLE_MENU_L_014')]),
+        ];
+
+        if ($request->get('register_mode') == 'edit') {
+            $messages['role_id.required'] = Message::getMessage(Message::ERROR_001, [Util::langtext('ROLE_MENU_L_015')]);
+            $messages['role_id.integer'] = Message::getMessage(Message::ERROR_005, [Util::langtext('ROLE_MENU_L_015')]);
+        }
+
+        return $messages;
+    }
+
+    /**
+     * Method for overriding save method of BaseController class
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @throws \Exception
+     */
+    public function save(Request $request)
+    {
+        $validator = $this->validation($request);
+
+        if ($validator->fails()) {
+            return $this->validationFailRedirect($request, $validator);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $input = $this->saveBefore($request);
+            $role = new Role();
+            $now = date('Y-m-d H:i:s');
+            $user_id = (isset(Auth::user()->id)) ? Auth::user()->id : 1;
+
+            if ($request->register_mode == 'edit') {
+                $role = $role->where('id', $request->role_id)->first();
+            } elseif ($request->register_mode == 'create') {
+                $role->created_at = $now;
+                $role->created_by = $user_id;
+            }
+
+            $role->name = $input['name'];
+            $role->type = $input['type'];
+            $role->updated_at = $now;
+            $role->updated_by = $user_id;
+            $role->save();
+
+            if ($request->register_mode == 'edit') {
+                $role_menus = $this->mainService->model()->where('role_id', $request->role_id)->get();
+
+                if ($role_menus->count()) {
+                    foreach ($role_menus as $role_menu) {
+                        $role_menu->deleted_by = $user_id;
+                        $role_menu->deleted_at = $now;
+                        $role_menu->save();
+                    }
+                }
+            }
+
+            foreach ($request->selected_menus as $selected_menu) {
+                $model = $this->mainService->save([
+                    'role_id' => $role->id,
+                    'menu_id' => $selected_menu
+                ]);
+                $this->saveAfter($request, $model);
+            }
+
+            DB::commit();
+
+            return $this->saveAfterRedirect($request);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('database register error:' . $e->getMessage());
+            throw new \Exception($e);
         }
     }
 }

@@ -8,6 +8,9 @@ var selected_rows_count = "";
 var request_url = "";
 var status = "";
 var errors = [];
+var selected = "";
+var json_data = "";
+var json_data2 = "";
 
 function exists(item, arr)
 {

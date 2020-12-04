@@ -175,7 +175,7 @@ $(document).ready(function() {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
                 }
             });
-    
+
             $.ajax({
                 "url": $("#confirm_url").val(),
                 "type": "POST",
@@ -207,5 +207,55 @@ $(document).ready(function() {
     $("#role-menu-form-cancel").click(function(e) {
         $("#confirm_url").val($(this).data("url"));
         $("#confirm_modal").modal("show");
+    });
+
+    $("#type").change(function(e) {
+        selected = $(this).val();
+        json_data = $("#menu-data").val();
+        json_data = $.parseJSON(json_data);
+
+        if (!is_string_empty(selected)) {
+            json_data = json_data[selected];
+            $("#available-menus").empty();
+            $("#selected-menus").empty();
+
+            for (var key in json_data) {
+                $("#available-menus").append(
+                    $("#available-menus").append($("<option></option>").val(json_data[key].id).html(json_data[key].name))
+                );
+            }
+
+            if ($("#register-mode").length && $("#register-mode").val() == 'edit') {
+                if (selected == $("#selected-type").val()) {
+                    json_data2 = $("#selected-menus-data").val();
+                    json_data2 = $.parseJSON(json_data2);
+
+                    for (var key2 in json_data2) {
+                        $("#selected-menus").append(
+                            $("#selected-menus").append($("<option></option>").val(json_data2[key2].id).html(json_data2[key2].name).prop("selected", "true"))
+                        );
+                    }
+                }
+            }
+        }
+    });
+
+    $("#menu-move-right").click(function() {
+        if ($("#available-menus").find("option").length) {
+            $("#available-menus option:selected").remove().appendTo("#selected-menus");
+        }
+    });
+
+    $("#menu-move-left").click(function() {
+        if ($("#selected-menus").find("option").length) {
+            $("#selected-menus option:selected").remove().appendTo("#available-menus");
+            $("#available-menus").html($("#available-menus").find("option").sort(function(x, y) {
+                return parseInt($(x).val()) > parseInt($(y).val()) ? 1 : -1;
+            }));
+
+            $("#selected-menus").find("option").each(function(key, value) {
+                $(value).prop("selected", "true");
+            });
+        }
     });
 });

@@ -251,6 +251,8 @@ return [
     'CUST_DEST_DLG_001' => '得意先送り先削除確認',
 
     // Role menu texts
+    'ROLE_MENU_T_002' => '登録',
+    'ROLE_MENU_T_003' => '更新',
     'ROLE_MENU_L_001' => '詳細検索',
     'ROLE_MENU_L_002' => '権限名',
     'ROLE_MENU_L_003' => '権限種別',
@@ -261,10 +263,19 @@ return [
     'ROLE_MENU_L_008' => '利用可能なメニュー',
     'ROLE_MENU_L_009' => '削除',
     'ROLE_MENU_L_010' => '削除',
+    'ROLE_MENU_L_011' => '権限名',
+    'ROLE_MENU_L_012' => '権限種別',
+    'ROLE_MENU_L_013' => '利用可能なメニュー',
+    'ROLE_MENU_L_014' => '利用可能なメニュー（追加済み）',
+    'ROLE_MENU_L_015' => 'ID',
+    'ROLE_MENU_D_001' => '管理者ユーザー',
+    'ROLE_MENU_D_002' => '得意先ユーザー',
     'ROLE_MENU_B_001' => 'クリア',
     'ROLE_MENU_B_002' => '検索',
     'ROLE_MENU_B_003' => '一括削除',
     'ROLE_MENU_B_004' => '新期ユーザー登録',
+    'ROLE_MENU_B_005' => '保存',
+    'ROLE_MENU_B_006' => 'キャンセル',
     'ROLE_MENU_DLG_001' => '権限管理削除確認',
 
     'BULLETIN_BOARD_L_001' => '掲示板名', // bulletin board name

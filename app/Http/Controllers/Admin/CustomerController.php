@@ -183,7 +183,7 @@ class CustomerController extends BaseController
             $rules['code'] = 'required|string|numeric|digits_between:1,7|unique:customer,code,' . $customer->code . ',code';
         }
 
-        return $rules;        
+        return $rules;
     }
 
     /**
