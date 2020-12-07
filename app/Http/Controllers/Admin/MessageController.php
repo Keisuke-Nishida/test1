@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Lib\Constant;
 use App\Lib\Message;
 use App\Lib\Util;
 use App\Services\Models\MessageService;
@@ -23,6 +24,7 @@ class MessageController extends BaseController
         $this->mainService = $admin_service;
         $this->mainRoot = 'admin/message';
         $this->mainTitle = Util::langtext('SIDEBAR_LI_010');
+        $this->menuKey = Util::getUserRolePrefix('admin') . Constant::MENU_MESSAGE;
     }
 
     /**
@@ -32,6 +34,10 @@ class MessageController extends BaseController
      */
     public function index()
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view('admin.message.index', ['page' => 'message']);
     }
 
@@ -75,6 +81,10 @@ class MessageController extends BaseController
      */
     public function create(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'action' => Util::langtext('MESSAGE_T_001'),
             'register_mode' => 'create',
@@ -91,6 +101,10 @@ class MessageController extends BaseController
      */
     public function edit(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         return view($this->mainRoot . '/register', [
             'action' => Util::langtext('MESSAGE_T_002'),
             'register_mode' => 'edit',
@@ -162,6 +176,10 @@ class MessageController extends BaseController
      */
     public function save(Request $request)
     {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
         $start_time = $request->notice_data_start_date . " " . $request->start . ":" . $request->start_minute . ":00";
         $end_time = $request->notice_data_end_date . " " . $request->end . ":" . $request->end_minute . ":00";
         $request->request->add(["start_time" => $start_time]);
