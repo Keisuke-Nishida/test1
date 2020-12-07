@@ -17,5 +17,7 @@ class Constant{
     const STATUS_NON_LINKED = 0;            // customer.core_system_status 非連携
     const STATUS_WAITING_FOR_LINKAGE = 1;   // customer.core_system_status 連携待ち
     const STATUS_LINKED = 2;                // customer.core_system_status 連携済み
+    
+    const WEB_PAGINATE_LINK_NUM = 5; // Web側の一覧表示にあるページネーションのリンク数
 
 }
