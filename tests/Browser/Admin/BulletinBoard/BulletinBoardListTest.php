@@ -13,7 +13,7 @@ use Tests\DuskTestCase;
 
 class BulletinBoardListTest extends DuskTestCase
 {
-    protected $sessionLogIn, $dashboardIndex, $bulletinBoardPath, $bulletinBoardIndexPath;
+    protected $sessionLogIn, $dashboardIndex, $bulletinBoardPath;
     
     // constructor and initialize data
     public function setUp(): void
@@ -23,7 +23,6 @@ class BulletinBoardListTest extends DuskTestCase
         $this->sessionLogIn = '/admin/login';
         $this->dashboardIndex = '/admin/index';
         $this->bulletinBoardPath = '/admin/bulletin_board';
-        $this->bulletinBoardIndexPath = '/admin/bulletin_board/index';
     }
     
     
@@ -72,7 +71,124 @@ class BulletinBoardListTest extends DuskTestCase
                     ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(4)')
                     ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(5)');
         }); 
-    }  
+    }
+    
+    /*
+     * Bulletin Board search test for per field basis
+     * @return void
+     */
+    public function testBulletinBoardSearchPerFields()
+    {
+        $this->browse(function (Browser $browser)
+        {
+            $browser->visit($this->bulletinBoardPath)
+                    ->pause(1000)
+                    ->assertVisible('#bulletin_board-table > tbody')
+                    ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(2)')
+                    ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(4)')
+                    ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(5)');
+                    
+            $name = $browser->text('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(2)');
+            $title = $browser->text('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(4)');
+            $body = substr($browser->text('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(5)'),0,10);
+            
+            //search name entry only 
+            $browser->click('#search-toggle-button')
+                    ->assertVisible('#search-name')
+                    ->value('#search-name', $name)
+                    ->value('#search-title','')
+                    ->value('#search-body','')
+                    ->assertValue('#search-name', $name)
+                    ->press(Util::langtext('BULLETIN_BOARD_B_003')) //submit
+                    ->pause(1000)
+                    ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(2)')
+                    ->assertSeeIn('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(2)', $name)
+                    ->press(Util::langtext('BULLETIN_BOARD_B_002')) //clear
+                    ->pause(1000);
+                    
+            //search title entry only
+            $browser->assertVisible('#search-title')
+                    ->value('#search-title', $title)
+                    ->value('#search-name','')
+                    ->value('#search-body','')
+                    ->assertValue('#search-title', $title)
+                    ->press(Util::langtext('BULLETIN_BOARD_B_003')) //submit
+                    ->pause(1000)
+                    ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(4)')
+                    ->assertSeeIn('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(4)', $title)
+                    ->press(Util::langtext('BULLETIN_BOARD_B_002')) //clear
+                    ->pause(1000);
+                    
+            //search body entry only
+            $browser->assertVisible('#search-body')
+                    ->value('#search-title','')
+                    ->value('#search-name','')
+                    ->value('#search-body',$body)
+                    ->assertValue('#search-body', $body)
+                    ->press(Util::langtext('BULLETIN_BOARD_B_003')) //submit
+                    ->pause(1000)
+                    ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(5)')
+                    ->assertSeeIn('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(5)', $body)
+                    ->press(Util::langtext('BULLETIN_BOARD_B_002')); //clear
+        });
+    }
+    
+    /*
+     * Bulletin Board search test field - all fields
+     * @return void
+     */
+    public function testBulletinBoardSearchAllFields()
+    {
+        $this->browse(function (Browser $browser)
+        {
+            $browser->visit($this->bulletinBoardPath)
+                    ->pause(1000)
+                    ->assertVisible('#bulletin_board-table > tbody')
+                    ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(2)')
+                    ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(4)')
+                    ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(5)');
+                    
+            $name = $browser->text('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(2)');
+            $title = $browser->text('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(4)');
+            $body = substr($browser->text('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(5)'),0,10);
+            
+            
+            //search name + title + body 
+            $browser->click('#search-toggle-button')
+                    ->pause(1000)
+                    ->assertVisible('#search-name')
+                    ->assertVisible('#search-title')
+                    ->assertVisible('#search-body')
+                    ->value('#search-name', $name)
+                    ->value('#search-title',$title)
+                    ->value('#search-body',$body)
+                    ->assertValue('#search-name', $name)
+                    ->assertValue('#search-title', $title)
+                    ->assertValue('#search-body', $body)
+                    ->press(Util::langtext('BULLETIN_BOARD_B_003')) //submit
+                    ->pause(1000)
+                    ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(2)')
+                    ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(4)')
+                    ->assertVisible('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(5)')
+                    ->assertSeeIn('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(2)', $name)
+                    ->assertSeeIn('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(4)', $title)
+                    ->assertSeeIn('#bulletin_board-table > tbody > tr:nth-child(1) > td:nth-child(5)', $body)
+                    ->press(Util::langtext('BULLETIN_BOARD_B_002')) //clear
+                    ->pause(1000)
+            //checked cleared and loaded all
+                    ->assertValue('#search-name','')
+                    ->assertValue('#search-body','')
+                    ->assertValue('#search-title','');      
+            
+            //check if there are more rows
+            for ($i = 1; $i <= 5 ; $i++)
+            {
+                $browser->assertVisible('#bulletin_board-table > tbody > tr:nth-child('.strval($i).') > td:nth-child(2)')
+                        ->assertVisible('#bulletin_board-table > tbody > tr:nth-child('.strval($i).') > td:nth-child(4)')
+                        ->assertVisible('#bulletin_board-table > tbody > tr:nth-child('.strval($i).') > td:nth-child(5)');
+            }
+        });
+    }   
     
     /**
      * Test no selected row bulk delete and popup dialog
