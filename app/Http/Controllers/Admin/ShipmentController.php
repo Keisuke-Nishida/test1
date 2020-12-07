@@ -72,10 +72,11 @@ class ShipmentController extends BaseController
             'shipment_data.order_date',
             'shipment_data.shipment_date',
             'shipment_data.delivery_date',
-            'shipment_data.shipping_no',
+            'shipment_detail_data.shipping_no',
             'voucher.name AS voucher_type_name',
-        )->join('condition', 'shipment_data.condition_code', '=', 'condition.code')
-        ->join('transport', 'shipment_data.transport_type', '=', 'transport.id')
+        )->join('shipment_detail_data', 'shipment_data.id', '=', 'shipment_detail_data.shipment_data_id')
+        ->join('condition', 'shipment_detail_data.condition_code', '=', 'condition.code')
+        ->join('transport', 'shipment_detail_data.transport_type', '=', 'transport.id')
         ->join('voucher', 'shipment_data.voucher_type', '=', 'voucher.id');
 
         if ($request->date_create_start && $request->date_create_end) {
@@ -86,7 +87,7 @@ class ShipmentController extends BaseController
         }
 
         if ($request->condition) {
-            $query = $query->where('shipment_data.condition_code', $request->condition);
+            $query = $query->where('shipment_detail_data.condition_code', $request->condition);
         }
 
         if ($request->customer_code) {
@@ -112,7 +113,7 @@ class ShipmentController extends BaseController
         }
 
         if ($request->transport_type) {
-            $query = $query->where('shipment_data.transport_type', $request->transport_type);
+            $query = $query->where('shipment_detail_data.transport_type', $request->transport_type);
         }
 
         if ($request->order_no) {
@@ -141,7 +142,7 @@ class ShipmentController extends BaseController
         }
 
         if ($request->shipping_no) {
-            $query = $query->where('shipment_data.shipping_no', 'LIKE', '%' . $request->shipping_no . '%');
+            $query = $query->where('shipment_detail_data.shipping_no', 'LIKE', '%' . $request->shipping_no . '%');
         }
 
         if ($request->voucher_type) {
@@ -149,6 +150,7 @@ class ShipmentController extends BaseController
         }
 
         $list = $query->whereNull('shipment_data.deleted_at')
+            ->whereNull('shipment_detail_data.deleted_at')
             ->whereNull('condition.deleted_at')
             ->whereNull('transport.deleted_at')
             ->whereNull('voucher.deleted_at')
