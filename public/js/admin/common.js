@@ -59,7 +59,7 @@ function toggle_search_cont()
 function get_list_link(type, id, link, extra_class, link_id = null, title = null)
 {
     if (type == "detail") {
-        return '<a href="javascript:void(0)" class="btn btn-success btn-detail ' + extra_class + '" data-toggle="tooltip" title="詳細" data-placement="top" data-id="' + id + '"><i class="fas fa-search fa-fw"></i></a>';
+        return '<a href="' + link + '" id="'+ title +'-id-'+ link_id +'" class="btn btn-success ' + extra_class + '" data-toggle="tooltip" title="詳細" data-placement="top"><i class="fas fa-search fa-fw"></i></a>';
     }
 
     if (type == "edit") {
@@ -68,5 +68,17 @@ function get_list_link(type, id, link, extra_class, link_id = null, title = null
 
     if (type == "remove") {
         return '<a href="javascript:void(0)" id="' + type + '-id-' + id + '" class="btn btn-danger btn-remove ' + extra_class + '" data-toggle="tooltip" title="削除" data-placement="top" data-id="' + id + '" data-url="' + link + '"><i class="fas fa-trash-alt fa-fw"></i></a>';
+    }
+}
+
+function isStartDateValid(start, end)
+{
+    start = new Date(start);
+    end = new Date(end);
+
+    if (start.getTime() > end.getTime()) {
+        return false;
+    } else {
+        return true;
     }
 }

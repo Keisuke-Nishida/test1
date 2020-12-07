@@ -94,5 +94,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function(){
     Route::post('/message/delete_single', 'Admin\MessageController@delete')->name('admin/message/delete_single');
     Route::post('/message/delete_multiple', 'Admin\MessageController@deleteMultiple')->name('admin/message/delete_multiple');
 
-
+    Route::get('/shipment', 'Admin\ShipmentController@index')->name('admin/shipment');
+    Route::get('/shipment/index', 'Admin\ShipmentController@index')->name('admin/shipment/index');
+    Route::post('/shipment/search', 'Admin\ShipmentController@list_search')->name('admin/shipment/search');
+    Route::get('/shipment/detail/{id}', 'Admin\ShipmentController@detail')->name('admin/shipment/detail');
 });
