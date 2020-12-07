@@ -14,4 +14,6 @@ class Constant {
     const STATUS_CUSTOMER = 2;      // user.status 得意先ユーザー
     const SYSTEM_ADMIN = 1;         // user.system_admin_flag システム管理者
 
+    const WEB_PAGINATE_LINK_NUM = 5; // Web側の一覧表示にあるページネーションのリンク数
+
 }
