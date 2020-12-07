@@ -29,6 +29,17 @@ class User extends Authenticatable
     ];
 
     /**
+     * 複数代入する属性
+     * データ保存時にfill()を使用する場合はその属性をここに記載
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'password', 'updated_by'
+    ];
+
+
+    /**
      * 権限マスタリレーション
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
