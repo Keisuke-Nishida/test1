@@ -1,159 +1,58 @@
-<!DOCTYPE html>
-<html lang="ja">
+@extends('web.layouts.app')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+{{-- 追加CSS --}}
+@section('app_css')
+@endsection
 
-    <!-- CSS -->
-    <!-- bootstrap4用 -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-    <!-- dataTables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap4.min.css" />
-    <!-- datetimepicker -->
-    <link rel="stylesheet" href="../../../public/css/datetimepicker/jquery.datetimepicker.min.css">
-    <!-- 共通 -->
-    <link rel="stylesheet" href="../../../public/css/style.css" />
-    <!-- 列固定テーブル -->
-    <link rel="stylesheet" href="../../../public/css/fixed.table.css" />
 
-    <!-- fontawesome -->
-    <!-- cdn廃止予定のためdownload版を使用 -->
-    <link rel="stylesheet" href="../../../public/fontawesome-free-5.14.0-web/css/all.css" />
+@section('app_title')
+    {{ $data->title }}
+@endsection
 
-    <title>湖南市市民産業交流施設「ここぴあ」オープンの模様をご紹介いたします | タキイ Web情報閲覧サービス</title>
-</head>
-
-<body class="page">
-    <!-- ヘッダー -->
-    <header class="header sticky-top">
-        <div class="header__bachground-image">
-            <div class="header__bachground-image__mask">
-                <div class="d-flex flex-row align-items-center px-5 py-3 shadow">
-                    <!-- ロゴ -->
-                    <div class="mr-auto">
-                        <a class="header__logo my-0 mr-lg-auto" href="../home/index.blade.html">
-                            <img src="../../../public/images/LOGO.png" alt="LOGO画像">
-                        </a>
-                    </div>
-
-                    <!-- ログイン表示/会員メニュー -->
-                    <div class="d-flex flex-column flex-lg-row ml-5">
-                        <div class="header__text d-flex align-items-center">
-                            ログイン中：株式会社○○○○○○○○○○○○(ID:123456789) 様
-                        </div>
-                        <div class="d-flex justify-content-end mt-2 mt-lg-0 ml-0 ml-lg-3">
-                            <div class="btn-group" role="group">
-                                <button id="btnGroupDrop1" type="button"
-                                    class="btn button__main dropdown-toggle btn-sm px-3" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    会員メニュー
-                                </button>
-                                <div class="header__dropdown-menu dropdown-menu dropdown-menu-right"
-                                    aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item header__dropdown-menu__text header__dropdown-menu__item"
-                                        href="../mypage/password.blade.html"><i class="fa fa-key"
-                                            aria-hidden="true"></i>
-                                        パスワード変更</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item header__dropdown-menu__text header__dropdown-menu__item"
-                                        href="../auth/login.blade.html"><i class="fa fa-lock" aria-hidden="true"></i>
-                                        ログアウト</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- Breadcrumb -->
+@section('app_bread')
+    <div class="row mt-2">
+        <div class="page__breadcrumb col col-lg-10 d-flex align-items-end">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0">
+                    <li class="breadcrumb-item">
+                        <a class="link__main" href="/">HOME</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <a class="link__main" href="/notice">お知らせ一覧</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        {{ Str::limit($data->title, $limit_title_length) }}
+                    </li>
+                </ol>
+            </nav>
         </div>
-    </header>
+    </div>
+@endsection
 
-    <div class="container mb-5">
-
-        <!-- パンくずリスト -->
-        <div class="row mt-2">
-            <!-- ページタイトル -->
-            <!-- <div class="col col-lg-2 d-flex align-items-end">
-            <h1 class="page__title">HOME</h1>
-        </div> -->
-            <div class="page__breadcrumb col col-lg-10 d-flex align-items-end">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-transparent mb-0">
-                        <li class="breadcrumb-item">
-                            <a class="link__main" href="../home/index.blade.html">HOME</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">
-                            <a class="link__main" href="./list.blade.html">お知らせ一覧</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">
-                            湖南市市民産業交流施設「ここぴあ」オープンの...
-                        </li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-
-        <hr class="page__hr my-0">
-
-        <!-- 記事詳細 -->
-        <div class="article row">
-            <div class="col py-3">
-                <div class="content bg-white shadow content__card--round p-5">
-                    <h2 class="m-0">湖南市市民産業交流施設「ここぴあ」オープンの模様をご紹介いたします</h2>
-                    <small class="article-list__date"><i class="far fa-clock fa-fw"></i> 2020.01.01</small>
-                    <p class="article-list__text mt-4 text__sub">
-                        本誌『タキイ最前線』2017年秋種特集号より連載スタートした「ここぴあ通信」滋賀県湖南市の市民産業交流施設「ここぴあ」内の直売所へ出荷される生産者の取り組みにクローズアップした本記事。ここでは、昨年11月に開催された「ここぴあ」オープンセレモニーの様子をご紹介します。
-                        <br><br>
-                        2016年11月５日、滋賀県湖南市にあるイオンタウン湖南の一角に、市民産業交流促進施設「ここぴあ」がオープンしました。初日から２日間はオープニングイベントが催され、まずは地元のジュニアバンドの演奏と谷畑市長らによるテープカットで華やかに幕が開きます。湖南市の未来を担う、期待の施設の誕生です。
-                        <br><br>
-                        「ここぴあ」は農産物直売所を柱に、１次産業だけでなく、２次産業、３次産業すべての経済活動の促進と、市民の交流や憩いの場となることを願って建設されたものです。地域には兼業の米農家が多く、近年は収入につながらなくなっていました。そこで、小さな畑を活用し、野菜を栽培して、少量でも利益の上がる直売所出荷をしてもらおう。高齢者や女性たちにも、外で働くことで元気になってもらおう。さらには後継者の育成にもつなげたい。そして、「農業の６次産業化」により市全体を活性化していこう。
-                        <br><br>
-                        こうした構想の拠点となるべく「ここぴあ」は誕生したのです。
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- お知らせ一覧へリンク -->
-        <div class="row">
-            <div class="col content__bottom__link text-center mt-4">
-                <a class="link__main" href="./list.blade.html">> お知らせ一覧へ</a>
+<!-- コンテンツ -->
+@section('app_contents')
+    <!-- 記事詳細 -->
+    <div class="article row">
+        <div class="col py-3">
+            <div class="content bg-white shadow content__card--round p-5">
+                <h2 class="article-list__title m-0">{{ $data->title }}</h2>
+                <small class="article-list__date">
+                    <i class="far fa-clock fa-fw"></i> {{ $data->start_time }}
+                </small>
+                <p class="article-list__text mt-4 text__sub">{{ $data->body }}</p>
             </div>
         </div>
     </div>
 
-    <footer class="footer">
-        <div class="contariner">
-            <div class="row m-0">
-                <div class="col text-center p-2">
-                    <small class="footer__text text-white">Copyright © TAKII & CO.,LTD.</small>
-                </div>
-            </div>
+    <!-- お知らせ一覧へリンク -->
+    <div class="row">
+        <div class="col content__bottom__link text-center mt-4">
+            <a class="link__main" href="/notice">> お知らせ一覧へ</a>
         </div>
-    </footer>
+    </div>
+@endsection
 
-    <!-- JavaScript -->
-    <!-- jQuery本体 -->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"
-        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-    <!-- Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-        crossorigin="anonymous"></script>
-    <!-- dataTables -->
-    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
-    <!-- datetimepicker -->
-    <script src="../../../public/js/datetimepicker/jquery.datetimepicker.full.min.js"></script>
-    <!-- 共有 -->
-    <script src="../../../public/js/main.js"></script>
-</body>
-
-</html>
+{{-- 追加JSファイル --}}
+@section('app_js')
+@endsection
