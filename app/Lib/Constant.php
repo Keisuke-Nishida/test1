@@ -14,6 +14,8 @@ class Constant{
     const STATUS_CUSTOMER = 2;      // user.status 得意先ユーザー
     const SYSTEM_ADMIN = 1;         // user.system_admin_flag システム管理者
 
+    const WEB_PAGINATE_LINK_NUM = 5; // Web側の一覧表示にあるページネーションのリンク数
+  
     const STATUS_NON_LINKED = 0;            // customer.core_system_status 非連携
     const STATUS_WAITING_FOR_LINKAGE = 1;   // customer.core_system_status 連携待ち
     const STATUS_LINKED = 2;                // customer.core_system_status 連携済み

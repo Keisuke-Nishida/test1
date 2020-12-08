@@ -1,5 +1,5 @@
 @php
-    $PAGINATE_LINK_NUM = 5;
+    $link_num = App\Lib\Constant::WEB_PAGINATE_LINK_NUM;
 @endphp
 
 @if ($paginator->hasPages())
@@ -17,24 +17,32 @@
 
 
             {{-- Pagination Elements --}}
-            @if ($paginator->lastPage() > $PAGINATE_LINK_NUM)
+            {{-- 定数（$link_num）よりページ数が多い場合 --}}
+            @if ($paginator->lastPage() > $link_num)
 
-                @if ($paginator->currentPage() <= floor($PAGINATE_LINK_NUM / 2))
+                {{-- 現在のページが表示するリンクの中心位置よりも左の場合 --}}
+                @if ($paginator->currentPage() <= floor($link_num / 2))
                     @php
                         $start_page = 1;
-                        $end_page = $PAGINATE_LINK_NUM;
+                        $end_page = $link_num;
                     @endphp
-                @elseif ($paginator->currentPage() > $paginator->lastPage() - floor($PAGINATE_LINK_NUM / 2))
+
+                {{-- 現在のページが表示するリンクの中心位置よりも右のとき --}}
+                @elseif ($paginator->currentPage() > $paginator->lastPage() - floor($link_num / 2))
                     @php
-                        $start_page = $paginator->lastPage() - ($PAGINATE_LINK_NUM - 1);
+                        $start_page = $paginator->lastPage() - ($link_num - 1);
                         $end_page = $paginator->lastPage();
                     @endphp
+
+                {{-- 現在のページが表示するリンクの中心位置の場合 --}}
                 @else
                     @php
-                        $start_page = $paginator->currentPage() - (floor(($PAGINATE_LINK_NUM % 2 == 0 ? $PAGINATE_LINK_NUM - 1 : $PAGINATE_LINK_NUM)  / 2));
-                        $end_page = $paginator->currentPage() + floor($PAGINATE_LINK_NUM / 2);
+                        $start_page = $paginator->currentPage() - (floor(($link_num % 2 == 0 ? $link_num - 1 : $link_num)  / 2));
+                        $end_page = $paginator->currentPage() + floor($link_num / 2);
                     @endphp
                 @endif
+
+            {{-- 定数（$link_num）よりもページ数が少ない場合 --}}
             @else
                 @php
                     $start_page = 1;
