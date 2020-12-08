@@ -7,19 +7,20 @@ use Illuminate\Http\Request;
 
 /**
  * API用Baseコントローラー
- * Class BaseController
+ * Class BaseApiController
  * @package App\Http\Controllers\Api
  */
-class BaseController extends Controller
+class BaseApiController extends Controller
 {
 
-    protected $mainService;
+    protected $mainApiService;
 
     /**
      * コンストラクター
-     * BaseController constructor.
+     * BaseApiController constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
     }
 
     /**
@@ -27,9 +28,10 @@ class BaseController extends Controller
      * @param array $response
      * @return \Illuminate\Http\JsonResponse
      */
-    public function success($response = []) {
+    public function success($response = [])
+    {
         $rtn['status'] = 1;
-        foreach($response as $key => $value) {
+        foreach ($response as $key => $value) {
             $rtn[$key] = $value;
         }
         return response()->json($rtn);
@@ -41,12 +43,13 @@ class BaseController extends Controller
      * @param array $response
      * @return \Illuminate\Http\JsonResponse
      */
-    public function error($status, $response = []) {
+    public function error($status, $response = [])
+    {
         $rtn['status'] = $status;
-        foreach($response as $key => $value) {
+        foreach ($response as $key => $value) {
             $rtn[$key] = $value;
         }
-        \Log::error('status:'.$status.", message:".json_encode($response));
+        \Log::error('status:' . $status . ", message:" . json_encode($response));
         return response()->json($rtn);
     }
 }
