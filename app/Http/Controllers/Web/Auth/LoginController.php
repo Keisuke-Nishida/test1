@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Lib\Constant;
 use App\Lib\Message;
 use App\Providers\RouteServiceProvider;
+use App\Services\Models\CustomerService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,13 +34,16 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    protected $customerService;
+
     /**
      * コンストラクタ
      * LoginController constructor.
      */
-    public function __construct()
+    public function __construct(CustomerService $customerService)
     {
         $this->middleware('guest:web')->except('logout');
+        $this->customerService = $customerService;
     }
 
     /**
@@ -128,7 +132,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::guard('web')->logout();
+        $this->guard()->logout();
 
         return $this->loggedOut($request);
     }
@@ -167,6 +171,8 @@ class LoginController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendLoginResponse(Request $request) {
+        // 得意先マスタの基幹システム連携ステータスの更新
+        $this->updateCoreSystemStatus($this->guard()->user());
         // 保存するにチェックしていない場合は、何も行わない
         if (!$request->remember) {
             return $this->authenticated($request, $this->guard()->user())
@@ -174,12 +180,30 @@ class LoginController extends Controller
         }
         $request->session()->regenerate();
         $this->clearLoginAttempts($request);
-        $cookies = \Auth::getCookieJar();
-        $value = $cookies->queued(\Auth::getRecallerName())->getValue();
+        $cookies = $this->guard()->getCookieJar();
+        $value = $cookies->queued($this->guard()->getRecallerName())->getValue();
         // ログイン保存の時間を変更
-        $cookies->queue(\Auth::getRecallerName(), $value, Constant::REMEMBER_TOKEN_TIME);
+        $cookies->queue($this->guard()->getRecallerName(), $value, Constant::REMEMBER_TOKEN_TIME);
 
         return $this->authenticated($request, $this->guard()->user())
             ?: redirect()->intended($this->redirectPath());
+    }
+
+    /**
+     * updateCoreSystemStatus
+     * 対象ログインユーザーの得意先IDをもとに得意先マスタを検索
+     * 基幹システム連携ステータスが 0 の場合は 1 に更新する
+     *
+     * @param  mixed $user
+     * @return void
+     */
+    public function updateCoreSystemStatus($user) {
+        $customer = $this->customerService->searchOne(["id" => $user->customer_id]);
+
+        if($customer->core_system_status == Constant::STATUS_NON_LINKED) {
+            $customer->core_system_status = Constant::STATUS_WAITING_FOR_LINKAGE;
+            $customer->updated_by = $user->id;
+            $customer->save();
+        }
     }
 }
