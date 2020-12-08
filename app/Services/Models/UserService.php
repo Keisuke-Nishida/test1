@@ -2,8 +2,11 @@
 
 namespace App\Services\Models;
 
+use App\Lib\Constant;
 use App\Models\User;
 use App\Services\Models\MessageService;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * ユーザーサービス
@@ -88,7 +91,7 @@ class UserService extends BaseService
     public function getUserDataFromIdAndPassword($request)
     {
         $conditions = ["login_id" => $request["login_id"]];
-        $user_list = $this->modelService->searchList($conditions);
+        $user_list = $this->searchList($conditions);
         $user_data = NULL;
 
         // ログインIDがユニークでない場合はpasswordでの検証も必要
