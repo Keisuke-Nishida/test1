@@ -172,7 +172,7 @@ class LoginController extends Controller
      */
     protected function sendLoginResponse(Request $request) {
         // 得意先マスタの基幹システム連携ステータスの更新
-        $this->updateCoreSystemStatus($this->guard()->user());
+        $this->customerService->updateCoreSystemStatus($this->guard()->user());
         // 保存するにチェックしていない場合は、何も行わない
         if (!$request->remember) {
             return $this->authenticated($request, $this->guard()->user())
@@ -187,23 +187,5 @@ class LoginController extends Controller
 
         return $this->authenticated($request, $this->guard()->user())
             ?: redirect()->intended($this->redirectPath());
-    }
-
-    /**
-     * updateCoreSystemStatus
-     * 対象ログインユーザーの得意先IDをもとに得意先マスタを検索
-     * 基幹システム連携ステータスが 0 の場合は 1 に更新する
-     *
-     * @param  mixed $user
-     * @return void
-     */
-    public function updateCoreSystemStatus($user) {
-        $customer = $this->customerService->searchOne(["id" => $user->customer_id]);
-
-        if($customer->core_system_status == Constant::STATUS_NON_LINKED) {
-            $customer->core_system_status = Constant::STATUS_WAITING_FOR_LINKAGE;
-            $customer->updated_by = $user->id;
-            $customer->save();
-        }
     }
 }
