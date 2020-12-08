@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\BaseController;
+use App\Http\Controllers\Api\BaseApiController;
 use App\Lib\Message;
 use App\Providers\RouteServiceProvider;
+use App\Services\Api\LoginApiService;
 use App\Services\Api\MessageApiService;
 use App\Services\Api\UserAgreeDataApiService;
 use App\Services\Api\UserApiService;
-use App\Services\Models\UserAgreeDataService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -16,10 +16,10 @@ use Illuminate\Validation\Rule;
 
 /**
  * API用ログインコントローラー
- * Class LoginController
+ * Class LoginApiController
  * @package App\Http\Controllers\Api
  */
-class LoginController extends BaseController
+class LoginApiController extends BaseApiController
 {
 
     use AuthenticatesUsers;
@@ -38,13 +38,18 @@ class LoginController extends BaseController
 
     /**
      * コンストラクター
-     * LoginController constructor.
+     * LoginApiController constructor.
      */
-    public function __construct()
-    {
-        $this->userApiService = new UserApiService();
-        $this->userAgreeDataApiService = new UserAgreeDataApiService();
-        $this->messageApiService = new MessageApiService();
+    public function __construct(
+        LoginApiService $loginApiService,
+        UserApiService $userApiService,
+        UserAgreeDataApiService $userAgreeDataApiService,
+        MessageApiService $messageApiService
+    ) {
+        $this->mainApiService = $loginApiService;
+        $this->userApiService = $userApiService;
+        $this->userAgreeDataApiService = $userAgreeDataApiService;
+        $this->messageApiService = $messageApiService;
     }
 
     /**
@@ -65,7 +70,7 @@ class LoginController extends BaseController
         }
 
         // ユーザーデータの取得
-        $user_data = $this->userApiService->getUserData($this->credentials($request));
+        $user_data = $this->userApiService->getUserDataFromIdAndPassword($this->credentials($request));
         // 利用規約のメッセージの取得
         $message_data = $this->messageApiService->getMessageTermsOfUseData();
         // 同意履歴の取得
@@ -84,9 +89,9 @@ class LoginController extends BaseController
 
         // 同意履歴が存在する場合
         if ($is_agreement_history) {
-            $is_more_recent = $this->isLastUpdateDateMoreRecent($request);
+            $is_more_recent = $this->userApiService->isLastUpdateDateMoreRecent($request);
 
-            // 最終更新日時のほうが新しい日付の場合
+            // 最終ログイン日時より最終更新日時のほうが新しい日付の場合
             if ($is_more_recent) {
                 // 免責事項同意のモーダル表示（※メールアドレス入力欄非表示）
                 $response = [
@@ -110,7 +115,7 @@ class LoginController extends BaseController
     }
 
     /**
-     * ログイン時バリデーション
+     * ログインフォームのバリデーション
      * @param Request $request
      * @throws ValidationException
      */
@@ -133,23 +138,14 @@ class LoginController extends BaseController
      */
     protected function validateModalForm(Request $request)
     {
-        $user = $this->userApiService->getUserData($request);
+        $user = $this->userApiService->getUserDataFromIdAndPassword($request);
 
         // 初回登録時はメールアドレスのバリデーションが必要
         if ($request->status == "first_login") {
-            $this->validate($request, [
-                'email'       => [
-                    'required', 'string', 'email',
-                    Rule::unique('user')->ignore($user->id)
-                ],
-                'check_agree' => 'accepted'
-            ], [
-                'email.required' => Message::getMessage(Message::ERROR_001, ["メールアドレス"]),
-                'email.email'    => Message::getMessage(Message::ERROR_008, ["メールアドレス"]),
-                'email.unique'   => Message::getMessage(Message::ERROR_010, ["メールアドレス"]),
+            $this->validateFirstLoginAgreement($request, $user->id);
 
-                'check_agree.accepted' => Message::getMessage(Message::ERROR_009)
-            ]);
+            // バリデーション成功時、user.reset_tokenとuser.reset_token_limit_timeを登録する
+            $this->userApiService->saveResetToken($user);
 
             $response = [
                 "login"  => false,
@@ -159,12 +155,7 @@ class LoginController extends BaseController
 
         // 同意更新時
         if ($request->status == "update_agreement") {
-            $this->validate($request, [
-                'check_agree' => 'required'
-            ], [
-                'check_agree.required' => Message::getMessage(Message::ERROR_009)
-            ]);
-
+            $this->validateUpdateAgreement($request);
             $response = [
                 "login"   => true,
                 "user_id" => $user->id,
@@ -173,6 +164,45 @@ class LoginController extends BaseController
         }
 
         return $this->success($response);
+    }
+
+    /**
+     * 初回ログイン時に表示されるモーダルのバリデーション
+     *
+     * @param  mixed $request
+     * @param  mixed $user_id
+     * @return void
+     */
+    protected function validateFirstLoginAgreement(Request $request, $user_id)
+    {
+        $this->validate($request, [
+            'email'       => [
+                'required', 'string', 'email',
+                Rule::unique('user')->ignore($user_id)
+            ],
+            'check_agree' => 'accepted'
+        ], [
+            'email.required' => Message::getMessage(Message::ERROR_001, ["メールアドレス"]),
+            'email.email'    => Message::getMessage(Message::ERROR_008, ["メールアドレス"]),
+            'email.unique'   => Message::getMessage(Message::ERROR_010, ["メールアドレス"]),
+
+            'check_agree.accepted' => Message::getMessage(Message::ERROR_009)
+        ]);
+    }
+
+    /**
+     * 同意履歴更新時に表示されるモーダルのバリデーション
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    protected function validateUpdateAgreement(Request $request)
+    {
+        $this->validate($request, [
+            'check_agree' => 'required'
+        ], [
+            'check_agree.required' => Message::getMessage(Message::ERROR_009)
+        ]);
     }
 
     /**
@@ -229,62 +259,5 @@ class LoginController extends BaseController
             "title"        => "メッセージ",
             "message"      => Message::getMessage(Message::INFO_008),
         ]);
-    }
-
-    /**
-     * isLastUpdateDateMoreRecent
-     * フロント側のログイン時に使用
-     * ユーザーマスタの最終ログイン日時(user.last_login_time)と
-     * メッセージマスタの免責同意データの最終更新日時(message.updated_at)を比較する
-     * 最終更新日時が新しい場合をtrueで返す
-     *
-     * @param  mixed $var
-     * @return bool
-     */
-    public function isLastUpdateDateMoreRecent(Request $request): bool
-    {
-        $user = $this->userApiService->getUserData($request);
-        $message = $this->messageApiService->getMessageTermsOfUseData();
-
-        return $user->last_login_time < $message->updated_at;
-    }
-
-    /**
-     * saveUserAgreeData
-     * 利用規約同意時の利用規約同意データの登録と更新
-     *
-     * @param  mixed $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function saveUserAgreeData(Request $request)
-    {
-        $user_agree_data = $this->userAgreeDataApiService->getUserAgreeData($request->user_id);
-        \DB::beginTransaction();
-        try {
-            // 新規登録
-            if (empty($user_agree_data)) {
-                $userAgreeDataService = new UserAgreeDataService();
-                $user_agree_data = $userAgreeDataService->newModel();
-                $user_agree_data->user_id = $request->user_id;
-                $user_agree_data->created_by = $request->user_id;
-            }
-            $user_agree_data->agree_time = now();
-            $user_agree_data->updated_by = $request->user_id;
-            $user_agree_data->save();
-            \DB::commit();
-        } catch (\Exception $e) {
-            \DB::rollBack();
-            $status = 2;
-            $response = [
-                'message'    => Message::getMessage(Message::ERROR_015, ["同意情報"]),
-                'error_data' => $e->getMessage()
-            ];
-            return $this->error($status, $response);
-        }
-
-        $response = [
-            "message" => "success"
-        ];
-        return $this->success($response);
     }
 }
