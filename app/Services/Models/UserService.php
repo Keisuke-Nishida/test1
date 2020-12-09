@@ -5,7 +5,6 @@ namespace App\Services\Models;
 use App\Lib\Constant;
 use App\Models\User;
 use App\Services\Models\MessageService;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -36,8 +35,7 @@ class UserService extends BaseService
      */
     public function generateResetToken($id)
     {
-        $now = Carbon::now();
-        return md5($id . $now);
+        return md5($id . now());
     }
 
     /**
@@ -47,8 +45,7 @@ class UserService extends BaseService
      */
     public function generateResetTokenLimitTime()
     {
-        $now = Carbon::now();
-        return $now->addMinutes(Constant::WEB_RESET_TOKEN_LIMIT_TIME);
+        return now()->addMinutes(Constant::WEB_RESET_TOKEN_LIMIT_TIME);
     }
 
     /**
@@ -59,10 +56,18 @@ class UserService extends BaseService
      */
     public function saveResetToken($user)
     {
-        $user->reset_token = $this->generateResetToken($user->id);
-        $user->reset_token_limit_time = $this->generateResetTokenLimitTime();
-        $user->updated_by = $user->id;
-        $user->save();
+        \DB::beginTransaction();
+        try {
+            $user->reset_token = $this->generateResetToken($user->id);
+            $user->reset_token_limit_time = $this->generateResetTokenLimitTime();
+            $user->updated_by = $user->id;
+            $user->save();
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            \Log::error('database save error:' . $e->getMessage());
+            throw new \Exception($e);
+        }
     }
 
     /**
@@ -78,7 +83,7 @@ class UserService extends BaseService
             return null;
         }
         $conditions["reset_token"] = $reset_token;
-        return $this->modelService->searchOne($conditions);
+        return $this->searchOne($conditions);
     }
 
     /**
@@ -133,5 +138,50 @@ class UserService extends BaseService
         $message = $this->messageService->getMessageTermsOfUseData();
 
         return $user->last_login_time < $message->updated_at;
+    }
+
+    /**
+     * リセットトークンの有効期限日時より現在時刻のほうが早ければtrueを返す
+     *
+     * @param  mixed $user
+     * @return bool
+     */
+    public function isEarlierThanLimitTime($user)
+    {
+        return now() < $user->reset_token_limit_time;
+    }
+
+    /**
+     * メールのリンクから初回ログイン時にアップデートされる処理
+     *
+     * @param  mixed $user
+     * @return void
+     */
+    public function updateUserDataAtLoginFromEmail($user)
+    {
+        \DB::beginTransaction();
+        try {
+            $user->last_login_time = now();
+            $user->updated_by = $user->id;
+            $user->save();
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            \Log::error('database save error:' . $e->getMessage());
+            throw new \Exception($e);
+        }
+    }
+
+    /**
+     * リセットトークンとその有効期限日時の初期化
+     *
+     * @param  mixed $user
+     * @return void
+     */
+    public function initResetToken($user)
+    {
+        $user->reset_token = null;
+        $user->reset_token_limit_time = null;
+        $user->save();
     }
 }
