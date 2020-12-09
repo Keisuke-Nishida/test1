@@ -33,10 +33,18 @@ class CustomerService extends BaseService
     {
         $customer = $this->searchOne(["id" => $user->customer_id]);
 
-        if ($customer->core_system_status == Constant::STATUS_NON_LINKED) {
-            $customer->core_system_status = Constant::STATUS_WAITING_FOR_LINKAGE;
-            $customer->updated_by = $user->id;
-            $customer->save();
+        \DB::beginTransaction();
+        try {
+            if ($customer->core_system_status == Constant::STATUS_NON_LINKED) {
+                $customer->core_system_status = Constant::STATUS_WAITING_FOR_LINKAGE;
+                $customer->updated_by = $user->id;
+                $customer->save();
+            }
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            \Log::error('database save error:' . $e->getMessage());
+            throw new \Exception($e);
         }
     }
 }

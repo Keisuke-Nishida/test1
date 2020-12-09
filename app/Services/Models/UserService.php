@@ -180,8 +180,16 @@ class UserService extends BaseService
      */
     public function initResetToken($user)
     {
-        $user->reset_token = null;
-        $user->reset_token_limit_time = null;
-        $user->save();
+        \DB::beginTransaction();
+        try {
+            $user->reset_token = null;
+            $user->reset_token_limit_time = null;
+            $user->save();
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            \Log::error('database save error:' . $e->getMessage());
+            throw new \Exception($e);
+        }
     }
 }
