@@ -1,29 +1,6 @@
 @extends('web.layouts.app')
 
 @section('app_title')
-    ルーティング定義エラー
-@endsection
-
-@section('app_contents')
-    <div id="box">
-        <div class="block">
-            <div class="content">
-                <div style="text-align: center;">
-                    <h1>405 MethodNotAllowedHttpException</h1>
-                    <p>ルーティングの定義がありません。</p>
-                    <p style="text-align:center">
-                        <a href="/">トップに戻る</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection
-
-
-@extends('web.layouts.app')
-
-@section('app_title')
     405 MethodNotAllowedHttpException
 @endsection
 
