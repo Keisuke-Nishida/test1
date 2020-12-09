@@ -81,6 +81,10 @@ class Util
      */
     public static function getUserRolePrefix($guard_name)
     {
+        if (!Auth::guard($guard_name)->check()) {
+            return '';
+        }
+
         $type  = Auth::guard($guard_name)->user()->role->type;
 
         if ($type == 1) {

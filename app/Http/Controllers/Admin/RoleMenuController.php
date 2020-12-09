@@ -8,10 +8,12 @@ use App\Lib\Util;
 use App\Models\Menu;
 use App\Services\Models\RoleMenuService;
 use App\Models\Role;
+use App\Models\RoleMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class RoleMenuController extends BaseController
 {
@@ -59,58 +61,68 @@ class RoleMenuController extends BaseController
             return ['data' => []];
         }
 
-        $query = $this->mainService->model();
-        $query = $query->select(
-            'role.id AS role_id',
-            'role.name AS role_name',
-            'role.type AS role_type',
-            'role_menu.menu_id',
-            'menu.name AS menu_name'
-        )->rightJoin('role', 'role_menu.role_id', '=', 'role.id')
-        ->leftJoin('menu', 'role_menu.menu_id', '=', 'menu.id');
+        $roles = Role::select(
+            'id AS role_id',
+            'name AS role_name',
+            'type AS role_type'
+        );
 
         if ($request->name) {
-            $query = $query->where('role.name', 'LIKE', '%' . $request->name . '%');
+            $roles = $roles->where('name', 'LIKE', '%' . $request->name . '%');
         }
 
         if ($request->type) {
-            $query = $query->where('role.type', $request->type);
+            $roles = $roles->where('type', $request->type);
         }
 
-        $role_menus = $query->whereNull('role_menu.deleted_at')
-            ->whereNull('role.deleted_at')
-            ->whereNull('menu.deleted_at')
-            ->orderBy('role.id', 'ASC')
+        $roles = $roles->whereNull('deleted_at')
+            ->orderBy('id', 'ASC')
             ->get();
+        $role_menus = null;
+        $menu_names = [];
+        $glued_menu_ids = '';
         $list = [];
 
-        foreach ($role_menus as $role_menu) {
-            $list[$role_menu->role_name]['role_id'] = $role_menu->role_id;
-            $list[$role_menu->role_name]['role_name'] = $role_menu->role_name;
-            $list[$role_menu->role_name]['role_type'] = $role_menu->role_type;
-            $list[$role_menu->role_name]['menu_id'][] = $role_menu->menu_id;
-            $list[$role_menu->role_name]['menu_name'][] = ($role_menu->menu_name) ? $role_menu->menu_name : '';
-        }
+        foreach ($roles as $role) {
+            $role_menus = RoleMenu::where('role_id', $role->role_id)
+                ->whereNull('deleted_at')
+                ->orderBy('id', 'ASC')
+                ->get();
 
-        $list = array_map(function($values) {
-            return [
-                'role_id' => $values['role_id'],
-                'role_name' => $values['role_name'],
-                'role_type' => $values['role_type'],
-                'menu_ids' => implode(',', $values['menu_id']),
-                'menu_names' => implode(', ', $values['menu_name'])
-            ];
-        }, $list);
-
-        if ($request->menu_id) {
-            foreach ($list as $key => $value) {
-                if (!preg_match("/\b" . $request->menu_id . "\b/i", $value['menu_ids'])) {
-                    unset($list[$key]);
+            if ($role_menus->count()) {
+                foreach ($role_menus as $role_menu) {
+                    $menu_ids[] = $role_menu->menu->id;
+                    $menu_names[] = $role_menu->menu->name;
                 }
             }
+
+            if ($request->menu_id) {
+                $glued_menu_ids = implode(',', $menu_ids);
+
+                if (preg_match("/\b" . $request->menu_id . "\b/i", $glued_menu_ids)) {
+                    $list[] = [
+                        'role_id' => $role->role_id,
+                        'role_name' => $role->role_name,
+                        'role_type' => $role->role_type,
+                        'menu_names' => implode(', ', $menu_names),
+                    ];
+                }
+            } else {
+                $list[] = [
+                    'role_id' => $role->role_id,
+                    'role_name' => $role->role_name,
+                    'role_type' => $role->role_type,
+                    'menu_names' => implode(', ', $menu_names),
+                ];
+            }
+
+            $role_menus = null;
+            $menu_names = [];
+            $menu_ids = [];
+            $glued_menu_ids = '';
         }
 
-        return ['data' => array_values($list)];
+        return ['data' => $list];
     }
 
     /**
@@ -275,20 +287,27 @@ class RoleMenuController extends BaseController
         }
 
         $role_menus = $this->mainService->model()->where('role_id', $request->role_id)->get();
-        $selected_type = $role_menus[0]->role->type;
         $selected_menu_data = [];
+        $trimmed_menu_data = [];
+        $role = Role::where('id', $request->role_id)
+            ->whereNull('deleted_at')->first();
 
-        foreach ($role_menus as $role_menu) {
-            $selected_menu_data[$role_menu->role->type][] = [
-                'id' => $role_menu->menu->id,
-                'name' => $role_menu->menu->name
-            ];
+        if ($role_menus->count()) {
+            foreach ($role_menus as $role_menu) {
+                $selected_menu_data[$role_menu->role->type][] = [
+                    'id' => $role_menu->menu->id,
+                    'name' => $role_menu->menu->name
+                ];
+            }
+
+            $trimmed_menu_data = array_udiff($menu_data[$role->type], $selected_menu_data[$role->type], function($a, $b) {
+                return $a['id'] - $b['id'];
+            });
+            $menu_data[$role->type] = $trimmed_menu_data;
+        } else {
+            $trimmed_menu_data = $menu_data[$role->type];
         }
 
-        $trimmed_menu_data = array_udiff($menu_data[$selected_type], $selected_menu_data[$selected_type], function($a, $b) {
-            return $a['id'] - $b['id'];
-        });
-        $menu_data[$selected_type] = $trimmed_menu_data;
         $menu_data = json_encode($menu_data);
 
         return view($this->mainRoot . '/register', [
@@ -298,10 +317,10 @@ class RoleMenuController extends BaseController
             'available' => $trimmed_menu_data,
             'page' => 'role_menu',
             'data' => [
-                'role_id' => $request->role_id,
-                'name' => $role_menus[0]->role->name,
-                'type' => $role_menus[0]->role->type,
-                'selected_menus' => $selected_menu_data[$selected_type]
+                'role_id' => $role->id,
+                'name' => $role->name,
+                'type' => $role->type,
+                'selected_menus' => isset($selected_menu_data[$role->type]) ? $selected_menu_data[$role->type] : []
             ],
         ]);
     }
@@ -326,7 +345,13 @@ class RoleMenuController extends BaseController
             $role = Role::where('id', $request->role_id)->first();
 
             $rules['role_id'] = 'required|integer';
-            $rules['name'] = 'required|string|min:1|max:50|unique:role,name,' . $role->name . ',name';
+            $rules['name'] = [
+                'required',
+                'string',
+                'min:1',
+                'max:50',
+                Rule::unique('role', 'name')->ignore($role->id, 'id')
+            ];
         }
 
         return $rules;        
@@ -412,12 +437,14 @@ class RoleMenuController extends BaseController
                 }
             }
 
-            foreach ($request->selected_menus as $selected_menu) {
-                $model = $this->mainService->save([
-                    'role_id' => $role->id,
-                    'menu_id' => $selected_menu
-                ]);
-                $this->saveAfter($request, $model);
+            if (isset($request->selected_menus)) {
+                foreach ($request->selected_menus as $selected_menu) {
+                    $model = $this->mainService->save([
+                        'role_id' => $role->id,
+                        'menu_id' => $selected_menu
+                    ]);
+                    $this->saveAfter($request, $model);
+                }
             }
 
             DB::commit();

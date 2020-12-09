@@ -51,9 +51,11 @@
                     <div class="form-group">
                         <p class="text-center"><label class="col-form-label">{{ Util::langtext('ROLE_MENU_L_013') }}</label></p>
                         <select class="form-control multi-select" id="available-menus" tabindex="3" multiple>
-                            @foreach ($available as $a)
-                            <option value="{{ $a['id'] }}">{{ $a['name'] }}</option>
-                            @endforeach
+                            @if (count($available))
+                                @foreach ($available as $a)
+                                <option value="{{ $a['id'] }}">{{ $a['name'] }}</option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                 </div>
