@@ -154,7 +154,7 @@ const saveUserAgreeData = function (user_id) {
         url: "/api/saveUserAgreeData",
         data: {
             _token: CSRF_TOKEN,
-            user_id: user_id,
+            id: user_id,
         },
         dataType: "json",
     })
