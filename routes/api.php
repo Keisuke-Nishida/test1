@@ -17,15 +17,15 @@ use Illuminate\Http\Request;
  *  API(認証前)
  *************************************************/
 // ログイン
-Route::post('/login',   'Api\LoginController@login');
+Route::post('/login',                   'Api\LoginApiController@login');
 // ログイン前処理
-Route::post('/beforeLogin',   'Api\LoginController@beforeLogin');
+Route::post('/beforeLogin',             'Api\LoginApiController@beforeLogin');
 // 利用規約モーダルのバリデーション
-Route::post('/validateModalForm',   'Api\LoginController@validateModalForm');
+Route::post('/validateModalForm',       'Api\LoginApiController@validateModalForm');
 // 利用規約の同意日時の更新
-Route::post('/saveUserAgreeData',   'Api\LoginController@saveUserAgreeData');
+Route::post('/saveUserAgreeData',       'Api\UserAgreeDataApiController@save');
 // Email送信結果ページ
-Route::get('/resultEmail', 'Api\LoginController@showResultEmail')->name('result');
+Route::get('/resultEmail',              'Api\LoginApiController@showResultEmail');
 
 
 /*************************************************
