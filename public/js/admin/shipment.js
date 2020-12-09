@@ -247,4 +247,24 @@ $(document).ready(function() {
         onShow: function (ct) {},
         timepicker: false,
     });
+
+    $("#confirm_button").click(function() {
+        $("#confirm_modal").modal("hide");
+        document.location.href = $("#confirm_url").val();
+    });
+
+    $("#confirm_modal").on("hidden.bs.modal", function() {
+        $("#confirm_url").val("");
+        $("#confirm_id").val("");
+    });
+
+    $("#shipment-detail-cancel").click(function(e) {
+        $("#confirm_url").val($(this).data("url"));
+        $("#confirm_modal").modal("show");
+    });
+
+    $("#shipment-detail-print").click(function(e) {
+        e.preventDefault();
+        window.open("/admin/shipment/detail/" + $("#shipment-id").val() + "/print", "_blank", "width=700");
+    });
 });

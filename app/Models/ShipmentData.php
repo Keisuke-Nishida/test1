@@ -50,6 +50,24 @@ class ShipmentData extends BaseModel
     public function voucher() {
         return $this->hasOne('App\Models\Voucher', 'code', 'voucher_type');
     }
+
+    /**
+     * customer table data
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function customer()
+    {
+        return $this->hasOne('App\Models\Customer', 'code', 'customer_code');
+    }
+
+    /**
+     * shipment table data
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function shipment_detail_data()
+    {
+        return $this->hasOne('App\Models\ShipmentDetailData', 'shipment_data_id', 'id');
+    }
 }
-
-

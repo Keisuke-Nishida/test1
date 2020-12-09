@@ -158,4 +158,105 @@ class ShipmentController extends BaseController
 
         return ['data' => $list];
     }
+
+    /**
+     * Method for overriding list_search method of BaseController class
+     * 
+     * @param int $shipment_id
+     * @return array
+     */
+    private function getShipmentData($shipment_id)
+    {
+        $shipment_data = $this->mainService->find($shipment_id);
+        $shipment_detail_data = $shipment_data->shipment_detail_data;
+        return [
+            'shipment_id' => $shipment_data->id,
+            'data_no' => $shipment_data->data_no,
+            'data_type' => $shipment_data->data_type,
+            'process_type' => $shipment_data->process_type,
+            'condition_code' => $shipment_detail_data->condition->name,
+            'data_create_date_time' => date('Y/m/d', strtotime($shipment_data->data_create_date)) . ' ' . $shipment_data->data_create_time,
+            'operator_no' => $shipment_data->operator_no,
+            'customer_code' => $shipment_data->customer_code,
+            'customer_name' => $shipment_data->customer->name,
+            'sale_name' => $shipment_data->sale_name,
+            'sale_name_kana' => $shipment_data->sale_name_kana,
+            'sale_address' => Util::langtext('POSTAL_CODE_SYMBOL') . $shipment_data->sale_post_no . '<br />' . $shipment_data->sale_prefecture->name
+                . $shipment_data->sale_address_1 . $shipment_data->sale_address_2,
+            'sale_tel' => $shipment_data->sale_tel,
+            'destination_code' => $shipment_data->destination_code,
+            'destination_name' => $shipment_data->destination_name,
+            'destination_name_kana' => $shipment_data->destination_name_kana,
+            'destination_address' => Util::langtext('POSTAL_CODE_SYMBOL') . $shipment_data->destination_post_no . '<br />' . $shipment_data->destination_prefecture->name
+            . $shipment_data->destination_address_1 . $shipment_data->destination_address_2,
+            'destination_tel' => $shipment_data->destination_tel,
+            'kiduke_kanji' => $shipment_data->kiduke_kanji,
+            'delivery_type' => $shipment_data->delivery_type,
+            'voucher_remark_a' => $shipment_data->voucher_remark_a,
+            'voucher_remark_b' => $shipment_data->voucher_remark_a,
+            'order_no' => $shipment_data->order_no,
+            'order_line_no' => $shipment_detail_data->order_line_no,
+            'order_date' => date('Y/m/d', strtotime($shipment_data->order_date)),
+            'order_confirm_date' => date('Y/m/d', strtotime($shipment_data->order_confirm_date)),
+            'shipment_date' => date('Y/m/d', strtotime($shipment_data->shipment_date)),
+            'instruction_no' => $shipment_data->instruction_no,
+            'jan_code' => $shipment_detail_data->jan_code,
+            'item_code' => $shipment_detail_data->item_code,
+            'packing_code' => $shipment_detail_data->packing_code,
+            'item_name' => $shipment_detail_data->item_name,
+            'item_quantity' => $shipment_detail_data->item_quantity,
+            'unit_name' => $shipment_detail_data->unit_name,
+            'order_price' => $shipment_detail_data->order_price,
+            'order_amount' => $shipment_detail_data->order_amount,
+            'detail_remarks' => $shipment_detail_data->detail_remarks,
+            'delivery_date' => date('Y/m/d', strtotime($shipment_data->delivery_date)),
+            'delivery_type' => $shipment_data->delivery_type,
+            'delivery_type_name' => $shipment_data->delivery_type,
+            'answer_delivery' => $shipment_data->answer_delivery,
+            'answer_delivery_date' => date('Y/m/d', strtotime($shipment_data->answer_delivery_date)),
+            'answer_delivery_detail' => $shipment_data->answer_delivery_detail,
+            'price_type' => $shipment_data->price_type,
+            'shipping_no' => $shipment_detail_data->shipping_no,
+            'item_lot' => $shipment_detail_data->item_lot,
+            'expire_date' => date('Y/m/d', strtotime($shipment_detail_data->expire_date)),
+            'price_type' => $shipment_data->price_type,
+            'reserve_type' => $shipment_data->reserve_type,
+            'voucher_type' =>  $shipment_data->voucher->name,
+            'yobi' => $shipment_detail_data->yobi,
+        ];
+    }
+
+    /**
+     * Display printable shipment detail page
+     * 
+     * @param Request $request
+     * @return array
+     */
+    public function detail(Request $request)
+    {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
+        return view($this->mainRoot . '/detail', [
+            'action' => Util::langtext('SHIPMENT_T_001'),
+            'page' => 'shipment',
+            'data' => $this->getShipmentData($request->id)
+        ]);
+    }
+
+    /**
+     * Display detail page of shipment list
+     * 
+     * @param Request $request
+     * @return array
+     */
+    public function print(Request $request)
+    {
+        if (!Util::isAdminUserAllowed($this->menuKey)) {
+            return view('admin.errors.403');
+        }
+
+        return view('admin.print.shipment', ['data' => $this->getShipmentData($request->id)]);
+    }
 }

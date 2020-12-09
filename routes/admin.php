@@ -98,4 +98,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function(){
     Route::get('/shipment/index', 'Admin\ShipmentController@index')->name('admin/shipment/index');
     Route::post('/shipment/search', 'Admin\ShipmentController@list_search')->name('admin/shipment/search');
     Route::get('/shipment/detail/{id}', 'Admin\ShipmentController@detail')->name('admin/shipment/detail');
+    Route::get('/shipment/detail/{id}/print', 'Admin\ShipmentController@print')->name('admin/shipment/detail/print');
 });
