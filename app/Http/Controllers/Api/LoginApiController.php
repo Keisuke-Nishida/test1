@@ -6,11 +6,13 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Lib\Message;
 use App\Providers\RouteServiceProvider;
 use App\Services\Api\LoginApiService;
-use App\Services\Api\MessageApiService;
-use App\Services\Api\UserAgreeDataApiService;
-use App\Services\Api\UserApiService;
+use App\Services\Models\CustomerService;
+use App\Services\Models\MessageService;
+use App\Services\Models\UserAgreeDataService;
+use App\Services\Models\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
 
@@ -24,9 +26,10 @@ class LoginApiController extends BaseApiController
 
     use AuthenticatesUsers;
 
-    protected $userApiService;
-    protected $userAgreeDataApiService;
-    protected $messageApiService;
+    protected $userService;
+    protected $userAgreeDataService;
+    protected $messageService;
+    protected $customerService;
 
     /**
      * Where to redirect users after login.
@@ -42,14 +45,16 @@ class LoginApiController extends BaseApiController
      */
     public function __construct(
         LoginApiService $loginApiService,
-        UserApiService $userApiService,
-        UserAgreeDataApiService $userAgreeDataApiService,
-        MessageApiService $messageApiService
+        UserService $userService,
+        UserAgreeDataService $userAgreeDataService,
+        MessageService $messageService,
+        CustomerService $customerService
     ) {
         $this->mainApiService = $loginApiService;
-        $this->userApiService = $userApiService;
-        $this->userAgreeDataApiService = $userAgreeDataApiService;
-        $this->messageApiService = $messageApiService;
+        $this->userService = $userService;
+        $this->userAgreeDataService = $userAgreeDataService;
+        $this->messageService = $messageService;
+        $this->customerService = $customerService;
     }
 
     /**
@@ -70,11 +75,11 @@ class LoginApiController extends BaseApiController
         }
 
         // ユーザーデータの取得
-        $user_data = $this->userApiService->getUserDataFromIdAndPassword($this->credentials($request));
+        $user_data = $this->userService->getUserDataFromIdAndPassword($this->credentials($request));
         // 利用規約のメッセージの取得
-        $message_data = $this->messageApiService->getMessageTermsOfUseData();
+        $message_data = $this->messageService->getMessageTermsOfUseData();
         // 同意履歴の取得
-        $is_agreement_history = $this->userAgreeDataApiService->isAgreementHistory($user_data);
+        $is_agreement_history = $this->userAgreeDataService->isAgreementHistory($user_data);
 
         // 同意履歴が存在しない場合（※初回ログイン）
         if (!$is_agreement_history) {
@@ -89,7 +94,7 @@ class LoginApiController extends BaseApiController
 
         // 同意履歴が存在する場合
         if ($is_agreement_history) {
-            $is_more_recent = $this->userApiService->isLastUpdateDateMoreRecent($request);
+            $is_more_recent = $this->userService->isLastUpdateDateMoreRecent($request);
 
             // 最終ログイン日時より最終更新日時のほうが新しい日付の場合
             if ($is_more_recent) {
@@ -138,14 +143,14 @@ class LoginApiController extends BaseApiController
      */
     protected function validateModalForm(Request $request)
     {
-        $user = $this->userApiService->getUserDataFromIdAndPassword($request);
+        $user = $this->userService->getUserDataFromIdAndPassword($request);
 
         // 初回登録時はメールアドレスのバリデーションが必要
         if ($request->status == "first_login") {
             $this->validateFirstLoginAgreement($request, $user->id);
 
             // バリデーション成功時、user.reset_tokenとuser.reset_token_limit_timeを登録する
-            $this->userApiService->saveResetToken($user);
+            $this->userService->saveResetToken($user);
 
             $response = [
                 "login"  => false,
@@ -248,16 +253,4 @@ class LoginApiController extends BaseApiController
         ]);
     }
 
-    /**
-     * メールによる認証完了画面
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showCompletedAuthByEmail()
-    {
-        return view('web.layouts.result')->with([
-            "isLinkToHome" => true,
-            "title"        => "メッセージ",
-            "message"      => Message::getMessage(Message::INFO_008),
-        ]);
-    }
 }
