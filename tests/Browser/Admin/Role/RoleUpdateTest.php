@@ -139,12 +139,21 @@ class RoleUpdateTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) use ($table_data)
         {
+            $faker = Faker::create();
             $browser->visit($this->test_edit_url . $table_data->id)
                     ->pause(1000)
                     ->value($this->input_name_field, '')
                     ->click('button[type="submit"]')
                     ->pause(1000)
-                    ->assertSee(Message::getMessage(Message::ERROR_001, [Util::langtext('ROLE_MENU_L_011')]));
+                    ->assertSee(Message::getMessage(Message::ERROR_001, [Util::langtext('ROLE_MENU_L_011')]));            
+            
+            $name = $faker->text(100);
+            $browser->visit($this->test_edit_url . $table_data->id)
+                    ->pause(1000)
+                    ->value($this->input_name_field, $name)
+                    ->click('button[type="submit"]')
+                    ->pause(1000)
+                    ->assertSee(Message::getMessage(Message::ERROR_006, [Util::langtext('ROLE_MENU_L_011'), '50']));
         });
     }
 

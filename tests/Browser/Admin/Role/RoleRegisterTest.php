@@ -107,6 +107,24 @@ class RoleRegisterTest extends DuskTestCase
     }
 
     /**
+     * Test name reg invalid function
+     */
+    public function testRegisterInvalidName()
+    {
+        $this->browse(function (Browser $browser)
+        {
+            $faker = Faker::create();
+            $name = $faker->text(100);
+            $browser->visit($this->test_create_url)
+                    ->pause(1000)
+                    ->value($this->reg_name_field, $name)
+                    ->click('button[type="submit"]')
+                    ->pause(1000)
+                    ->assertSee(Message::getMessage(Message::ERROR_006, [Util::langtext('ROLE_MENU_L_011'), '50']));
+        });
+    }
+
+    /**
      * test register valid
      */
     public function testRegisterValid()
