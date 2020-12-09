@@ -51,7 +51,7 @@
                         <div class="col-lg-9">
                             <input type="password" class="form-control" value="" placeholder="新しいパスワード" id="new_password" name="new_password">
                             @include('web.layouts.components.error_message', ['title' => 'new_password'])
-                            <span style="font-size: 0.8em; color: #bfc4c4">※半角英数6文字以上で入力してください</span>
+                            <span style="font-size: 0.8em; color: #bfc4c4">※半角英数8文字以上で入力してください</span>
                         </div>
                     </div>
 
