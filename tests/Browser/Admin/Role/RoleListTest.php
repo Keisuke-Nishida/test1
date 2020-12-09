@@ -271,7 +271,7 @@ class RoleListTest extends DuskTestCase
         {
             $role_menu_data = RoleMenu::where('role_id', $table_data->id)
                             ->where('deleted_at', null)->first();
-            $menu_data = Menu::where('id', $role_menu_data->id)
+            $menu_data = Menu::where('id', $role_menu_data->menu_id)
                         ->where('deleted_at', null)->first();
             $browser->visit($this->test_url)
                 ->click('#search-toggle-button')
@@ -368,15 +368,11 @@ class RoleListTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser)
         {
-            $role_menu_avail = RoleMenu::select('role_id')
-                            ->where('deleted_at',null)
-                            ->groupBy('role_id')->get();
-            $role_data = Role::where('deleted_at', null)
-                        ->whereIn('id', $role_menu_avail)->skip(25)->first();
+            $role_data = Role::where('deleted_at',null)->skip(25)->first();
             $role_menu_data = RoleMenu::where('deleted_at',null)
                             ->where('role_id', $role_data->id)->first();
             $menu = Menu::where('deleted_at',null)->where('id', $role_menu_data->menu_id)->first();
-            $role_data2 = Role::where('deleted_at', null)->whereIn('id', $role_menu_avail)->skip(50)->first();
+            $role_data2 = Role::where('deleted_at',null)->skip(50)->first();
             $role_menu_data2 = RoleMenu::where('deleted_at',null)->where('role_id', $role_data2->id)->first();
             $menu2 = Menu::where('deleted_at',null)->where('id', $role_menu_data2->menu_id)->first();
             $browser->visit($this->test_url)
