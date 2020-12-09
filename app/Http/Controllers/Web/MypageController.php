@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Lib\Constant;
 use App\Lib\Message;
 use App\Lib\Util;
 use App\Services\Models\UserService;
@@ -60,12 +61,10 @@ class MypageController extends BaseController
      */
     public function validation_rules(Request $request)
     {
-        // 半角英小文字大文字数字をそれぞれ1種類以上含む文字列の正規表現
-        $password_regex = '/\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]+\z/';
         return [
             'current_password'          => 'required|password',
-            'new_password'              => 'required|min:6|max:255|regex:' . $password_regex . '|different:current_password|confirmed',
-            'new_password_confirmation' => 'required|min:6|max:255|regex:' . $password_regex,
+            'new_password'              => 'required|min:8|max:255|regex:' . Constant::PASSWORD_REGEX . '|different:current_password|confirmed',
+            'new_password_confirmation' => 'required|min:8|max:255|regex:' . Constant::PASSWORD_REGEX,
         ];
     }
 
@@ -88,7 +87,7 @@ class MypageController extends BaseController
             'new_password.confirmed' => Message::getMessage(Message::ERROR_004, ["新しいパスワード", "確認パスワード"]),
 
             'new_password_confirmation.required' => Message::getMessage(Message::ERROR_001, ["確認パスワード"]),
-            'new_password_confirmation.min'      => Message::getMessage(Message::ERROR_006, ["確認パスワード", "6"]),
+            'new_password_confirmation.min'      => Message::getMessage(Message::ERROR_006, ["確認パスワード", "8"]),
             'new_password_confirmation.max'      => Message::getMessage(Message::ERROR_013, ["確認パスワード", "255"]),
             'new_password_confirmation.regex'    => Message::getMessage(Message::ERROR_012),
         ];
