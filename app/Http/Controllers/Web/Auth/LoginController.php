@@ -7,6 +7,8 @@ use App\Lib\Constant;
 use App\Lib\Message;
 use App\Providers\RouteServiceProvider;
 use App\Services\Models\CustomerService;
+use App\Services\Models\UserAgreeDataService;
+use App\Services\Models\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,15 +36,23 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    protected $userService;
+    protected $userAgreeDataService;
     protected $customerService;
 
     /**
      * コンストラクタ
      * LoginController constructor.
      */
-    public function __construct(CustomerService $customerService)
+    public function __construct(
+        UserService $userService,
+        UserAgreeDataService $userAgreeDataService,
+        CustomerService $customerService
+        )
     {
         $this->middleware('guest:web')->except('logout');
+        $this->userService = $userService;
+        $this->userAgreeDataService = $userAgreeDataService;
         $this->customerService = $customerService;
     }
 
@@ -187,5 +197,54 @@ class LoginController extends Controller
 
         return $this->authenticated($request, $this->guard()->user())
             ?: redirect()->intended($this->redirectPath());
+    }
+
+    /**
+     * 初回ログイン時に送信されるメールのリンクからの認証
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function loginFromEmail($reset_token)
+    {
+        $user = $this->userService->getUserDataFromResetToken($reset_token);
+
+        // ユーザー情報の取得OK
+        if ($user) {
+            // リセットトークンの有効期限内
+            if ($this->userService->isEarlierThanLimitTime($user)) {
+                // ログイン
+                Auth::login($user);
+                // ログイン状態を保存する場合
+                // Auth::login($user, true);
+
+                // ログインできた場合
+                if (Auth::check()) {
+                    // ログイン時ユーザーマスタの更新
+                    $this->userService->updateUserDataAtLoginFromEmail($user);
+                    // リセットトークンとその有効期限日時の初期化
+                    $this->userService->initResetToken($user);
+                    // 同意履歴情報の登録
+                    $this->userAgreeDataService->saveUserAgreeData($user);
+                    // 得意先連携更新
+                    $this->customerService->updateCoreSystemStatus($user);
+
+                    // 利用確認完了ページへ遷移
+                    return view('web.layouts.result')->with([
+                        "isLinkToHome" => true,
+                        "title"        => "メッセージ",
+                        "message"      => Message::getMessage(Message::INFO_008),
+                    ]);
+                }
+            }
+        }
+
+        // 利用確認失敗ページへ遷移
+        return view('web.layouts.result')->with([
+            "isLinkToHome"  => false,
+            "isLinkToLogin" => true,
+            "title"         => "メッセージ",
+            "message"       => Message::getMessage(Message::INFO_011),
+        ]);
     }
 }

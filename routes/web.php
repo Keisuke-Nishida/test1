@@ -5,14 +5,16 @@
  *  フロントサイドルーティング(非ログイン)
  ************************************************/
 Route::group(['middleware' => 'guest:web'], function () {
+    // ログイン
     Route::get('/', 'Web\Auth\LoginController@showLoginForm')->name('login');
     Route::get('/login', 'Web\Auth\LoginController@showLoginForm')->name('login');
     Route::post('/login', 'Web\Auth\LoginController@login')->name('login/submit');
 
+    // Emailからの利用登録確認処理
+    Route::get('/register/{reset_token}', 'Web\Auth\LoginController@loginFromEmail');
+
     // パスワードを忘れた場合
-    //    Route::get('/password_reset');
-
-
+    // Route::get('/password_reset');
 });
 
 /************************************************
