@@ -163,27 +163,21 @@ abstract class BaseService{
 
     /**
      * 指定データ保存
-     * @param $data
+     * @param array $data
      * @param bool $transaction
      * @return Model|mixed
      * @throws \Exception
      */
     public function save($data, $transaction=false) {
         if ($transaction) \DB::beginTransaction();
-
         try {
-            // 同じ日時変数を使用する
-            $now = Carbon::now();
             if (key_exists('id', $data) && $data['id']) {
                 // UPDATE
-                $model = $this->find($data["id"]);
+                $model = $this->find($data['id']);
             } else {
                 // INSERT
                 $model = $this->newModel();
-                $model->created_by = self::getUserId();
-                $model->created_at = now();
-            }
-            $model->updated_by = self::getUserId();
+           }
             $model->fill($data);
             $model->save();
             if ($transaction) \DB::commit();
@@ -206,9 +200,7 @@ abstract class BaseService{
         if ($transaction) \DB::beginTransaction();
         try {
             $model = $this->find($id);
-            $model->deleted_by = self::getUserId();
-            $model->deleted_at = now();
-            $model->save();
+            $model->delete();
             if ($transaction) \DB::commit();
             return $model;
         } catch (\Exception $e) {

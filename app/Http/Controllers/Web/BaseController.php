@@ -150,7 +150,6 @@ class BaseController extends Controller
             $this->saveAfter($request, $model);
 
             \DB::commit();
-
             // リダイレクト
             return $this->saveAfterRedirect($request);
         } catch (\Exception $e) {
@@ -169,10 +168,10 @@ class BaseController extends Controller
     {
         // 対象データの一覧にリダイレクト
         if ($this->isCreate($request)) {
-            return redirect($this->mainRoot . "/index")->with('create_message', "データを保存しました。");
+            return redirect($this->mainRoot . "/index");
         } else {
             $query = "?" . preg_replace("/^id=.+?&/", "", $request->getQueryString());
-            return redirect($this->mainRoot . "/index" . $query)->with('edit_message', "変更内容を保存しました。");
+            return redirect($this->mainRoot . "/index" . $query);
         }
     }
 
@@ -183,7 +182,7 @@ class BaseController extends Controller
      */
     public function saveErrorRedirect(\Exception $exception)
     {
-        return redirect($this->mainRoot . "/index")->with('error_message', 'データ登録時にエラーが発生しました。');
+        return redirect($this->mainRoot . "/index");
     }
 
     /**

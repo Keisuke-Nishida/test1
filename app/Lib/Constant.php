@@ -1,10 +1,13 @@
 <?php
+
 namespace App\Lib;
+
 /**
  * 定数クラス
  * Class Constant
  */
-class Constant{
+class Constant
+{
 
     const REMEMBER_TOKEN_TIME = 1440;               // ログイン情報保存時の有効時間(分)
     const SESSION_COOKIE_ADMIN = "auth-admin";      // 管理者用セッションクッキー名
@@ -20,4 +23,5 @@ class Constant{
     
     const WEB_PAGINATE_LINK_NUM = 5; // Web側の一覧表示にあるページネーションのリンク数
 
+    const PASSWORD_REGEX = '/\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]+\z/';    // 半角英小文字大文字数字をそれぞれ1種類以上含む文字列の正規表現
 }
