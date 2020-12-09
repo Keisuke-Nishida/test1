@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Lib\Message;
 use App\Providers\RouteServiceProvider;
-use App\Services\Api\LoginApiService;
 use App\Services\Models\CustomerService;
 use App\Services\Models\MessageService;
 use App\Services\Models\UserAgreeDataService;
@@ -44,13 +43,11 @@ class LoginApiController extends BaseApiController
      * LoginApiController constructor.
      */
     public function __construct(
-        LoginApiService $loginApiService,
         UserService $userService,
         UserAgreeDataService $userAgreeDataService,
         MessageService $messageService,
         CustomerService $customerService
     ) {
-        $this->mainApiService = $loginApiService;
         $this->userService = $userService;
         $this->userAgreeDataService = $userAgreeDataService;
         $this->messageService = $messageService;
@@ -252,5 +249,4 @@ class LoginApiController extends BaseApiController
             "message"      => Message::getMessage(Message::INFO_007),
         ]);
     }
-
 }
