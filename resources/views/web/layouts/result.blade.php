@@ -39,6 +39,12 @@
         <div class="content col bg-white shadow p-3 content__card--round">
             <div class="m-5 text-center">
                     {!! $message !!}
+                    @if (isset($isLinkToLogin))
+                        <br><br>
+                        <p style='text-align:center'>
+                            <a href='/'>ログインページに戻る</a>
+                        </p>
+                    @endif
             </div>
         </div>
     </div>
