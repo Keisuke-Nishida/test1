@@ -18,4 +18,5 @@ class Constant{
     const STATUS_WAITING_FOR_LINKAGE = 1;   // customer.core_system_status 連携待ち
     const STATUS_LINKED = 2;                // customer.core_system_status 連携済み
 
+    const WEB_RESET_TOKEN_LIMIT_TIME = 1440;   // ウェブ側のリセットトークン有効時間(分)
 }
