@@ -55,13 +55,13 @@ class MessageController extends BaseController
             $conditions['name@like'] = $request->name;
         }
 
-        if ($request->title) {
-            $conditions['key@like'] = $request->title;
+        if ($request->key) {
+            $conditions['key@like'] = $request->key;
         }
 
 
-        if ($request->body) {
-            $conditions['value@like'] = $request->body;
+        if ($request->value) {
+            $conditions['value@like'] = $request->value;
         }
 
         $conditions['deleted_at'] = null;
