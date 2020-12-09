@@ -27,5 +27,8 @@
         <testsuite name="Role Test">
             <file>tests/Browser/Admin/Role/RoleListTest.php</file>
         </testsuite>
+        <testsuite name="Bulletin Board Test ">
+            <file>tests/Browser/Admin/BulletinBoard/BulletinBoardRegTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>
