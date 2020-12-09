@@ -148,6 +148,11 @@ class UserService extends BaseService
      */
     public function isEarlierThanLimitTime($user)
     {
+        // 有効期限がなかった場合はfalseを返す
+        if (!$user->reset_token_limit_time) {
+            return false;
+        }
+
         return now() < $user->reset_token_limit_time;
     }
 
