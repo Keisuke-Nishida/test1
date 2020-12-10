@@ -23,13 +23,6 @@ class ShipmentDetailData extends BaseModel
         return $this->belongsTo('App\Models\ShipmentData', 'shipment_data_id', 'id');
     }
     /**
-     * 扱便マスタリレーション
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function transport() {
-        return $this->hasOne('App\Models\Transport', 'code', 'transport_type');
-    }
-    /**
      * 状況マスタリレーション
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

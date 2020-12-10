@@ -29,13 +29,6 @@ class InvoiceData extends BaseModel
         return $this->hasOne('App\Models\CustomerDestination', 'code', 'customer_code');
     }
     /**
-     * 扱便マスタリレーション
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function transport() {
-        return $this->hasOne('App\Models\Transport', 'code', 'transport_type');
-    }
-    /**
      * 売上先都道府県マスタリレーション
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
