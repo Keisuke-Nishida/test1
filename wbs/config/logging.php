@@ -37,7 +37,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single','stdout'],
             'ignore_exceptions' => false,
         ],
 
@@ -69,6 +69,16 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
+            ],
+        ],
+
+        'stdout' => [
+            'driver' => 'monolog',
+            'level' => 'debug',
+            'handler' => StreamHandler::class,
+            'formatter' => env('LOG_STDERR_FORMATTER'),
+            'with' => [
+                'stream' => 'php://stdout',
             ],
         ],
 
