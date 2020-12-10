@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
             CustomerTableSeeder::class,
             ConditionTableSeeder::class,
             PrefectureTableSeeder::class,
-            TransportTableSeeder::class,
             VoucherTableSeeder::class,
             SampleTableSeeder::class
         ]);

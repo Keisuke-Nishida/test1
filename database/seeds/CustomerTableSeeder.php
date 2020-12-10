@@ -32,7 +32,7 @@ class CustomerTableSeeder extends Seeder
                 'uriage_6'          => null,
                 'uriage_7'          => null,
                 'uriage_8'          => null,
-                'core_system_flag'  => 1,
+                'core_system_status'=> 2, // 連携済み(flag => statusに変更)
 
                 'created_at'        => 20200101,
                 'created_by'        => 1,
