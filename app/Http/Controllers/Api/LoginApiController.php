@@ -72,11 +72,11 @@ class LoginApiController extends BaseApiController
         }
 
         // ユーザーデータの取得
-        $user_data = $this->userService->getUserDataFromIdAndPassword($this->credentials($request));
+        $user = $this->userService->getUserDataFromLoginIdAndPassword($request);
         // 利用規約のメッセージの取得
-        $message_data = $this->messageService->getMessageTermsOfUseData();
+        $message = $this->messageService->getMessageTermsOfUseData();
         // 同意履歴の取得
-        $is_agreement_history = $this->userAgreeDataService->isAgreementHistory($user_data);
+        $is_agreement_history = $this->userAgreeDataService->isAgreementHistory($user);
 
         // 同意履歴が存在しない場合（※初回ログイン）
         if (!$is_agreement_history) {
@@ -84,7 +84,7 @@ class LoginApiController extends BaseApiController
             $response = [
                 "status"   => "first_login",
                 "login"     => false,
-                "message"   => $message_data->value
+                "message"   => $message->value
             ];
             return $this->success($response);
         }
@@ -99,7 +99,7 @@ class LoginApiController extends BaseApiController
                 $response = [
                     "status"   => "update_agreement",
                     "login"     => false,
-                    "message"   => $message_data->value
+                    "message"   => $message->value
                 ];
                 return $this->success($response);
             }
@@ -140,7 +140,7 @@ class LoginApiController extends BaseApiController
      */
     protected function validateModalForm(Request $request)
     {
-        $user = $this->userService->getUserDataFromIdAndPassword($request);
+        $user = $this->userService->getUserDataFromLoginIdAndPassword($request);
 
         // 初回登録時はメールアドレスのバリデーションが必要
         if ($request->status == "first_login") {
