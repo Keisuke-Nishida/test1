@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  compose:
+  composer:
     image: composer:latest
-    command: "composer update"
+    command: "composer install"
     environment:
       REQUIRE_DEV: "true"
     volumes:
