@@ -21,7 +21,6 @@ class UserAgreeDataService extends BaseService
     }
 
     /**
-     * getUserAgreeData
      * ユーザーIDから同意履歴のデータを取得する
      *
      * @param  mixed $user_id
@@ -36,51 +35,36 @@ class UserAgreeDataService extends BaseService
     }
 
     /**
-     * isAgreementHistory
-     * getUserDataFromIdAndPassword()で取得したデータを使用して
+     * getUserDataFromLoginIdAndPassword()で取得したデータを使用して
      * user_agree_dataテーブルにユーザの同意履歴のデータの有無を返却する
      *
-     * @param  mixed $user_data
+     * @param  mixed $user
      * @return bool
      */
-    public function isAgreementHistory($user_data): bool
+    public function isAgreementHistory($user): bool
     {
-        return $this->searchExists(["user_id" => $user_data->id]);
+        return $this->searchExists(["user_id" => $user->id]);
     }
 
     /**
-     * saveUserAgreeData
-     * 利用規約同意時の利用規約同意データの登録と更新
+     * ユーザーIDから利用規約同意時の利用規約同意データの登録と更新
      *
-     * @param  mixed $request
-     * @param  mixed $user_agree_data
+     * @param  mixed $user_id
      * @return array
      */
-    public function saveUserAgreeData($request)
+    public function saveUserAgreeData($user_id)
     {
-        $user_agree_data = $this->getUserAgreeData($request->id);
+        $user_agree_data = $this->getUserAgreeData($user_id);
 
-        \DB::beginTransaction();
-        try {
-            // insert
-            if (empty($user_agree_data)) {
-                $user_agree_data = $this->newModel();
-                $user_agree_data->user_id = $request->id;
-                $user_agree_data->created_by = $request->id;
-            }
-            //update
-            $user_agree_data->agree_time = now();
-            $user_agree_data->updated_by = $request->id;
-            $user_agree_data->save();
-            \DB::commit();
-        } catch (\Exception $e) {
-            \DB::rollBack();
-            return [
-                'status'    => "error",
-                'exception' => $e->getMessage()
-            ];
+        // insert
+        if (empty($user_agree_data)) {
+            $user_agree_data = $this->newModel();
+            $user_agree_data->user_id = $user_id;
+            $user_agree_data->created_by = $user_id;
         }
-
-        return ['status' => "success"];
+        //update
+        $user_agree_data->agree_time = now();
+        $user_agree_data->updated_by = $user_id;
+        $user_agree_data->save();
     }
 }

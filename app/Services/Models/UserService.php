@@ -6,6 +6,7 @@ use App\Lib\Constant;
 use App\Models\User;
 use App\Services\Models\MessageService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 
 /**
  * ユーザーサービス
@@ -87,21 +88,21 @@ class UserService extends BaseService
     }
 
     /**
-     * 指定のログインIDとパスワードの
+     * ログインフォームに入力されたログインIDとパスワードから
      * ユーザーのデータを取得する
      *
-     * @param  mixed $request
+     * @param  Request $request
      * @return mixed
      */
-    public function getUserDataFromIdAndPassword($request)
+    public function getUserDataFromLoginIdAndPassword(Request $request)
     {
-        $conditions = ["login_id" => $request["login_id"]];
+        $conditions = ["login_id" => $request->login_id];
         $user_list = $this->searchList($conditions);
         $user_data = NULL;
 
         // ログインIDがユニークでない場合はpasswordでの検証も必要
         foreach ($user_list as $user) {
-            if ($this->validatePassword($request, $user->password)) {
+            if ($this->validatePassword($request->password, $user->password)) {
                 $user_data = $user;
             }
         }
@@ -110,31 +111,30 @@ class UserService extends BaseService
     }
 
     /**
-     * validatePassword
-     * getUserData内でデータを取得する前にPasswordチェック
+     * ログインフォームに入力されたパスワードと
+     * ユーザーマスタに登録されたパスワードが合っているかのチェック
      *
-     * @param  mixed $request
      * @param  mixed $password
+     * @param  mixed $password_hash
      * @return void
      */
-    public function validatePassword($request, $password)
+    public function validatePassword($password, $password_hash)
     {
-        return Hash::check($request["password"], $password);
+        return Hash::check($password, $password_hash);
     }
 
     /**
-     * isLastUpdateDateMoreRecent
-     * フロント側のログイン時に使用
+     * ログインフォームの入力からユーザーを取得し、
      * ユーザーマスタの最終ログイン日時(user.last_login_time)と
      * メッセージマスタの免責同意データの最終更新日時(message.updated_at)を比較する
      * 最終更新日時が新しい場合をtrueで返す
      *
-     * @param  mixed $var
+     * @param  Request $request
      * @return bool
      */
-    public function isLastUpdateDateMoreRecent($request): bool
+    public function isLastUpdateDateMoreRecent(Request $request): bool
     {
-        $user = $this->getUserDataFromIdAndPassword($request);
+        $user = $this->getUserDataFromLoginIdAndPassword($request);
         $message = $this->messageService->getMessageTermsOfUseData();
 
         return $user->last_login_time < $message->updated_at;
@@ -164,17 +164,9 @@ class UserService extends BaseService
      */
     public function updateUserDataAtLoginFromEmail($user)
     {
-        \DB::beginTransaction();
-        try {
-            $user->last_login_time = now();
-            $user->updated_by = $user->id;
-            $user->save();
-            \DB::commit();
-        } catch (\Exception $e) {
-            \DB::rollBack();
-            \Log::error('database save error:' . $e->getMessage());
-            throw new \Exception($e);
-        }
+        $user->last_login_time = now();
+        $user->updated_by = $user->id;
+        $user->save();
     }
 
     /**
@@ -185,16 +177,8 @@ class UserService extends BaseService
      */
     public function initResetToken($user)
     {
-        \DB::beginTransaction();
-        try {
-            $user->reset_token = null;
-            $user->reset_token_limit_time = null;
-            $user->save();
-            \DB::commit();
-        } catch (\Exception $e) {
-            \DB::rollBack();
-            \Log::error('database save error:' . $e->getMessage());
-            throw new \Exception($e);
-        }
+        $user->reset_token = null;
+        $user->reset_token_limit_time = null;
+        $user->save();
     }
 }

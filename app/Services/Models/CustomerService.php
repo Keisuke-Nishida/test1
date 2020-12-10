@@ -22,7 +22,6 @@ class CustomerService extends BaseService
     }
 
     /**
-     * updateCoreSystemStatus
      * 対象ログインユーザーの得意先IDをもとに得意先マスタを検索
      * 基幹システム連携ステータスが 0 の場合は 1 に更新する
      *
@@ -33,18 +32,10 @@ class CustomerService extends BaseService
     {
         $customer = $this->searchOne(["id" => $user->customer_id]);
 
-        \DB::beginTransaction();
-        try {
-            if ($customer->core_system_status == Constant::STATUS_NON_LINKED) {
-                $customer->core_system_status = Constant::STATUS_WAITING_FOR_LINKAGE;
-                $customer->updated_by = $user->id;
-                $customer->save();
-            }
-            \DB::commit();
-        } catch (\Exception $e) {
-            \DB::rollBack();
-            \Log::error('database save error:' . $e->getMessage());
-            throw new \Exception($e);
+        if ($customer->core_system_status == Constant::STATUS_NON_LINKED) {
+            $customer->core_system_status = Constant::STATUS_WAITING_FOR_LINKAGE;
+            $customer->updated_by = $user->id;
+            $customer->save();
         }
     }
 }

@@ -220,14 +220,22 @@ class LoginController extends Controller
 
                 // ログインできた場合
                 if (Auth::check()) {
-                    // ログイン時ユーザーマスタの更新
-                    $this->userService->updateUserDataAtLoginFromEmail($user);
-                    // リセットトークンとその有効期限日時の初期化
-                    $this->userService->initResetToken($user);
-                    // 同意履歴情報の登録
-                    $this->userAgreeDataService->saveUserAgreeData($user);
-                    // 得意先連携更新
-                    $this->customerService->updateCoreSystemStatus($user);
+                    \DB::beginTransaction();
+                    try {
+                        // ログイン時ユーザーマスタの更新
+                        $this->userService->updateUserDataAtLoginFromEmail($user);
+                        // リセットトークンとその有効期限日時の初期化
+                        $this->userService->initResetToken($user);
+                        // 同意履歴情報の登録
+                        $this->userAgreeDataService->saveUserAgreeData($user->id);
+                        // 得意先連携更新
+                        $this->customerService->updateCoreSystemStatus($user);
+                        \DB::commit();
+                    } catch (\Exception $e) {
+                        \DB::rollBack();
+                        \Log::error('database save error:' . $e->getMessage());
+                        throw new \Exception($e);
+                    }
 
                     // 利用確認完了ページへ遷移
                     return view('web.layouts.result')->with([

@@ -32,19 +32,21 @@ class UserAgreeDataApiController extends BaseApiController
      */
     public function save(Request $request)
     {
-        $user_agree_data = $this->mainApiService->getUserAgreeData($request->user_id);
-        $result_data = $this->mainApiService->saveUserAgreeData($request, $user_agree_data);
-
-        if ($result_data['status'] == "success") {
-            $response = ["message" => "success"];
-            return $this->success($response);
-        } else {
+        \DB::beginTransaction();
+        try {
+            $this->mainApiService->saveUserAgreeData($request->user_id);
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollBack();
             $status = 2;
             $response = [
                 'message'    => Message::getMessage(Message::ERROR_015, ["同意情報"]),
-                'error_data' => $result_data['exception']
+                'error_data' => $e->getMessage()
             ];
             return $this->error($status, $response);
         }
+
+        $response = ["message" => "success"];
+        return $this->success($response);
     }
 }
